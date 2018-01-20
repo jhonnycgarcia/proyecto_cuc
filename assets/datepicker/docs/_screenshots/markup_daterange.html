@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <!-- <link rel="stylesheet" href="script/common.css"> -->
+        <!-- <script src="script/common.js"></script> -->
+        <link rel="stylesheet" type="text/css" href="../../dist/css/bootstrap-datepicker3.css">
+        <link rel="stylesheet" type="text/css" href="../../../bootstrap/css/bootstrap.css">
+        <style>
+            body {
+                /* Padding around all elements to allow space for screenshots */
+                padding: 10px;
+                /* Transparent background for PNG screenshots */
+                background: none;
+            }
+        </style>
+    </head>
+    <body data-capture=".input-daterange, .datepicker" data-show="input:first, input:last">
+        <div class="row">
+            <div class="col-sm-5">
+                <div class="input-group input-daterange">
+                    <input type="text" class="form-control" value="2012-04-05">
+                    <div class="input-group-addon">to</div>
+                    <input type="text" class="form-control" value="2012-04-19">
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div class="input-group input-daterange">
+                    <input type="text" class="form-control" value="2012-04-05">
+                    <div class="input-group-addon">to</div>
+                    <input type="text" class="form-control" value="2012-04-19">
+                </div>
+            </div>
+        </div>
+        <script src="../../../jquery/jquery.js"></script>
+        <script src="./../../dist/js/bootstrap-datepicker.js"></script>
+        <script>
+
+            jQuery(document).ready(function($) {
+                
+                function setup(){
+                    $('.input-daterange').datepicker({
+                        format: 'yyyy-mm-dd'
+                    });
+                }
+
+                setup();
+
+            });
+        </script>
+    </body>
+</html>
