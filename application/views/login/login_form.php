@@ -5,7 +5,8 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <title>Ingresar .::Sistema Maestro::.</title>
   <!-- FavIcon -->
-  <link rel="shortcut icon" type="image/ico" href="<?= base_url('assets/images/icovzla.png'); ?>">
+  <link rel="shortcut icon" type="image/ico" href="<?= base_url('assets/images/favicon.ico'); ?>">
+  <!-- <link rel="shortcut icon" type="image/ico" href="<?= base_url('assets/images/icovzla.png'); ?>"> -->
   <!-- Tell the browser to be responsive to screen width -->
   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
   <!-- Bootstrap CSS  -->
@@ -29,14 +30,26 @@
 
     <?php 
       $form_attributes = array('id' => 'login_form');
-      echo form_open($form_action,$form_attributes); 
+      echo form_open($form_action,$form_attributes);
+    ?>
+    <?php
+      if( isset($error) && !empty($error) ){
+    ?>
+      <div class="alert alert-danger">
+        <button class="close" data-dismiss="alert">
+          <span>&times;</span>
+        </button>
+        <?= $error; ?>
+      </div>
+    <?php
+      }
     ?>
     <div class="form-group has-feedback">
-      <input type="text" class="form-control" placeholder="Usuario" name="usuario" id="usuario" value="">
+      <input type="text" class="form-control" placeholder="Usuario" name="usuario" id="usuario" value="" maxlength="12">
       <span class="glyphicon glyphicon-user form-control-feedback"></span>
     </div>
     <div class="form-group has-feedback">
-      <input type="password" class="form-control" placeholder="Contraseña" maxlength="6" name="contraseña" id="contraseña" value="">
+      <input type="password" class="form-control" placeholder="Contraseña" maxlength="6" name="contraseña" id="contraseña" value="" maxlength="12">
       <span class="glyphicon glyphicon-lock form-control-feedback"></span>
     </div>
     <div class="row">
