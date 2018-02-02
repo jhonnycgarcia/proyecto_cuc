@@ -13,7 +13,7 @@ Class Seguridad_lib {
 		if( array_key_exists('db', $config) )
 			$this->db = $config['db'];
 		$this->ci =& get_instance();				// Cargar librerias de CodeIgniter
-		// $this->ci->load->model('Seguridad_M');		// Cargar modelo
+		$this->ci->load->model('Seguridad_M');		// Cargar modelo
 	}
 
 
@@ -33,12 +33,12 @@ Class Seguridad_lib {
 	}
 
 
-	// function acceso_metodo($metodo){
-	// 	$metodo = str_replace('::', '/', $metodo);
-	// 	$id_usuario = $this->ci->session->userdata('id_usuario');
-	// 	$login = $this->login_in(true);									// Validar logeo
-	// 	$ans = $this->validar_acceso_metodo($id_usuario,$metodo);		// validar acceso 
-	// }
+	function acceso_metodo($metodo){
+		$metodo = str_replace('::', '/', $metodo);
+		$id_usuario = $this->ci->session->userdata('id_usuario');
+		$login = $this->login_in(true);									// Validar logeo
+		// $ans = $this->validar_acceso_metodo($id_usuario,$metodo);		// validar acceso 
+	}
 
 	/**
 	 * Funcion para validar el acceso a una funcion consultado la base de datos
