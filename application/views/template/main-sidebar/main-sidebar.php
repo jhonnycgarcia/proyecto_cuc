@@ -9,10 +9,7 @@
   $this->load->view('Template/main-sidebar/user-panel');
 
   // Menu
-  $this->load->view('Template/main-sidebar/sidebar-menu0');
-  // $this->load->view('Template/main-sidebar/sidebar-menu3');
-  // $this->load->view('Template/main-sidebar/sidebar-menu4');
-  // $this->load->view('Template/main-sidebar/sidebar-menu1');
+  $this->load->view('Template/main-sidebar/sidebar-menu');
 ?>
     </section>
     <!-- /.sidebar -->

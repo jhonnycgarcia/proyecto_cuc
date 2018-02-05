@@ -24,7 +24,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
       -->
       <link rel="stylesheet" href="<?= base_url('assets/AdminLTE/dist/css/skins/_all-skins.min.css'); ?>">
   <!-- FavIcon -->
-  <link rel="shortcut icon" type="image/ico" href="<?= base_url('assets/images/icovzla.png'); ?>">
+  <link rel="shortcut icon" type="image/ico" href="<?= base_url('assets/images/favicon.ico'); ?>">
   <?php
     if( isset($e_header) && !is_null($e_header) ) // etiquetas precargadas en el header
       $this->template_lib->cargar_etiquetas($e_header);

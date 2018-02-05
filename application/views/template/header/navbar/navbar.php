@@ -10,22 +10,22 @@
 <?php
   
   // Dropdown Messages
-  $this->load->view('Template/header/navbar/navbar-dropdown-messages');
+  // $this->load->view('Template/header/navbar/navbar-dropdown-messages');
   
   // Dropdown Notifications
-  $this->load->view('Template/header/navbar/navbar-dropdown-notifications');
+  // $this->load->view('Template/header/navbar/navbar-dropdown-notifications');
   
   // Dropdown Tasks
-  $this->load->view('Template/header/navbar/navbar-dropdown-tasks');
+  // $this->load->view('Template/header/navbar/navbar-dropdown-tasks');
   
   // Dropdown User Menu
   $this->load->view('Template/header/navbar/navbar-dropdown-user-menu');
   
 ?>
       <!-- Control Sidebar Toggle Button -->
-      <li>
+<!--       <li>
         <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-      </li>
+      </li> -->
       
     </ul>
   </div>

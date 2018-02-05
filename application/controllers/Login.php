@@ -44,9 +44,9 @@ class Login extends CI_Controller {
 			$this->session->set_flashdata('error', validation_errors() );
 			redirect('ingresar');
 		}else{
-			$data['usuario'] = $this->input->post('usuario');
-			$data['clave'] = do_hash( $this->input->post('clave').SEMILLA, 'md5' );
-
+			$data['usuario'] = strtolower( $this->input->post('usuario') );
+			$data['clave'] = do_hash( $this->input->post('contraseña').SEMILLA, 'md5' );
+			
 			$answer = $this->Login_M->consultar($data);
 
 			if( $answer == false ){
