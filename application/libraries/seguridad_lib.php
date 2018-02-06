@@ -16,12 +16,6 @@ Class Seguridad_lib {
 		$this->ci->load->model('Seguridad_M');		// Cargar modelo
 	}
 
-
-	/**
-	 * Funcion para validar si se encuentra iniciada una session en el sistema
-	 * @param  boolean 		$retornar 		[si esta declarada en TRUE retorna el resultado de la consulta]
-	 * @return mix			$ans            booleano en caso de requerirlo o redirecciona a la base url
-	 */
 	function login_in( $redireccionar = false ){
 		$data = $this->ci->session->userdata();
 		$ans = false;
@@ -32,29 +26,20 @@ Class Seguridad_lib {
 		return $ans;
 	}
 
-
 	function acceso_metodo($metodo){
 		$metodo = str_replace('::', '/', $metodo);
 		$metodo = str_replace('/index', '', $metodo);
-		
+
 		$id_usuario = $this->ci->session->userdata('id_usuario');
 		$login = $this->login_in(true);									// Validar logeo
 		$ans = $this->validar_acceso_metodo($id_usuario,$metodo,true);		// validar acceso 
 	}
 
-	/**
-	 * Funcion para validar el acceso a una funcion consultado la base de datos
-	 * @param  integer 			$id_usuario 				[id del usuario logeado]
-	 * @param  string 			$metodo     				[nombre del controlador y metodo]
-	 * @return mix(boolean-False or Redirect)             	[false en caso de no tener acceso]
-	 */
 	function validar_acceso_metodo($id_usuario,$metodo, $redireccion = false){
 		$id_menu = $this->ci->Seguridad_M->obtener_id_item($metodo);
 		$id_rol_usuario = $this->ci->Seguridad_M->obtener_rol_usuario($id_usuario);
 		$consultar = $this->ci->Seguridad_M->verificar_acceso($id_rol_usuario,$id_menu);
 
-		// var_export($consultar);
-		// exit();
 		if( !$consultar && !$redireccion ){
 			return false;
 		}elseif( !$consultar && $redireccion ){
@@ -62,6 +47,10 @@ Class Seguridad_lib {
 		}elseif( $consultar ){
 			return true;
 		}
+	}
+
+	function bitacora_sesion($datos){
+		$this->ci->Seguridad_M->registro_bitacora_sesion($datos);
 	}
 
 

@@ -40,6 +40,7 @@ class Login_M extends CI_Model {
 
 		if( count($query) > 0 ){
 			$ans = true;
+			$this->session->set_userdata($query[0]);
 		}
 
 		return $ans;
@@ -63,7 +64,9 @@ class Login_M extends CI_Model {
 
 		if( count($query) > 0 ){
 			$ans = true;
-			$this->session->set_userdata($query[0]);
+			$query = $query[0];
+			$this->session->set_userdata($query);
+			$this->seguridad_lib->bitacora_sesion( array( 'usuario_id' => $query['id_usuario'], 'accion' => 'INGRESAR' ) );
 		}
 
 		return $ans;

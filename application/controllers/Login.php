@@ -64,6 +64,7 @@ class Login extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function salir(){
+		$this->seguridad_lib->bitacora_sesion( array( 'usuario_id' => $this->session->userdata('id_usuario'), 'accion' => 'SALIR' ) );
 		$this->session->sess_destroy();
 		redirect('ingresar');
 	}
