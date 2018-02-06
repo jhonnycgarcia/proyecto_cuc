@@ -86,4 +86,4 @@ defined('EXIT__AUTO_MAX')      OR define('EXIT__AUTO_MAX', 125); // highest auto
 
 
 define('SEMILLA', "*pr0y3ct0_cUc*"); //semilla para la encriptacion md5
-define('TITULO_NAV', "..::Sistema Maestro::.."); //semilla para la encriptacion md5
+define('TITULO_NAV', "..::Sistema CUC::.."); //semilla para la encriptacion md5

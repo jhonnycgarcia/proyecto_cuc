@@ -42,6 +42,38 @@
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									)
 								),
+			'Menu/validar_editar' => array(
+								array(
+									'field' => 'menu',
+									'label' => '<b>Nombre</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'link',
+									'label' => '<b>Link</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'icono',
+									'label' => '<b>Icono</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'posicion',
+									'label' => '<b>Posición</b>',
+									'rules' => 'trim|required|is_natural|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'rol_menu[]',
+									'label' => '<b>Roles</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'id',
+									'label' => '<b>id</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									)
+								),
 		);
 
 		

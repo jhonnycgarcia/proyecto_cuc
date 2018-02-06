@@ -35,9 +35,11 @@ Class Seguridad_lib {
 
 	function acceso_metodo($metodo){
 		$metodo = str_replace('::', '/', $metodo);
+		$metodo = str_replace('/index', '', $metodo);
+		
 		$id_usuario = $this->ci->session->userdata('id_usuario');
 		$login = $this->login_in(true);									// Validar logeo
-		// $ans = $this->validar_acceso_metodo($id_usuario,$metodo);		// validar acceso 
+		$ans = $this->validar_acceso_metodo($id_usuario,$metodo,true);		// validar acceso 
 	}
 
 	/**
@@ -46,16 +48,21 @@ Class Seguridad_lib {
 	 * @param  string 			$metodo     				[nombre del controlador y metodo]
 	 * @return mix(boolean-False or Redirect)             	[false en caso de no tener acceso]
 	 */
-	// function validar_acceso_metodo($id_usuario,$metodo){
-	// 	$ans = false;
-	// 	$id_sistema_menu = $this->ci->Seguridad_M->get_id_sistema_menu($metodo);
-	// 	if( count($id_sistema_menu) < 0 )
-	// 		return $ans;
-	// 	$id_sistema_menu += array('id_usuario' => $id_usuario);			// Concatenar id_usuario en los datos de la opcion MENU
-	// 	$validar = $this->ci->Seguridad_M->get_acceso_usuario($id_sistema_menu);
-	// 	if( !$validar )
-	// 		redirect( base_url() );
-	// }
+	function validar_acceso_metodo($id_usuario,$metodo, $redireccion = false){
+		$id_menu = $this->ci->Seguridad_M->obtener_id_item($metodo);
+		$id_rol_usuario = $this->ci->Seguridad_M->obtener_rol_usuario($id_usuario);
+		$consultar = $this->ci->Seguridad_M->verificar_acceso($id_rol_usuario,$id_menu);
+
+		// var_export($consultar);
+		// exit();
+		if( !$consultar && !$redireccion ){
+			return false;
+		}elseif( !$consultar && $redireccion ){
+			redirect( base_url() );
+		}elseif( $consultar ){
+			return true;
+		}
+	}
 
 
 }

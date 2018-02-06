@@ -13,8 +13,8 @@
       <thead>
         <tr>
           <th class="col-md-1 col-sm-1 col-xs-1 text-center">id</th>
-          <th>Menu</th>
-          <th>Link</th>
+          <th class="input-filter">Menu</th>
+          <th class="input-filter">Link</th>
           <th class="col-md-1 col-sm-1 col-xs-1 text-center">Icono</th>
           <th class="col-md-1 col-sm-1 col-xs-1 text-center">Relación</th>
           <th class="col-md-1 col-sm-1 col-xs-1 text-center">Posición</th>
@@ -59,8 +59,8 @@
               </button>
 
               <ul class="dropdown-menu" rle="menu" aria-labelledby="dropdown_menu<?= $i; ?>">
-                <li role="presentation"><a href="editar/<?=$value['id']?>" role="item">Editar</a></li>
-                <li role="presentation"><a href="eliminar/<?=$value['id']?>" role="item">Eliminar</a></li>
+                <li role="presentation"><a href="Menu/editar/<?=$value['id']?>" role="item">Editar</a></li>
+                <li role="presentation"><a href="Menu/eliminar/<?=$value['id']?>" role="item">Eliminar</a></li>
               </ul>
             </div>
           </td>

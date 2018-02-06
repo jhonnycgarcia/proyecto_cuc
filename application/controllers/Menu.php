@@ -12,13 +12,12 @@ class Menu extends CI_Controller {
 
 	public function index()
 	{
-		// $this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
-		// $this->load->view('template/template');
 		$this->lista();
 	}
 
 	public function lista(){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
+
 		$datos['titulo_descripcion'] = "Lista de items";
 		$datos['titulo_contenedor'] = "Menu";
 		$datos['contenido'] = "menu/menu_lista";
@@ -31,6 +30,7 @@ class Menu extends CI_Controller {
 	}
 
 	public function agregar(){
+		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
 
 		$datos['titulo_contenedor'] = "Menu";
 		$datos['titulo_descripcion'] = "Agregar";
@@ -57,6 +57,7 @@ class Menu extends CI_Controller {
 	}
 
 	public function validar_agregar(){
+		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
 		if( count( $this->input->post() ) == 0 )
 			redirect('Menu/agregar');
 
@@ -77,11 +78,86 @@ class Menu extends CI_Controller {
 		}
 	}
 
-	public function editar(){
-		echo "editar menu";
+	public function editar($id){
+		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
+		if( !isset($id) || !is_numeric($id) || ($id == 0 ) )
+			redirect("Menu");
+
+		$datos = $this->Menu_M->consultar_item($id);
+		if( is_null($datos) ){
+			echo '<script language="javascript">
+						alert("No se encontro el item deseado, favor intente nuevamente");
+						window.location="'.base_url('Menu').'";
+					</script>'; ;
+		}else{
+			
+			$datos['titulo_contenedor'] = "Menu";
+			$datos['titulo_descripcion'] = "Editar item";
+			$datos['btn_action'] = "Actualizar";
+
+			$datos['contenido'] = "menu/menu_form";
+			$datos['form_action'] = "Menu/validar_editar";
+
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/menu/v_menu_form.js'), 'ext' =>'js');
+
+			$this->load->view('template/template',$datos);
+
+		}
 	}
 
-	public function eliminar(){
-		echo "eliminar menu";
+	function validar_editar(){
+		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
+
+		if( count( $this->input->post() ) == 0 )
+			redirect("Menu");
+
+		$this->form_validation->set_error_delimiters('<span>','</span>');
+
+		if( !$this->form_validation->run() ){
+			$this->editar();
+		}else{
+			$up = $this->Menu_M->actualizar_item( $this->input->post() );
+			if( $up ){
+				redirect('Menu');
+			}else{
+				echo '<script language="javascript">
+						alert("No se pudo actualizar el item, favor intente nuevamente");
+						window.location="'.base_url('Menu').'";
+					</script>'; ;
+			}
+		}
 	}
+
+	public function eliminar($id){
+		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
+		if( !isset($id) || !is_numeric($id) || ($id == 0 ) )
+			redirect("Menu");
+
+		$datos = $this->Menu_M->consultar_item($id);
+		if( is_null($datos) ){
+			echo '<script language="javascript">
+						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
+						window.location="'.base_url('Menu').'";
+					</script>'; ;
+		}else{
+			$delete = $this->Menu_M->eliminar_item($id,$datos['relacion']);
+
+			if( is_null($delete) ){
+				echo '<script language="javascript">
+						alert("No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este items");
+						window.location="'.base_url('Menu').'";
+					</script>'; 
+			}elseif ( $delete == false ) {
+				echo '<script language="javascript">
+						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
+						window.location="'.base_url('Menu').'";
+					</script>'; 
+			}else{
+				redirect("Menu");
+			}
+		}
+	}
+
 }

@@ -1,44 +1,29 @@
 <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu">
-        <li class="header">MAIN NAVIGATION</li>
-        <li class="active treeview">
-          <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-            <li><a href="index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-dashboard"></i> <span>Menu</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li class="active"><a href="index.html"><i class="fa fa-circle-o"></i> Agregar</a></li>
-            <li><a href="index2.html"><i class="fa fa-circle-o"></i> Lista</a></li>
-          </ul>
-        </li>
-        <li class="treeview">
-          <a href="#">
-            <i class="fa fa-files-o"></i>
-            <span>Layout Options</span>
-            <span class="pull-right-container">
-              <span class="label label-primary pull-right">4</span>
-            </span>
-          </a>
-          <ul class="treeview-menu">
-            <li><a href="pages/layout/top-nav.html"><i class="fa fa-circle-o"></i> Top Navigation</a></li>
-            <li><a href="pages/layout/boxed.html"><i class="fa fa-circle-o"></i> Boxed</a></li>
-            <li><a href="pages/layout/fixed.html"><i class="fa fa-circle-o"></i> Fixed</a></li>
-            <li><a href="pages/layout/collapsed-sidebar.html"><i class="fa fa-circle-o"></i> Collapsed Sidebar</a></li>
-          </ul>
-        </li>
+        <li class="header">OPCIONES</li>
+<?php
+  $padres = $this->db->query("SELECT * FROM seguridad.obtener_items_menu();")->result_array();
+  foreach ($padres as $key_p => $value_p) {
+    $hijos = $this->db->query("SELECT * FROM seguridad.obtener_items_menu({$value_p['id']});")->result_array();
+    if( count($hijos) > 0 ){
+      $etiqueta = imprimir_item($value_p);
+      echo "\t\t<li class='treeview'>\n\t\t\t"
+        .$etiqueta
+        ."\r\t\t\t<ul class='treeview-menu'>\n";
+      foreach ($hijos as $key_h => $value_h) {
+        $etiqueta = imprimir_item($value_h,true);
+        echo "\t\t<li>\n\t\t\t"
+          .$etiqueta
+          ."\r\t\t</li>\n";
+      }
+      echo "\t\t\t</ul>\n"
+        ."\r\t\t</li>\r";
+
+    }else{
+      $etiqueta = imprimir_item($value_p,true);
+      echo "\t\t<li>\n\t\t\t".$etiqueta."\r\t\t</li>\r";
+    }
+  }
+?>
       </ul>
 <!-- /.sidebar-menu --> <!-- Menu Vertical -->
