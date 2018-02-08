@@ -1,7 +1,7 @@
         (function ($) {
 
             var session = {
-                inactiveTimeout: 3000,              // tiempo para mostrar el mensaje de alerta
+                inactiveTimeout: 3000,              // tiempo para mostrar el mensaje de alerta por inactividad
                 warningTimeout: 5000,               // tiempo para esperar respuesta de la notificacion
                 warningStart: null,                 // fecha del tiempo en que comenzo el conteo
                 warningTimer: 5000,                 // el tiempo que transcurre por segundo antes del logout Timer running every second to countdown to logout

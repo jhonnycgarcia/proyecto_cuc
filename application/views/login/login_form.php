@@ -29,7 +29,7 @@
     <p class="login-box-msg">Inicie sesion para poder continuar</p>
 
     <?php 
-      $form_attributes = array('id' => 'login_form');
+      $form_attributes = array('id' => 'login_form', 'autocomplete' => 'off');
       echo form_open($form_action,$form_attributes);
     ?>
     <?php

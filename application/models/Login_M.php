@@ -35,7 +35,7 @@ class Login_M extends CI_Model {
 						->from("seguridad.usuarios AS a")
 							->join("administrativo.trabajadores AS b", "a.trabajador_id = b.id")
 							->join("seguridad.roles AS c", "a.rol_id = c.id")
-						->where( array('a.clave' => $datos['clave'], 'a.usuario' => $datos['usuario']) )
+						->where( array('a.clave' => $datos['clave'], 'a.usuario' => $datos['usuario'], 'a.logeado' => 'f')  )
 						->get()->result_array();
 
 		if( count($query) > 0 ){
@@ -59,7 +59,7 @@ class Login_M extends CI_Model {
 		$query = $this->db->select("a.id AS id_usuario, a.usuario, 'WebMaster'::VARCHAR AS apellidos_nombres, b.rol")
 						->from('seguridad.usuarios AS a')
 							->join("seguridad.roles AS b", "a.rol_id = b.id")
-						->where( array('a.clave' => $datos['clave'], 'a.usuario' => $datos['usuario']) )
+						->where( array('a.clave' => $datos['clave'], 'a.usuario' => $datos['usuario'], 'a.logeado' => 'f' ) )
 						->get()->result_array();
 
 		if( count($query) > 0 ){
