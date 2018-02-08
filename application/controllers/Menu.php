@@ -149,7 +149,7 @@ class Menu extends CI_Controller {
 			echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
 						window.location="'.base_url('Menu').'";
-					</script>'; ;
+					</script>';
 		}else{
 			$delete = $this->Menu_M->eliminar_item($id,$datos['relacion']);
 
