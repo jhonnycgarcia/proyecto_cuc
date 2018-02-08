@@ -83,8 +83,8 @@ class Menu extends CI_Controller {
 		if( !isset($id) || !is_numeric($id) || ($id == 0 ) )
 			redirect("Menu");
 
-		$datos = $this->Menu_M->consultar_item($id);
-		if( is_null($datos) ){
+		$item = $this->Menu_M->consultar_item($id);
+		if( is_null($item) ){
 			echo '<script language="javascript">
 						alert("No se encontro el item deseado, favor intente nuevamente");
 						window.location="'.base_url('Menu').'";
@@ -94,6 +94,16 @@ class Menu extends CI_Controller {
 			$datos['titulo_contenedor'] = "Menu";
 			$datos['titulo_descripcion'] = "Editar item";
 			$datos['btn_action'] = "Actualizar";
+
+			$datos['menu'] = set_value('menu',$item['menu']);
+			$datos['link'] = set_value('link',$item['link']);
+			$datos['icono'] = set_value('icono',$item['icono']);
+			$datos['acceso'] = set_value('acceso',$item['acceso']);
+			$datos['estatus'] = set_value('estatus',$item['estatus']);
+			$datos['relacion'] = set_value('relacion',$item['relacion']);
+			$datos['posicion'] = set_value('posicion',$item['posicion']);
+			$datos['rol_menu'] = set_value('rol_menu',$item['rol_menu']);
+			$datos['id'] = set_value('id',$item['id']);
 
 			$datos['contenido'] = "menu/menu_form";
 			$datos['form_action'] = "Menu/validar_editar";

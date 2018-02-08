@@ -38,7 +38,7 @@
           <td class="text-center">
             <?= ( $value['relacion'] == 0 )
               ?'<span class="label label-primary">Padre</span>'
-              :'<span class="label label-danger">Hijo</span>;' ?>
+              :'<span class="label label-danger">Hijo</span>' ?>
           </td>
           <td class="text-center"><?= $value['posicion']; ?></td>
           <td class="text-center">
@@ -47,7 +47,7 @@
               :'<span class="label label-warning">Método</span>'; ?>
           </td>
           <td class="text-center">
-            <?= ( $value['estatus'] )
+            <?= ( $value['estatus'] == 't' )
               ?'<span class="label label-success">Activado</span>'
               :'<span class="label label-default">Inactivo</span>' ; ?>
           </td>

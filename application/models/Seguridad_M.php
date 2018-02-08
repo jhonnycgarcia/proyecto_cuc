@@ -34,7 +34,19 @@ class Seguridad_M extends CI_Model {
 	}
 
 	function registro_bitacora_sesion($datos){
+		if( strtolower($datos['accion']) == 'salir' ){
+			$this->estatus_logeo($datos['usuario_id']);
+		}else{
+			$this->estatus_logeo($datos['usuario_id'], true );
+		}
+
 		$this->db->insert('seguridad.bitacora_session',$datos);
+	}
+
+	function estatus_logeo($usuario_id,$estatus = false ){
+		$query = $this->db->set('logeado',$estatus)
+						->where('id',$usuario_id)
+						->update('seguridad.usuarios');
 	}
 
 }

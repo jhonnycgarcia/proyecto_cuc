@@ -55,7 +55,7 @@
         <label for="estatus" class="control-label col-md-2">Estatus:</label>
         <div class="col-md-10">
           <?php
-            $option_estatus = array(1 =>'Activado',0 => 'Inactivo');
+            $option_estatus = array('t' =>'Activado','f' => 'Inactivo');
             $attribute_estatus = array('class' => 'form-control');
             echo form_dropdown('estatus',$option_estatus,$estatus,$attribute_estatus);
           ?>
