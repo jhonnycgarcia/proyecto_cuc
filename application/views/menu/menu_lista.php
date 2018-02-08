@@ -1,13 +1,7 @@
 <div class="box box-default"> 
-  <!-- Box-Header -->
-  <!-- <div class="box-header with-border"> -->
-  <!-- <?php echo anchor('Menu/agregar/','Agregar',array('class'=>'btn btn-primary btn-sm pull-right'));?> -->
-  <!-- </div> -->
-  <!-- /Box-Header -->
   <div class="box-body"> <!-- Box-Body -->
-  <!-- <?php echo anchor('Menu/agregar/','Agregar',array('class'=>'btn btn-primary btn-sm pull-right'));?> -->
   <?php echo anchor('Menu/agregar/','<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>',array('class'=>'btn btn-primary btn-sm pull-right'));?>
-  <!-- <h4>Lista de Items</h4> -->
+  
   <div class="table-responsive">
     <table class="table table-striped table-hover table-bordered" id="list">
       <thead>
@@ -72,8 +66,5 @@
     </table>
   </div>
   </div> <!-- /Box-Body -->
-  <!-- <div class="box-footer"> <!-- Box-Header -->
-  	<!-- Lorem ipsum dolor sit amet. [FOOTER] -->
-  <!-- </div> -->
 </div>
 <!-- Your Page Content Here -->

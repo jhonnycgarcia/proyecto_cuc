@@ -8,8 +8,8 @@ class Menu_M extends CI_Model {
 		$this->load->database();
 	}
 
-	function obtener_todos(){
-		$query = $this->db->query("SELECT * FROM seguridad.lista_menu();")->result_array();
+	function obtener_todos( $opcion = 3 ){
+		$query = $this->db->query("SELECT * FROM seguridad.lista_menu({$opcion});")->result_array();
 		return $query;
 	}
 
