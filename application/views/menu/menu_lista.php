@@ -53,8 +53,8 @@
               </button>
 
               <ul class="dropdown-menu" rle="menu" aria-labelledby="dropdown_menu<?= $i; ?>">
-                <li role="presentation"><a href="Menu/editar/<?=$value['id']?>" role="item">Editar</a></li>
-                <li role="presentation"><a href="Menu/eliminar/<?=$value['id']?>" role="item">Eliminar</a></li>
+                <li role="presentation"><?= anchor( site_url('Menu/editar/'.$value['id']),"Editar",array("role" =>"item")  )?></li>
+                <li role="presentation"><?= anchor( site_url('Menu/eliminar/'.$value['id']),"Eliminar",array("role" =>"item")  )?></li>
               </ul>
             </div>
           </td>

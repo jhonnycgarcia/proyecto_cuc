@@ -59,7 +59,7 @@ class Menu extends CI_Controller {
 	public function validar_agregar(){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
 		if( count( $this->input->post() ) == 0 )
-			redirect('Menu/agregar');
+			redirect('Menu');
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 
@@ -73,7 +73,7 @@ class Menu extends CI_Controller {
 				echo '<script language="javascript">
 						alert("No se pudo crear el item, favor intente nuevamente");
 						window.location="'.base_url('Menu').'";
-					</script>'; ;
+					</script>'; 
 			}
 		}
 	}
@@ -88,7 +88,7 @@ class Menu extends CI_Controller {
 			echo '<script language="javascript">
 						alert("No se encontro el item deseado, favor intente nuevamente");
 						window.location="'.base_url('Menu').'";
-					</script>'; ;
+					</script>';
 		}else{
 			
 			$datos['titulo_contenedor'] = "Menu";
@@ -119,7 +119,6 @@ class Menu extends CI_Controller {
 
 	function validar_editar(){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
-
 		if( count( $this->input->post() ) == 0 )
 			redirect("Menu");
 
@@ -135,7 +134,7 @@ class Menu extends CI_Controller {
 				echo '<script language="javascript">
 						alert("No se pudo actualizar el item, favor intente nuevamente");
 						window.location="'.base_url('Menu').'";
-					</script>'; ;
+					</script>';
 			}
 		}
 	}

@@ -74,6 +74,35 @@
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									)
 								),
+			'Roles/validar_agregar' => array(
+								array(
+									'field' => 'rol',
+									'label' => '<b>Rol</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'descripcion',
+									'label' => '<b>Descripcion</b>',
+									'rules' => 'trim|strip_tags|xss_clean'
+									)
+								),
+			'Roles/validar_editar' => array(
+								array(
+									'field' => 'rol',
+									'label' => '<b>Rol</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'descripcion',
+									'label' => '<b>Descripcion</b>',
+									'rules' => 'trim|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'id',
+									'label' => '<b>Id</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									)
+								),
 		);
 
 		
