@@ -12,7 +12,8 @@ class Menu extends CI_Controller {
 
 	public function index()
 	{
-		$this->lista();
+		// $this->lista();
+		redirect('Menu/lista');
 	}
 
 	public function lista(){

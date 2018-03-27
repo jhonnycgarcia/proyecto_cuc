@@ -12,7 +12,7 @@
           <th class="col-md-1 col-sm-1 col-xs-1 text-center">Icono</th>
           <th class="col-md-1 col-sm-1 col-xs-1 text-center">Relación</th>
           <th class="col-md-1 col-sm-1 col-xs-1 text-center">Posición</th>
-          <th class="col-md-1 col-sm-1 col-xs-1 text-center">Acceso</th>
+          <th class="col-md-1 col-sm-1 col-xs-1 text-center">Visible en Lista</th>
           <th class="col-md-1 col-sm-1 col-xs-1 text-center">Estatus</th>
           <th class="col-md-1 col-sm-1 col-xs-1">Opciones</th>
         </tr>
@@ -25,7 +25,7 @@
     $i++;
 ?>
         <tr>
-          <td><?= $value['id'];?></td>
+          <td><?= $value['id_menu'];?></td>
           <td><?= $value['menu']; ?></td>
           <td><code><?= $value['link']; ?></code></td>
           <td class="text-center"><?= "<i class='".$value['icono']."'></i>"; ?></td>
@@ -36,9 +36,9 @@
           </td>
           <td class="text-center"><?= $value['posicion']; ?></td>
           <td class="text-center">
-            <?= ( $value['acceso'] == 1 )
-              ?'<span class="label label-info">Vista y Método</span>'
-              :'<span class="label label-warning">Método</span>'; ?>
+            <?= ( $value['visible_menu'] == 1 )
+              ?'<span class="label label-info">SI</span>'
+              :'<span class="label label-warning">NO</span>'; ?>
           </td>
           <td class="text-center">
             <?= ( $value['estatus'] == 't' )
@@ -53,8 +53,8 @@
               </button>
 
               <ul class="dropdown-menu" rle="menu" aria-labelledby="dropdown_menu<?= $i; ?>">
-                <li role="presentation"><?= anchor( site_url('Menu/editar/'.$value['id']),"Editar",array("role" =>"item")  )?></li>
-                <li role="presentation"><?= anchor( site_url('Menu/eliminar/'.$value['id']),"Eliminar",array("role" =>"item")  )?></li>
+                <li role="presentation"><?= anchor( site_url('Menu/editar/'.$value['id_menu']),"Editar",array("role" =>"item")  )?></li>
+                <li role="presentation"><?= anchor( site_url('Menu/eliminar/'.$value['id_menu']),"Eliminar",array("role" =>"item")  )?></li>
               </ul>
             </div>
           </td>

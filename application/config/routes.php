@@ -56,6 +56,7 @@ $route['salir'] = 'Login/salir';
 $route['ingresar'] = 'Login/ingresar';
 $route['validar_ingreso'] = 'Login/validar_ingreso';
 
+
 // $route['default_controller'] = 'welcome';
 $route['404_override'] = '';
 $route['translate_uri_dashes'] = FALSE;

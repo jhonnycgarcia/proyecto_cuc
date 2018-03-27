@@ -26,4 +26,4 @@
   }
 ?>
       </ul>
-<!-- /.sidebar-menu --> <!-- Menu Vertical <--></-->
+<!-- /.sidebar-menu --> <!-- Menu Vertical -->

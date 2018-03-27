@@ -8,7 +8,7 @@ class Dashboard extends CI_Controller {
 	}
 
 	public function index(){
-		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
+		// $this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
 		$this->load->view('template/template');
 	}
 }
