@@ -8,8 +8,8 @@ class Roles_M extends CI_Model {
 		$this->load->database();
 	}
 
-	function obtener_todos($opcion = 3 ){
-		$query = $this->db->query("SELECT * FROM seguridad.lista_roles({$opcion});")->result_array();
+	function obtener_todos($opcion = null ){
+		$query = $this->db->query("SELECT * FROM seguridad.lista_roles(".$opcion.");")->result_array();
 		return $query;
 	}
 

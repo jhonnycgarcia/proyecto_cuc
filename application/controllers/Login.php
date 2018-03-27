@@ -13,7 +13,6 @@ class Login extends CI_Controller {
 	public function index()
 	{
 		redirect('ingresar');
-		// $this->ingresar();
 	}
 
 	/**

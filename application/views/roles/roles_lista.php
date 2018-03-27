@@ -9,7 +9,6 @@
             <th class="col-md-1 col-sm-1 col-xs-1 text-center">id</th>
             <th class="input-filter text-center">Rol</th>
             <th class="col-md-1 col-sm-1 col-xs-1 text-center">Estatus</th>
-            <th class="text-center">Descripción</th>
             <th class="col-md-1 col-sm-1 col-xs-1">Opciones</th>
           </tr>
         </thead>
@@ -21,14 +20,13 @@
     $i++;
 ?>
           <tr>
-            <td class="text-center"><?= $value['id']; ?></td>
+            <td class="text-center"><?= $value['id_rol']; ?></td>
             <td class="text-center"><?= $value['rol']; ?></td>
             <td class="text-center">
             <?= ( $value['estatus'] == 't' )
               ?'<span class="label label-success">Activado</span>'
               :'<span class="label label-default">Inactivo</span>' ; ?>    
             </td>
-            <td><?= $value['descripcion']; ?></td>
             <td>
               <div class="dropdown">
                 <button class="btn btn-xs btn-default dropdown-toggle" type="button" id="dropdown_menu<?= $i; ?>" data-toggle="dropdown" aria-extended="true">

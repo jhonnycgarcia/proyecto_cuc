@@ -8,15 +8,42 @@ class Menu_M extends CI_Model {
 		$this->load->database();
 	}
 
-	function obtener_todos( $opcion = true ){
-		$query = $this->db->query("SELECT * FROM seguridad.lista_items_menu('{$opcion}');")->result_array();
+	/**
+	 * Funcion para obtener todos los items de la tabla MENUS
+	 * @param  boolean 	$opcion 
+	 *         [description]
+	 * @return array         
+	 *         [description]
+	 */
+	function obtener_todos( $opcion = null ){
+		$query = $this->db->query("SELECT * FROM seguridad.lista_items_menu(".$opcion.");")->result_array();
 		return $query;
 	}
 
+	/**
+	 * Funcion para formatear el array antes de crear un nuevo registro de item en MENUS
+	 * @param  array 		$datos 			[description]
+	 * @return array 		$datos       	[description]
+	 */
+	function formatear_datos($datos){
+		if( $datos['visible_menu'] == 'f' ){
+			$datos['posicion'] = 0;
+			$datos['relacion'] = 0;
+			$datos['icono'] = 'fa fa-cog';
+		}
+		return $datos;
+	}
+
+	/**
+	 * Funcion para agregar un nuevo item a la tabla MENUS
+	 * @param  array 		$datos 		[description]
+	 * @return boolean 		$ans 		[description]
+	 */
 	function agregar_item( $datos ){
 		$ans = false;
-		unset($datos['id']);
+		unset($datos['id_menu']);
 		$id_rol_menu = array_pop($datos);
+		$datos = $this->formatear_datos($datos);		// Formatear datos
 		$status = $this->db->insert('seguridad.menus',$datos);
 		if( $status ){
 			$ans = true;
@@ -29,10 +56,19 @@ class Menu_M extends CI_Model {
 		return $ans;
 	}
 
+	/**
+	 * Funcion para insertar registros en la tabla ROLES_MENUS
+	 * @param  array 		$datos 			[description]
+	 */
 	function agregar_rol_menu($datos){
-		$query = $this->db->insert_batch('seguridad.roles_menu',$datos);
+		$query = $this->db->insert_batch('seguridad.roles_menus',$datos);
 	}
 
+	/**
+	 * Funcion para obtener todos los detalles de un item de la tabla MENUS
+	 * @param  integer 		$id 		[description]
+	 * @return array/null   $query  	[description]
+	 */
 	function consultar_item($id){
 		$query = $this->db->query("SELECT * FROM seguridad.consultar_item_menu({$id});")->result_array();
 		if( count($query) > 0 ){
@@ -45,10 +81,15 @@ class Menu_M extends CI_Model {
 		}
 	}
 
+	/**
+	 * Funcion para obtener todos los registros de la tabla ROLES_MENUS que dependan de un items de menu
+	 * @param  integer 			$id 		[description]
+	 * @return array     		$ans
+	 */
 	function obtener_rol_menu($id){
 		$ans = array();
 		$query = $this->db->select()
-						->from('seguridad.roles_menu AS a')
+						->from('seguridad.roles_menus AS a')
 						->where( array('a.menu_id' => $id ) )
 						->get()->result_array();
 		if( count($query) > 0 ){
@@ -59,12 +100,16 @@ class Menu_M extends CI_Model {
 		return $ans;
 	}
 
+	/**
+	 * Funcion para actualizar los campos de un items de MENU
+	 * @param  array 		$datos 		[description]
+	 * @return boolean		$ans        [description]
+	 */
 	function actualizar_item($datos){
 		$ans = false;
 		$id = array_pop($datos);
 		$id_roles = array_pop($datos);
-
-		$status = $this->db->where("a.id",$id)
+		$status = $this->db->where("a.id_menu",$id)
 							->update("seguridad.menus AS a",$datos);
 		if( $status ){
 			$ans = true;
@@ -77,11 +122,21 @@ class Menu_M extends CI_Model {
 		return $ans;
 	}
 
+	/**
+	 * Funcion para eliminar los registros de la tabla ROLES_MENUS que dependan del item a modificar
+	 * @param  integer 		$id 		[El identificador del item a modificar]
+	 */
 	function eliminar_rol_menu($id){
 		$query = $this->db->where( array("a.menu_id" => $id) )
-							->delete("seguridad.roles_menu AS a");
+							->delete("seguridad.roles_menus AS a");
 	}
 
+	/**
+	 * Funcion para consultar si un item posee registros dependientes a de el
+	 * @param  integer 		$id 		[El id del item de menu a consultar]
+	 * @return boolean		$ans     	[TRUE en caso de conseguir registros,
+	 *                            	 	FALSE en caso contratio]
+	 */
 	function consultar_items_dependientes($id){
 		$ans = false;
 		$query = $this->db->get_where("seguridad.menus AS a", array("a.relacion" => $id) )->result_array();
@@ -99,7 +154,7 @@ class Menu_M extends CI_Model {
 		}
 		
 		$this->eliminar_rol_menu($id);
-		$status = $this->db->where("a.id",$id)->delete("seguridad.menus AS a");
+		$status = $this->db->where("a.id_menu",$id)->delete("seguridad.menus AS a");
 		if( $status != false )
 			$ans = true;
 		return $ans;

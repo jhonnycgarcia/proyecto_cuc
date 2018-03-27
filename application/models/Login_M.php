@@ -36,22 +36,4 @@ class Login_M extends CI_Model {
 		return $ans;
 	}
 
-
-	function obtener_usuario1($datos){
-		$ans = false;
-		$query = $this->db->select("a.id AS id_usuario, a.usuario, CONCAT(b.p_apellido,' ',b.p_nombre) AS apellidos_nombres, c.rol")
-						->from("seguridad.usuarios AS a")
-							->join("administrativo.trabajadores AS b", "a.trabajador_id = b.id")
-							->join("seguridad.roles AS c", "a.rol_id = c.id")
-						->where( array('a.clave' => $datos['clave'], 'a.usuario' => $datos['usuario'], 'a.logeado' => 'f')  )
-						->get()->result_array();
-
-		if( count($query) > 0 ){
-			$ans = true;
-			$this->session->set_userdata($query[0]);
-		}
-
-		return $ans;
-	}
-
 }

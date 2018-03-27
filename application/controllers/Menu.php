@@ -43,12 +43,12 @@ class Menu extends CI_Controller {
 		$datos['menu'] = set_value('menu');
 		$datos['link'] = set_value('link');
 		$datos['icono'] = set_value('icono');
-		$datos['acceso'] = set_value('acceso');
+		$datos['visible_menu'] = set_value('visible_menu');
 		$datos['estatus'] = set_value('estatus');
 		$datos['posicion'] = set_value('posicion');
 		$datos['relacion'] = set_value('relacion');
 		$datos['rol_menu'] = set_value('rol_menu');
-		$datos['id'] = set_value('id');
+		$datos['id_menu'] = set_value('id_menu');
 
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
@@ -58,7 +58,6 @@ class Menu extends CI_Controller {
 	}
 
 	public function validar_agregar(){
-		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
 		if( count( $this->input->post() ) == 0 )
 			redirect('Menu');
 
@@ -99,12 +98,12 @@ class Menu extends CI_Controller {
 			$datos['menu'] = set_value('menu',$item['menu']);
 			$datos['link'] = set_value('link',$item['link']);
 			$datos['icono'] = set_value('icono',$item['icono']);
-			$datos['acceso'] = set_value('acceso',$item['acceso']);
+			$datos['visible_menu'] = set_value('visible_menu',$item['visible_menu']);
 			$datos['estatus'] = set_value('estatus',$item['estatus']);
 			$datos['relacion'] = set_value('relacion',$item['relacion']);
 			$datos['posicion'] = set_value('posicion',$item['posicion']);
 			$datos['rol_menu'] = set_value('rol_menu',$item['rol_menu']);
-			$datos['id'] = set_value('id',$item['id']);
+			$datos['id_menu'] = set_value('id_menu',$item['id_menu']);
 
 			$datos['contenido'] = "menu/menu_form";
 			$datos['form_action'] = "Menu/validar_editar";
@@ -119,10 +118,8 @@ class Menu extends CI_Controller {
 	}
 
 	function validar_editar(){
-		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
 		if( count( $this->input->post() ) == 0 )
 			redirect("Menu");
-
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 
 		if( !$this->form_validation->run() ){

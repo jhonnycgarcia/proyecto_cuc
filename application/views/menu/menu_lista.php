@@ -36,14 +36,14 @@
           </td>
           <td class="text-center"><?= $value['posicion']; ?></td>
           <td class="text-center">
-            <?= ( $value['visible_menu'] == 1 )
+            <?= ( $value['visible_menu'] == 't' )
               ?'<span class="label label-info">SI</span>'
               :'<span class="label label-warning">NO</span>'; ?>
           </td>
           <td class="text-center">
             <?= ( $value['estatus'] == 't' )
               ?'<span class="label label-success">Activado</span>'
-              :'<span class="label label-default">Inactivo</span>' ; ?>
+              :'<span class="label label-default">Inactivo</span>'; ?>
           </td>
           <td>
             <div class="dropdown">

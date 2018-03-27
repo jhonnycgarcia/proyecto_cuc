@@ -35,6 +35,13 @@ class Seguridad_M extends CI_Model {
 		return $query[0]['id_usuario'];
 	}
 
+	/**
+	 * Funcion para generar bitacora de peticiones
+	 * @param  array $datos [description]
+	 */
+	function registrar_bitacora($datos){
+		$this->db->insert('seguridad.bitacora',$datos);
+	}
 
 	/**
 	 * Funcion para generar bitacora de registro de inicio o cierre de sesion

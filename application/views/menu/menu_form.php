@@ -42,12 +42,12 @@
         </div>  
       </div>
       <div class="form-group">
-        <label for="acceso" class="control-label col-md-2">Acceso:</label>
+        <label for="visible_menu" class="control-label col-md-2">Listar:</label>
         <div class="col-md-10">
           <?php
-            $option_acceso = array(1 =>'Vista y Método',0 => 'Método');
-            $attribute_acceso = array('class' => 'form-control');
-            echo form_dropdown('acceso',$option_acceso,$acceso,$attribute_acceso);
+            $option_visible_menu = array('t' =>'SI','f' => 'NO');
+            $attribute_visible_menu = array('class' => 'form-control','id' => 'visible_menu');
+            echo form_dropdown('visible_menu',$option_visible_menu,$visible_menu,$attribute_visible_menu);
           ?>
         </div>  
       </div>
@@ -70,7 +70,7 @@
             foreach ($sql as $key => $value) {
               $option_relacion[ $value['id'] ] = $value['menu'];
             }
-            $attribute_relacion = array('class' => 'form-control');
+            $attribute_relacion = array('class' => 'form-control','id' => 'relacion');
             echo form_dropdown('relacion',$option_relacion,$relacion,$attribute_relacion);
           ?>
         </div>
@@ -79,7 +79,7 @@
         <label for="posicion" class="control-label col-md-2">Posicion:</label>
         <div class="col-md-10">
           <?php
-            $attribute_posicion = array('class' => 'form-control','placeholder' => 'Posicion:');
+            $attribute_posicion = array('class' => 'form-control','placeholder' => 'Posicion:','id' => 'posicion');
             echo form_input('posicion',$posicion,$attribute_posicion);
             echo form_error('posicion');
           ?>
@@ -90,12 +90,12 @@
         <div class="col-md-10">
           <?php
 
-            $query = $this->db->select('a.id,a.rol')->from('seguridad.roles AS a')
-                        ->where( array('a.estatus' => 't') )->order_by('a.id','ASC')->get()->result_array();
+            $query = $this->db->select('a.id_rol,a.rol')->from('seguridad.roles AS a')
+                        ->where( array('a.estatus' => 't') )->order_by('a.id_rol','ASC')->get()->result_array();
             if( count($query) > 0 ):
 
               foreach ($query as $key => $value) :
-                $option_rol_menu[ $value['id'] ] = $value['rol'];
+                $option_rol_menu[ $value['id_rol'] ] = $value['rol'];
               endforeach;
 
               ;else:
@@ -109,7 +109,7 @@
       </div>
       <div>
         <?php
-          echo form_hidden('id',$id);
+          echo form_hidden('id_menu',$id_menu);
         ?>
       </div>
       <div class="form-group">

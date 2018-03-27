@@ -69,7 +69,7 @@
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									),
 								array(
-									'field' => 'id',
+									'field' => 'id_menu',
 									'label' => '<b>id</b>',
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									)

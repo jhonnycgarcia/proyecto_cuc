@@ -12,7 +12,7 @@ class Roles extends CI_Controller {
 
 	public function index()
 	{
-		$this->lista();
+		redirect('Roles/lista');
 	}
 
 	public function lista(){
@@ -49,7 +49,6 @@ class Roles extends CI_Controller {
 	}
 
 	public function validar_agregar(){
-		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
 		if( count( $this->input->post() ) == 0 )
 			redirect('Roles');
 
