@@ -22,8 +22,24 @@
             <td><?= $value['id_direccion']; ?></td>
             <td><?= $value['direccion']; ?></td>
             <td><?= $value['descripcion']; ?></td>
-            <td><?= $value['estatus']; ?></td>
-            <td></td>
+            <td class="text-center">
+              <?= ( $value['estatus'] == 't' )
+              ?'<span class="label label-success">Activo</span>'
+              :'<span class="label label-default">Inactivo</span>'; ?>
+            </td>
+            <td>
+              <div class="dropdown">
+                <button class="btn btn-xs btn-default dropdown-toggle" type="button" id="dropdown_menu<?= $i; ?>" data-toggle="dropdown" aria-extended="true">
+                  <i class="fa fa-cog"></i>
+                  <span class="caret"></span>
+                </button>
+
+                <ul class="dropdown-menu" rle="menu" aria-labelledby="dropdown_menu<?= $i; ?>">
+                  <li role="presentation"><?= anchor( site_url('Direccion/editar/'.$value['id_direccion']),"Editar",array("role" =>"item")  )?></li>
+                  <li role="presentation"><?= anchor( site_url('Direccion/eliminar/'.$value['id_direccion']),"Eliminar",array("role" =>"item")  )?></li>
+                </ul>
+              </div>
+            </td>
           </tr>
 <?php
   }
