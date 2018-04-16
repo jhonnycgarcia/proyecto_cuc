@@ -34,8 +34,8 @@
                   <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu" rle="menu" aria-labelledby="dropdown_menu<?= $i; ?>">
-                  <li role="presentation"><?= anchor( site_url('Roles/editar/'.$value['id']),"Editar",array("role" =>"item")  )?></li>
-                  <li role="presentation"><?= anchor( site_url('Roles/eliminar/'.$value['id']),"Eliminar",array("role" =>"item")  )?></li>
+                  <li role="presentation"><?= anchor( site_url('Roles/editar/'.$value['id_rol']),"Editar",array("role" =>"item")  )?></li>
+                  <li role="presentation"><?= anchor( site_url('Roles/eliminar/'.$value['id_rol']),"Eliminar",array("role" =>"item")  )?></li>
                 </ul>
               </div>
             </td>
