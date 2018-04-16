@@ -19,7 +19,7 @@
   foreach ($lista as $key => $value) {
 ?>
           <tr>
-            <td><?= $value['id']; ?></td>
+            <td><?= $value['id_direccion']; ?></td>
             <td><?= $value['direccion']; ?></td>
             <td><?= $value['descripcion']; ?></td>
             <td><?= $value['estatus']; ?></td>

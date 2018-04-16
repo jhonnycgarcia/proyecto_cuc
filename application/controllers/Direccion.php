@@ -17,6 +17,8 @@ class Direccion extends CI_Controller {
 	}
 
 	public function lista(){
+		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
+
 		$datos['titulo_contenedor'] = 'Dirección';
 		$datos['titulo_descripcion'] = 'Lista de items';
 		$datos['contenido'] = 'direccion/direccion_lista';
@@ -29,7 +31,21 @@ class Direccion extends CI_Controller {
 	}
 
 	public function agregar(){
+		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
 
+		$datos['titulo_contenedor'] = 'Dirección';
+		$datos['titulo_descripcion'] = 'Agregar';
+		$datos['contenido'] = 'direccion/direccion_form';
+
+		$datos['form_action'] = 'Direccion/validar_agregar';
+		$datos['btn_action'] = 'Agregar';
+
+		$datos['direccion'] = set_value('direccion');
+		$datos['descripcion'] = set_value('descripcion');
+		$datos['estatus'] = set_value('estatus');
+		$datos['id_direccion'] = set_value('id_direccion');
+
+		$this->load->view('template/template',$datos);
 	}
 
 	public function editar(){

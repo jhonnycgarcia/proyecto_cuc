@@ -8,8 +8,11 @@ class Direccion_M extends CI_Model {
 		$this->load->database();
 	}
 
-	function obtener_todos( $opcion = 3 ){
-		$query = $this->db->query("SELECT * FROM administrativo.lista_direcciones({$opcion});")->result_array();
+	function obtener_todos( $opcion = null ){
+		if( is_null($opcion) ){ $query = $this->db->order_by('id_direccion','ASC')->get('administrativo.direcciones')->result_array();
+		}elseif( $opcion ){ $query = $this->db->order_by('id_direccion','ASC')->get_where('administrativo.direcciones',array('estatus' => 't'))->result_array();
+		}else{ $query = $this->db->order_by('id_direccion','ASC')->get_where('administrativo.direcciones',array('estatus' => 'f'))->result_array(); }
 		return $query;
 	}
+	
 }

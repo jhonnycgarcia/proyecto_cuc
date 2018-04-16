@@ -9,7 +9,10 @@ class Roles_M extends CI_Model {
 	}
 
 	function obtener_todos($opcion = null ){
-		$query = $this->db->query("SELECT * FROM seguridad.lista_roles(".$opcion.");")->result_array();
+		if( is_null($opcion) ){ $query = $this->db->order_by('id_rol','ASC')->get('seguridad.roles')->result_array();
+		}elseif ( $opcion) {	$query = $this->db->order_by('id_rol','ASC')->get_where('seguridad.roles',array('estatus'=>'t'))->result_array();
+		}else{ $query = $this->db->order_by('id_rol','ASC')->get_where('seguridad.roles',array('estatus'=>'f'))->result_array();}
+		// $query = $this->db->query("SELECT * FROM seguridad.lista_roles(".$opcion.");")->result_array();
 		return $query;
 	}
 
@@ -23,9 +26,14 @@ class Roles_M extends CI_Model {
 	}
 
 	function consultar_item($id = 0 ){
-		$query = $this->db->query("SELECT * FROM seguridad.consultar_item_roles({$id});")->result_array();
-		if( count($query) > 0 )
-			return $query[0];
+		if( $id != 0 ){
+			$query = $this->db->get_where('seguridad.roles',array('id_rol' => $id))->result_array();
+			if( count($query) >  0 )
+				return $query[0];
+		}
+		// $query = $this->db->query("SELECT * FROM seguridad.consultar_item_roles({$id});")->result_array();
+		// if( count($query) > 0 )
+		// 	return $query[0];
 		return null;
 	}
 
