@@ -62,7 +62,7 @@ class Direccion extends CI_Controller {
 			if( $add ){ redirect('Direccion');
 			}else{
 				echo '<script language="javascript">
-						alert("No se pudo crear la dirección, favor intente nuevamente");
+						alert("No se pudo crear la Dirección, favor intente nuevamente");
 						window.location="'.base_url('Direccion').'";
 					</script>'; 
 			}

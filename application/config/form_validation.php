@@ -130,6 +130,61 @@
 									'rules' => 'trim|strip_tags|xss_clean'
 									)
 								),
+// -----------------------------------------------------------------------------------------------------------
+			'Coordinacion/validar_agregar' => array(
+								array(
+									'field' => 'coordinacion',
+									'label' => '<b>Coordinación</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'descripcion',
+									'label' => '<b>Descripción</b>',
+									'rules' => 'trim|strip_tags|xss_clean'
+									)
+								),
+			'Coordinacion/validar_editar' => array(
+								array(
+									'field' => 'coordinacion',
+									'label' => '<b>Coordinación</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'descripcion',
+									'label' => '<b>Descripción</b>',
+									'rules' => 'trim|strip_tags|xss_clean'
+									)
+								),
+// -----------------------------------------------------------------------------------------------------------
+			'Condicion_laboral/validar_agregar' => array(
+								array(
+									'field' => 'condicion_laboral',
+									'label' => '<b>Condicion Laboral</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									)
+								),
+			'Condicion_laboral/validar_editar' => array(
+								array(
+									'field' => 'condicion_laboral',
+									'label' => '<b>Condicion Laboral</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									)
+								),
+// -----------------------------------------------------------------------------------------------------------
+			'Cargos/validar_agregar' => array(
+								array(
+									'field' => 'cargo',
+									'label' => '<b>Cargo</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									)
+								),
+			'Cargos/validar_editar' => array(
+								array(
+									'field' => 'cargo',
+									'label' => '<b>Cargo</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									)
+								),
 		);
 
 		

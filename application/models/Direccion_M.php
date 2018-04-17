@@ -34,7 +34,7 @@ class Direccion_M extends CI_Model {
 	function editar_direccion($datos){
 		$id = array_pop($datos);
 		$this->estatus = $this->db->where('id_direccion',$id)->update('administrativo.direcciones',$datos);
-		return $id;
+		return $this->estatus;
 	}
 
 	function consular_dependencias($id){

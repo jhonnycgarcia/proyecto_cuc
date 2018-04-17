@@ -47,8 +47,6 @@ class Login extends CI_Controller {
 		}else{
 			$data['usuario'] = strtolower( $this->input->post('usuario') );
 			$data['clave'] = do_hash( $this->input->post('contraseña').SEMILLA, 'md5' );
-			// var_export($data);
-			// exit();
 			$answer = $this->Login_M->obtener_usuario($data);
 
 			if( $answer == false ){

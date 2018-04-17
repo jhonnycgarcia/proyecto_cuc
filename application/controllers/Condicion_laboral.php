@@ -1,13 +1,13 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Coordinacion extends CI_Controller {
+class Condicion_Laboral extends CI_Controller {
 
 	function __construct(){
 		parent::__construct();
 		$this->load->helper( array('form','security') );
 		$this->load->library( array('form_validation') );
-		$this->load->model('Coordinacion_M');
+		$this->load->model('Condicion_Laboral_M');
 	}
 
 	public function index()
@@ -16,11 +16,11 @@ class Coordinacion extends CI_Controller {
 	}
 
 	public function lista(){
-		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
+		$this->seguridad_lib->acceso_metodo(__METHOD__);
 
-		$datos['titulo_contenedor'] = 'Coordinación';
+		$datos['titulo_contenedor'] = 'Condiciones Laborales';
 		$datos['titulo_descripcion'] = 'Lista de items';
-		$datos['contenido'] = 'coordinacion/coordinacion_lista';
+		$datos['contenido'] = 'condicion_laboral/condicion_laboral_lista';
 
 		$datos['e_footer'][] = array('nombre' => 'DataTable JS','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
@@ -29,119 +29,115 @@ class Coordinacion extends CI_Controller {
 		$this->load->view('template/template',$datos);
 	}
 
-	public function agregar(){
-		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
+	public function agregar()
+	{
+		$this->seguridad_lib->acceso_metodo(__METHOD__);
 
-		$datos['titulo_contenedor'] = 'Coordinación';
+		$datos['titulo_contenedor'] = 'Condiciones Laborales';
 		$datos['titulo_descripcion'] = 'Agregar';
-		$datos['contenido'] = "coordinacion/coordinacion_form";
-		$datos['form_action'] = "Coordinacion/validar_agregar";
-		$datos['btn_action'] = "Agregar";
+		$datos['form_action'] = 'Condicion_laboral/validar_agregar';
+		$datos['btn_action'] = 'Agregar';
+		$datos['contenido'] = 'condicion_laboral/condicion_laboral_form';
 
-		$datos['coordinacion'] = set_value('coordinacion');
-		$datos['descripcion'] = set_value('descripcion');
-		$datos['direccion_id'] = set_value('direccion_id');
-		$datos['estatus'] = set_value('estatus');
-		$datos['id_coordinacion'] = set_value('id_coordinacion');
+		$datos['condicion_laboral'] = set_value('condicion_laboral');
+		$datos['id_condicion_laboral'] = set_value('id_condicion_laboral');
 
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
-		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/coordinacion/v_coordinacion_form.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/condicion_laboral/v_condicion_laboral_form.js'), 'ext' =>'js');
 
 		$this->load->view('template/template',$datos);
 	}
 
-	public function validar_agregar(){
-		if( count( $this->input->post() ) == 0 ) redirect("Coordinacion");
+	public function validar_agregar()
+	{
+		if( count( $this->input->post() ) == 0 ) redirect("Condicion_Laboral");
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){ $this->agregar(); }
 		else{
-			$add = $this->Coordinacion_M->agregar_coordinacion($this->input->post());
-			if($add){redirect('Coordinacion');
+			$add = $this->Condicion_Laboral_M->agregar_condicion_laboral($this->input->post());
+			if($add){redirect('Condicion_Laboral');
 			}else{
 				echo '<script language="javascript">
-						alert("No se pudo crear la Coordinación, favor intente nuevamente");
-						window.location="'.base_url('Coordinacion').'";
+						alert("No se pudo crear la Condicion Laboral, favor intente nuevamente");
+						window.location="'.base_url('Condicion_Laboral').'";
 					</script>'; }
 		}
 	}
 
-
-	public function editar($id=null){
+	public function editar($id=NULL)
+	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Coordinacion");
+		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Condicion_Laboral");
 
-		$item = $this->Coordinacion_M->consultar_coordinacion($id);
+		$item = $this->Condicion_Laboral_M->consultar_condicion_laboral($id);
 		if(is_null($item)){
 			echo '<script language="javascript">
 						alert("No se encontro el item deseado, favor intente nuevamente");
-						window.location="'.base_url('Coordinacion').'";
+						window.location="'.base_url('Condicion_Laboral').'";
 					</script>';
 		}else{
-			$datos['titulo_contenedor'] = 'Coordinación';
+			$datos['titulo_contenedor'] = 'Condiciones Laborales';
 			$datos['titulo_descripcion'] = 'Editar';
-			$datos['contenido'] = "coordinacion/coordinacion_form";
-			$datos['form_action'] = "Coordinacion/validar_editar";
-			$datos['btn_action'] = "Actualizar";
+			$datos['form_action'] = 'Condicion_laboral/validar_editar';
+			$datos['btn_action'] = 'Actualizar';
+			$datos['contenido'] = 'condicion_laboral/condicion_laboral_form';
 
-			$datos['coordinacion'] = set_value('coordinacion',$item['coordinacion']);
-			$datos['descripcion'] = set_value('descripcion',$item['descripcion']);
-			$datos['direccion_id'] = set_value('direccion_id',$item['direccion_id']);
-			$datos['estatus'] = set_value('estatus',$item['estatus']);
-			$datos['id_coordinacion'] = set_value('id_coordinacion',$item['id_coordinacion']);
+			$datos['condicion_laboral'] = set_value('condicion_laboral',$item['condicion_laboral']);
+			$datos['id_condicion_laboral'] = set_value('id_condicion_laboral',$item['id_condicion_laboral']);
 
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
-			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/coordinacion/v_coordinacion_form.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/condicion_laboral/v_condicion_laboral_form.js'), 'ext' =>'js');
 
 			$this->load->view('template/template',$datos);
 		}
 	}
 
 	public function validar_editar(){
-		if( count( $this->input->post() ) == 0 ) redirect("Coordinacion");
+		if( count( $this->input->post() ) == 0 ) redirect("Condicion_Laboral");
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
 			$this->editar();
-		}else{
-			$up = $this->Coordinacion_M->editar_coordinacion($this->input->post());
-			if($up){ redirect("Coordinacion");
+		}else
+		{
+			$up=$this->Condicion_Laboral_M->editar_condicion_laboral($this->input->post());
+			if($up){ redirect("Condicion_Laboral");
 			}else{
 				echo '<script language="javascript">
 						alert("No se actualizar los datos de la Coordinacion, favor intente nuevamente");
-						window.location="'.base_url('Coordinacion').'";
+						window.location="'.base_url('Condicion_Laboral').'";
 					</script>'; }
 		}
 	}
 
-	public function eliminar($id){
+	public function eliminar($id)
+	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Coordinacion");
+		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Condicion_Laboral");
 
-		$item = $this->Coordinacion_M->consultar_coordinacion($id);
+		$item = $this->Condicion_Laboral_M->consultar_condicion_laboral($id);
 		if( !is_null($item) ){
-			$delete = $this->Coordinacion_M->eliminar_coordinacion($id);
+			$delete = $this->Condicion_Laboral_M->eliminar_condicion_laboral($id);
 			if( is_null($delete) ){
 				echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este items");
-						window.location="'.base_url('Coordinacion').'";
+						window.location="'.base_url('Condicion_Laboral').'";
 					</script>'; 
 			}elseif( $delete === false ){
 				echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-						window.location="'.base_url('Coordinacion').'";
+						window.location="'.base_url('Condicion_Laboral').'";
 					</script>';
 			}else{
-				redirect('Coordinacion'); }
+				redirect('Condicion_Laboral'); }
 		}else{
 			echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
-						window.location="'.base_url('Coordinacion').'";
+						window.location="'.base_url('Condicion_Laboral').'";
 					</script>'; }
 	}
-
-
 
 }
