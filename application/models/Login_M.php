@@ -3,6 +3,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Login_M extends CI_Model {
 
+	public $status = false;
+
 	function __construct(){
 		parent::__construct();
 		$this->load->database();
@@ -17,10 +19,18 @@ class Login_M extends CI_Model {
 	 *                        [FLASE]	= en caso de no conseguir ningun registro
 	 */
 	function obtener_usuario($datos){
-		$ans = false;
-		$query = $this->db->query("SELECT * FROM seguridad.obtener_usuario('{$datos['usuario']}','{$datos['clave']}'); ")->result_array();
+		$query = $this->db->select("a.id_usuario,a.usuario, a.rol_id, b.rol, CONCAT(d.p_apellido,' ',d.p_nombre)::VARCHAR AS apellidos_nombres"
+						.",c.cargo_id, e.cargo, c.coordinacion_id, f.coordinacion")
+						->from("seguridad.usuarios AS a")
+							->join("seguridad.roles AS b","a.rol_id = b.id_rol")
+							->join("administrativo.trabajadores AS c","a.trabajador_id = c.id_trabajador")
+							->join("administrativo.datos_personales AS d","d.id_dato_personal = c.dato_personal_id")
+							->join("administrativo.cargos AS e","c.cargo_id = e.id_cargo")
+							->join("administrativo.coordinaciones AS f","c.coordinacion_id = f.id_coordinacion")
+						->where( array("a.usuario" => $datos['usuario'],"a.clave" => $datos['clave']) )
+						->get()->result_array();
 		if( count($query) > 0 ){
-			$ans = true;
+			$this->status = true;
 			$this->session->set_userdata($query[0]);
 			$this->seguridad_lib->registrar_bitacora( 								// Crear registro de Bitacora
 				array(
@@ -33,7 +43,7 @@ class Login_M extends CI_Model {
 					) 
 				);
 		}
-		return $ans;
+		return $this->status;
 	}
 
 }
