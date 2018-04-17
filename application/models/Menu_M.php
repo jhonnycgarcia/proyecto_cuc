@@ -16,7 +16,9 @@ class Menu_M extends CI_Model {
 	 *         [description]
 	 */
 	function obtener_todos( $opcion = null ){
-		$query = $this->db->query("SELECT * FROM seguridad.lista_items_menu(".$opcion.");")->result_array();
+		if( is_null($opcion) ){ $query= $this->db->order_by('id_menu','ASC')->get('seguridad.menus')->result_array();
+		}elseif( $opcion ){ $query = $this->db->order_by('id_menu','ASC')->get_where('seguridad.menus',array('estatus' => 't'))->result_array();
+		}else{$query = $this->db->order_by('id_menu','ASC')->get_where('seguridad.menus',array('estatus' => 'f'))->result_array(); }
 		return $query;
 	}
 
@@ -29,8 +31,7 @@ class Menu_M extends CI_Model {
 		if( $datos['visible_menu'] == 'f' ){
 			$datos['posicion'] = 0;
 			$datos['relacion'] = 0;
-			$datos['icono'] = 'fa fa-cog';
-		}
+			$datos['icono'] = 'fa fa-cog'; }
 		return $datos;
 	}
 
@@ -69,16 +70,16 @@ class Menu_M extends CI_Model {
 	 * @param  integer 		$id 		[description]
 	 * @return array/null   $query  	[description]
 	 */
-	function consultar_item($id){
-		$query = $this->db->query("SELECT * FROM seguridad.consultar_item_menu({$id});")->result_array();
-		if( count($query) > 0 ){
-			$query = $query[0];
-			$rol_menu = $this->obtener_rol_menu($id);
-			$query += array( 'rol_menu' => $rol_menu );
-			return $query;
-		}else{
-			return null;
-		}
+	function consultar_item($id = null){
+		if( !is_null($id) ){
+			$query = $this->db->get_where('seguridad.menus',array('id_menu' => $id) )->result_array();
+			if( count($query) > 0 ){
+				$query = $query[0];
+				$rol_menu = $this->obtener_rol_menu($id);
+				$query += array( 'rol_menu' => $rol_menu );
+				return $query;
+			}
+		}else{ return null; }
 	}
 
 	/**
@@ -88,10 +89,7 @@ class Menu_M extends CI_Model {
 	 */
 	function obtener_rol_menu($id){
 		$ans = array();
-		$query = $this->db->select()
-						->from('seguridad.roles_menus AS a')
-						->where( array('a.menu_id' => $id ) )
-						->get()->result_array();
+		$query = $this->db->get_where('seguridad.roles_menus',array('menu_id' => $id) )->result_array();
 		if( count($query) > 0 ){
 			foreach ($query as $key => $value) {
 				$ans[] = $value['rol_id'];
