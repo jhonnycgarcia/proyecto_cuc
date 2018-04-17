@@ -15,6 +15,7 @@
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									)
 								),
+// -----------------------------------------------------------------------------------------------------------
 			'Menu/validar_agregar' => array(
 								array(
 									'field' => 'menu',
@@ -74,6 +75,7 @@
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									)
 								),
+// -----------------------------------------------------------------------------------------------------------
 			'Roles/validar_agregar' => array(
 								array(
 									'field' => 'rol',
@@ -82,7 +84,7 @@
 									),
 								array(
 									'field' => 'descripcion',
-									'label' => '<b>Descripcion</b>',
+									'label' => '<b>Descripción</b>',
 									'rules' => 'trim|strip_tags|xss_clean'
 									)
 								),
@@ -94,13 +96,38 @@
 									),
 								array(
 									'field' => 'descripcion',
-									'label' => '<b>Descripcion</b>',
+									'label' => '<b>Descripción</b>',
 									'rules' => 'trim|strip_tags|xss_clean'
 									),
 								array(
 									'field' => 'id',
 									'label' => '<b>Id</b>',
 									'rules' => 'trim|required|strip_tags|xss_clean'
+									)
+								),
+// -----------------------------------------------------------------------------------------------------------
+			'Direccion/validar_agregar' => array(
+								array(
+									'field' => 'direccion',
+									'label' => '<b>Dirección</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'descripcion',
+									'label' => '<b>Descripción</b>',
+									'rules' => 'trim|strip_tags|xss_clean'
+									)
+								),
+			'Direccion/validar_editar' => array(
+								array(
+									'field' => 'direccion',
+									'label' => '<b>Dirección</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'descripcion',
+									'label' => '<b>Descripción</b>',
+									'rules' => 'trim|strip_tags|xss_clean'
 									)
 								),
 		);

@@ -45,14 +45,100 @@ class Direccion extends CI_Controller {
 		$datos['estatus'] = set_value('estatus');
 		$datos['id_direccion'] = set_value('id_direccion');
 
+		$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/direccion/v_direccion_form.js'), 'ext' =>'js');
+
 		$this->load->view('template/template',$datos);
 	}
 
-	public function editar(){
+	public function validar_agregar(){
+		if( count( $this->input->post() ) == 0 ) redirect("Direccion");
+
+		$this->form_validation->set_error_delimiters('<span>','</span>');
+		if( !$this->form_validation->run() ){ $this->editar(); }
+		else{
+			$add = $this->Direccion_M->agregar_direccion($this->input->post() );
+			if( $add ){ redirect('Direccion');
+			}else{
+				echo '<script language="javascript">
+						alert("No se pudo crear la dirección, favor intente nuevamente");
+						window.location="'.base_url('Direccion').'";
+					</script>'; 
+			}
+		}
+	}
+
+	public function editar( $id = null ){
+		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
+		if( !isset($id) || !is_numeric($id) || ($id == 0 ) )
+			redirect("Direccion");
+
+		$item = $this->Direccion_M->consultar_direccion($id);
+		if( is_null($item) ){
+			echo '<script language="javascript">
+						alert("No se encontro el item deseado, favor intente nuevamente");
+						window.location="'.base_url('Menu').'";
+					</script>';
+		}else{
+			$datos['contenido'] = 'direccion/direccion_form';
+			$datos['form_action'] = 'Direccion/validar_editar';
+			$datos['btn_action'] = 'Actualizar';
+
+			$datos['direccion'] = set_value('direccion',$item['direccion']);
+			$datos['descripcion'] = set_value('descripcion',$item['descripcion']);
+			$datos['estatus'] = set_value('estatus',$item['estatus']);
+			$datos['id_direccion'] = set_value('id_direccion',$item['id_direccion']);
+
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/direccion/v_direccion_form.js'), 'ext' =>'js');
+
+			$this->load->view('template/template',$datos);
+		}
+	}
+
+	public function validar_editar(){
+		if( count( $this->input->post() ) == 0 ) redirect("Direccion");
+
+		$this->form_validation->set_error_delimiters('<span>','</span>');
+		if( !$this->form_validation->run() ){
+			$this->editar();
+		}else{
+			$up = $this->Direccion_M->editar_direccion( $this->input->post() );
+			if( $up ){ redirect('Direccion');
+			}else{
+				echo '<script language="javascript">
+						alert("No se actualizar los datos de la dirección, favor intente nuevamente");
+						window.location="'.base_url('Direccion').'";
+					</script>'; }
+		}
 
 	}
 
-	public function eliminar(){
+	public function eliminar($id){
+		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
+		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Direccion");
 
+		$item = $this->Direccion_M->consultar_direccion($id);
+		if( !is_null($item) ){
+			$delete = $this->Direccion_M->eliminar_direccion($id);
+			if( is_null($delete) ){
+				echo '<script language="javascript">
+						alert("No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este items");
+						window.location="'.base_url('Direccion').'";
+					</script>'; 
+			}elseif( $delete === false ){
+				echo '<script language="javascript">
+						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
+						window.location="'.base_url('Direccion').'";
+					</script>';
+			}else{
+				redirect('Direccion'); }
+		}else{
+			echo '<script language="javascript">
+						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
+						window.location="'.base_url('Direccion').'";
+					</script>'; }
 	}
 }

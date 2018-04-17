@@ -24,7 +24,7 @@
             <td class="text-center"><?= $value['rol']; ?></td>
             <td class="text-center">
             <?= ( $value['estatus'] == 't' )
-              ?'<span class="label label-success">Activado</span>'
+              ?'<span class="label label-success">Activo</span>'
               :'<span class="label label-default">Inactivo</span>' ; ?>    
             </td>
             <td>

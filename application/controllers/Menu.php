@@ -80,8 +80,7 @@ class Menu extends CI_Controller {
 
 	public function editar($id){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) )
-			redirect("Menu");
+		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Menu");
 
 		$item = $this->Menu_M->consultar_item($id);
 		if( is_null($item) ){
@@ -118,8 +117,7 @@ class Menu extends CI_Controller {
 	}
 
 	function validar_editar(){
-		if( count( $this->input->post() ) == 0 )
-			redirect("Menu");
+		if( count( $this->input->post() ) == 0 ) redirect("Menu");
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 
 		if( !$this->form_validation->run() ){
@@ -139,8 +137,7 @@ class Menu extends CI_Controller {
 
 	public function eliminar($id){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) )
-			redirect("Menu");
+		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Menu");
 
 		$datos = $this->Menu_M->consultar_item($id);
 		if( is_null($datos) ){
