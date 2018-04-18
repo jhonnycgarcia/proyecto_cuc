@@ -191,7 +191,52 @@
 									'field' => 'p_apellido',
 									'label' => '<b>Primer Apellido</b>',
 									'rules' => 'trim|required|strip_tags|xss_clean|min_length[3]'
-									)
+									),
+								array(
+									'field' => 's_apellido',
+									'label' => '<b>Primer Apellido</b>',
+									'rules' => 'trim|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'p_nombre',
+									'label' => '<b>Primer Nombre</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[3]'
+									),
+								array(
+									'field' => 's_nombre',
+									'label' => '<b>Primer Nombre</b>',
+									'rules' => 'trim|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'cedula',
+									'label' => '<b>Cedula</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|is_natural_no_zero|callback_check_cedula'
+									),
+								array(
+									'field' => 'fecha_nacimiento',
+									'label' => '<b>Fecha Nacimiento</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'email',
+									'label' => '<b>Email</b>',
+									'rules' => 'trim|strip_tags|xss_clean|valid_email'
+									),
+								array(
+									'field' => 'telefono_1',
+									'label' => '<b>Telefono Principal</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|exact_length[14]'
+									),
+								array(
+									'field' => 'telefono_2',
+									'label' => '<b>Telefono Secundario</b>',
+									'rules' => 'trim|strip_tags|xss_clean|exact_length[14]'
+									),
+								array(
+									'field' => 'direccion',
+									'label' => '<b>Dirección</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|alpha_numeric'
+									),
 								),
 		);
 

@@ -65,6 +65,9 @@ class Persona extends CI_Controller {
 		$datos['s_nombre'] = set_value('s_nombre');
 		$datos['cedula'] = set_value('cedula');
 		$datos['fecha_nacimiento'] = set_value('fecha_nacimiento');
+		$datos['estado_civil_id'] = set_value('estado_civil_id');
+		$datos['tipo_sangre_id'] = set_value('tipo_sangre_id');
+		$datos['sexo'] = set_value('sexo');
 		$datos['email'] = set_value('email');
 		$datos['telefono_1'] = set_value('telefono_1');
 		$datos['telefono_2'] = set_value('telefono_2');
@@ -72,6 +75,7 @@ class Persona extends CI_Controller {
 		$datos['id_dato_personal'] = set_value('id_dato_personal');
 
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Additional Method JS','path' => base_url('assets/jqueryvalidate/dist/additional-methods.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'Input Mask JS','path' => base_url('assets/AdminLTE/plugins/input-mask/jquery.inputmask.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'Input Mask Extension JS','path' => base_url('assets/AdminLTE/plugins/input-mask/jquery.inputmask.extensions.js'), 'ext' =>'js');
@@ -84,13 +88,33 @@ class Persona extends CI_Controller {
 		$this->load->view('template/template',$datos);
 	}
 
+	/**
+	 * Funcion de callback para verificar si la cedula se encuentra registrada
+	 * @param  [string] 	$cedula 			[description]
+	 * @return [boolean]	$consulta         	[description]
+	 */
+	public function check_cedula($cedula = NULL)
+	{	
+		$ans = FALSE;
+		$this->form_validation->set_message('check_cedula', 'La <b>{field}</b> ingresada ya se encuentra registrada.');
+
+		if( !is_null($cedula) ) $ans = $this->Persona_M->check_cedula($cedula);
+		return $ans;
+	}
+
 	public function validar_agregar(){
 		if( count( $this->input->post() ) == 0 ) redirect("Persona");
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){ $this->agregar(); }
 		else{
-			var_export($_POST);
+			$add=$this->Persona_M->agregar_persona($this->input->post());
+			if($add){ redirect("Persona");
+			}else{
+				echo '<script language="javascript">
+						alert("No se pudo registrar la persona, favor intente nuevamente");
+						window.location="'.base_url('Persona').'";
+					</script>'; }
 		}
 	}
 

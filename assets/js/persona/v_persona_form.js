@@ -12,7 +12,8 @@ $(document).ready(function() {
 			},
 			cedula : {
 				required : true,
-				minlength : 7
+				minlength : 7,
+				number: true
 			},
 			fecha_nacimiento : {
 				required : true,
@@ -34,5 +35,6 @@ $(document).ready(function() {
 
 	 $("input[name='telefono_1']").inputmask({"mask":"(999) 999-9999"});
 	 $("input[name='telefono_2']").inputmask({"mask":"(999) 999-9999"});
-	 $("input[name='fecha_nacimiento']").datepicker({autoclose: true,language:'es'});
+	 $("input[name='fecha_nacimiento']").datepicker({autoclose: true,language:'es',format: 'dd/mm/yyyy'});
+
 });

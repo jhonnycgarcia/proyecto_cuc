@@ -64,7 +64,7 @@
           <?php
             echo form_input('cedula'
                 ,$cedula
-                ,array('class' => 'form-control','placeholder' => 'Cedula:')
+                ,array('class' => 'form-control','placeholder' => 'Cedula:','maxlength'=>'8')
               );
             echo form_error('cedula');
           ?>
@@ -79,11 +79,56 @@
             echo form_error('fecha_nacimiento');
           ?>
         </div>
+      </div> 
+      
+      <div class="form-group">
+        <label for="estado_civil_id" class="control-label col-md-2">Estado civil:</label>
+        <div class="col-md-4">
+          <?php
+
+            $sql = $this->Persona_M->lista_estado_civil();
+            $opcion_estado_civil = array();
+            foreach ($sql as $key => $value) {
+              $opcion_estado_civil[$value['id_estado_civil']]=$value['estado_civil'];
+            }
+
+            echo form_dropdown("estado_civil_id",
+                $opcion_estado_civil,
+                $estado_civil_id,
+                array('class' => 'form-control')
+              );
+            echo form_error('estado_civil_id');
+          ?>
+        </div>
+        <label for="tipo_sangre_id" class="control-label col-md-2">Tipo sangre:</label>
+        <div class="col-md-4">
+          <?php
+
+            $sql = $this->Persona_M->lista_tipos_sangre();
+            $opcion_tipo_sangre = array();
+            foreach ($sql as $key => $value) {
+              $opcion_tipo_sangre[$value['id_tipo_sangre']]=$value['tipo_sangre'];
+            }
+
+            echo form_dropdown("tipo_sangre_id",
+                $opcion_tipo_sangre,
+                $tipo_sangre_id,
+                array('class' => 'form-control')
+              );
+            echo form_error('tipo_sangre_id');
+          ?>
+        </div>
       </div>     
 
       <div class="form-group">
+        <label for="email" class="control-label col-md-2">Sexo:</label>
+        <div class="col-md-4">
+          <?=
+            form_dropdown('sexo',array('M'=>'Masculino','F'=>'Femenino'),$sexo,array('class' => 'form-control'));
+          ?>
+        </div>
         <label for="email" class="control-label col-md-2">Email:</label>
-        <div class="col-md-10">
+        <div class="col-md-4">
           <?php
             echo form_input('email'
                 ,$email
@@ -123,7 +168,7 @@
           <?php
             echo form_textarea('direccion'
                 ,$direccion
-                ,array('class' => 'form-control','placeholder' => 'Dirección:','style' => 'resize: vertical;')
+                ,array('class' => 'form-control','placeholder' => 'Dirección:','style' => 'resize: vertical;','id'=>'direccion')
               );
             echo form_error('direccion');
           ?>

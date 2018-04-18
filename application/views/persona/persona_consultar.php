@@ -52,8 +52,14 @@
         </div>
 
         <div class="row">
+          <div class="col-md-3 col-sm-3"><b>Sexo</b></div>
+          <div class="col-md-3 col-sm-3">
+            <?= ( $datos['sexo'] == 'M' )
+              ?'<span class="label label-info">Masculino</span>'
+              :'<span class="label label-danger">Femenino</span>' ; ?> 
+          </div>
           <div class="col-md-3 col-sm-3"><b>Estatus</b></div>
-          <div class="col-md-9 col-sm-9">
+          <div class="col-md-3 col-sm-3">
             <?= ( $datos['estatus'] == 't' )
               ?'<span class="label label-success">Activo</span>'
               :'<span class="label label-default">Inactivo</span>' ; ?> 
