@@ -15,7 +15,8 @@ class Persona_M extends CI_Model {
 	{
 		$query = $this->db->select("a.id_dato_personal, a.cedula, "
 							."CONCAT(a.p_apellido,' ',a.s_apellido) AS apellidos, CONCAT(a.p_nombre,' ',a.s_nombre) AS nombres,"
-							."a.fecha_nacimiento,a.email,a.sexo,a.estatus")
+							."to_char(a.fecha_nacimiento,'DD/MM/YYYY') AS fecha_nacimiento, "
+							."a.email,a.sexo,a.estatus")
 						->from("administrativo.datos_personales AS a")
 						->order_by('a.cedula','ASC')->get()->result_array();
 		return $query;
@@ -26,8 +27,9 @@ class Persona_M extends CI_Model {
 		if(!is_null($id)){
 			$query=$this->db->select("a.id_dato_personal, a.cedula,"
 							."a.p_apellido, a.s_apellido, a.p_nombre,a.s_nombre,"
-							."a.fecha_nacimiento, a.email, a.direccion, a.telefono_1, a.telefono_2, a.sexo, a.imagen, a.estatus,"
-							."b.estado_civil, c.tipo_sangre")
+							."to_char(a.fecha_nacimiento,'DD/MM/YYYY') AS fecha_nacimiento, "
+							."a.email, a.direccion, a.telefono_1, a.telefono_2, a.sexo, a.imagen, a.estatus,"
+							."a.estado_civil_id, b.estado_civil, a.tipo_sangre_id, c.tipo_sangre")
 							->from("administrativo.datos_personales AS a")
 								->join("estatico.estado_civil AS b","a.estado_civil_id = b.id_estado_civil")
 								->join("estatico.tipos_sangre AS c","a.tipo_sangre_id = c.id_tipo_sangre")
@@ -61,11 +63,19 @@ class Persona_M extends CI_Model {
 		return $datos;
 	}
 
+	/**
+	 * Funcion para obtener el listado de tipos de sangre
+	 * @return [type] [description]
+	 */
 	function lista_tipos_sangre(){
 		$query = $this->db->order_by('tipo_sangre','ASC')->get('estatico.tipos_sangre')->result_array();
 		return $query;
 	}
 
+	/**
+	 * Funcion para obtener el listado de los estados civil
+	 * @return [type] [description]
+	 */
 	function lista_estado_civil(){
 		$query = $this->db->order_by('estado_civil','ASC')->get('estatico.estado_civil')->result_array();
 		return $query;
@@ -77,5 +87,28 @@ class Persona_M extends CI_Model {
 		$this->estatus = $this->db->insert("administrativo.datos_personales",$datos);
 		return $this->estatus;
 	}
+
+	function editar_persona($datos){
+		$id = array_pop($datos);
+		$datos = $this->limpiar_datos($datos);
+		$this->estatus = $this->db->where('id_dato_personal',$id)->update('administrativo.datos_personales',$datos);
+		return $this->estatus;
+	}
+
+	function consultar_dependencias($id){
+		$query = $this->db->get_where('administrativo.trabajadores',array('dato_personal_id' => $id) )->result_array();
+		if( count($query) > 0 ) $this->estatus = true;
+		return $this->estatus;
+	}
+
+	function eliminar_persona($id){
+		$dependencia = $this->consultar_dependencias($id);
+		if($dependencia) return $this->ans;
+		$query = $this->db->where('id_dato_personal',$id)->delete('administrativo.datos_personales');
+		if($query!=false) $this->estatus=true;
+		return $this->estatus;
+	}
+
+
 
 }
