@@ -17,8 +17,10 @@ class Persona_M extends CI_Model {
 							."CONCAT(a.p_apellido,' ',a.s_apellido) AS apellidos, CONCAT(a.p_nombre,' ',a.s_nombre) AS nombres,"
 							."to_char(a.fecha_nacimiento,'DD/MM/YYYY') AS fecha_nacimiento, "
 							."a.email,a.sexo,a.estatus")
-						->from("administrativo.datos_personales AS a")
-						->order_by('a.cedula','ASC')->get()->result_array();
+						->from("administrativo.datos_personales AS a");
+		if($opcion){ $query = $this->db->where( array('a.estatus' => 't') );
+		}elseif( $opcion === false ){ $query = $this->db->where( array('a.estatus' => 'f') ); }
+		$query = $this->db->order_by('a.cedula','ASC')->get()->result_array();
 		return $query;
 	}
 
