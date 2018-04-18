@@ -185,6 +185,14 @@
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									)
 								),
+// -----------------------------------------------------------------------------------------------------------
+			'Persona/validar_agregar' => array(
+								array(
+									'field' => 'p_apellido',
+									'label' => '<b>Primer Apellido</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[3]'
+									)
+								),
 		);
 
 		
