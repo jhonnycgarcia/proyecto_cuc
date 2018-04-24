@@ -235,7 +235,7 @@
 								array(
 									'field' => 'direccion',
 									'label' => '<b>Dirección</b>',
-									'rules' => 'trim|required|strip_tags|xss_clean|alpha_numeric'
+									'rules' => 'trim|required|strip_tags|xss_clean'
 									),
 								),
 			'Persona/validar_editar' => array(
@@ -287,9 +287,56 @@
 								array(
 									'field' => 'direccion',
 									'label' => '<b>Dirección</b>',
-									'rules' => 'trim|required|strip_tags|xss_clean|alpha_numeric'
+									'rules' => 'trim|required|strip_tags|xss_clean'
 									),
 								),
+// -----------------------------------------------------------------------------------------------------------
+			'Trabajadores/validar_ingresar' => array(
+								array(
+									'field' => 'fecha_ingreso',
+									'label' => '<b>Fecha de ingreso</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[9]|max_length[10]'
+									),
+								array(
+									'field' => 'dato_personal_id',
+									'label' => '<b>Dato personal</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|callback_check_persona_na'
+									)
+							),
+			'Trabajadores/validar_egresar' => array(
+								array(
+									'field' => 'fecha_egreso',
+									'label' => '<b>Fecha de Egreso</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[9]|max_length[10]'
+									),
+								array(
+									'field' => 'id_trabajador',
+									'label' => '<b>Dato Trabajador</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'dato_personal_id',
+									'label' => '<b>Dato personal</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									)
+							),
+			'Trabajadores/validar_editar' => array(
+								array(
+									'field' => 'asistencia_obligatoria',
+									'label' => '<b>Fecha de Egreso</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'id_trabajador',
+									'label' => '<b>Dato Trabajador</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'dato_personal_id',
+									'label' => '<b>Dato personal</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									)
+							),
 		);
 
 		

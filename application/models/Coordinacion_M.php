@@ -30,8 +30,8 @@ class Coordinacion_M extends CI_Model {
 
 	function agregar_coordinacion($datos){
 		unset($datos['id_coordinacion']);
-		$this->estatus = $this->db->insert('administrativo.coordinaciones',$datos);
-		return $this->estatus;
+		$query = $this->db->insert('administrativo.coordinaciones',$datos);
+		return $query;
 	}
 
 	function consultar_coordinacion($id=null){
@@ -40,28 +40,28 @@ class Coordinacion_M extends CI_Model {
 								->from("administrativo.coordinaciones AS a")
 								->where( array('a.id_coordinacion' => $id) )
 								->get()->result_array();
-			if( count($query)>0) $this->ans = $query[0];
-		} return $this->ans;
+			if( count($query)>0) return $query[0];
+		} return NULL;
 	}
 
 	function editar_coordinacion($datos){
 		$id=array_pop($datos);
-		$this->estatus=$this->db->where('id_coordinacion',$id)->update('administrativo.coordinaciones',$datos);
-		return $this->estatus;
+		$sql=$this->db->where('id_coordinacion',$id)->update('administrativo.coordinaciones',$datos);
+		return $sql;
 	}
 
 	function consultar_dependencias($id){
 		$query = $this->db->get_where('administrativo.trabajadores',array('coordinacion_id' => $id) )->result_array();
-		if( count($query) > 0 ) $this->estatus = true;
-		return $this->estatus;
+		if( count($query) > 0 ) return TRUE;
+		return FALSE;
 	}
 
 	function eliminar_coordinacion($id){
 		$dependencia=$this->consultar_dependencias($id);
 		if($dependencia) return $this->ans;
 		$query=$this->db->where('id_coordinacion',$id)->delete('administrativo.coordinaciones');
-		if($query!=false) $this->estatus=true;
-		return $this->estatus;
+		if($query!=false) return TRUE;
+		return $query;
 	}
 
 }

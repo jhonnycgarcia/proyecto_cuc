@@ -47,7 +47,14 @@
               <ul class="dropdown-menu" rle="menu" aria-labelledby="dropdown_menu<?= $i; ?>">
                 <li role="presentation"><?= anchor( site_url('Persona/consultar/'.$value['id_dato_personal']),"Consultar",array("role" =>"item")  )?></li>
                 <li role="presentation"><?= anchor( site_url('Persona/editar/'.$value['id_dato_personal']),"Editar",array("role" =>"item")  )?></li>
-                <li role="presentation"><?= anchor( site_url('Persona/eliminar/'.$value['id_dato_personal']),"Eliminar",array("role" =>"item")  )?></li>
+                <?php
+                  if( $value['estatus']  !== 't'){
+                ?>
+                <li role="presentation"><?= anchor( site_url('Trabajadores/ingresar/'.$value['id_dato_personal']),"Ingresar",array("role" =>"item", "onclick" => "javasciprt: return confirm('¿Desea ingresarlo como trabajador?');")  )?></li>
+                <?php
+                  }
+                ?>
+                <li role="presentation"><?= anchor( site_url('Persona/eliminar/'.$value['id_dato_personal']),"Eliminar",array("role" =>"item", "onclick" => "javasciprt: return confirm('¿Esta seguro que desea eliminar este registro?');")  )?></li>
               </ul>
             </div>
           </td>

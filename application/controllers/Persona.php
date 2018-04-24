@@ -59,6 +59,8 @@ class Persona extends CI_Controller {
 		$datos['btn_action'] = "Registrar";
 		$datos['contenido'] = "persona/persona_form";
 
+		$datos['cedula_config'] = array();
+
 		$datos['p_apellido'] = set_value('p_apellido');
 		$datos['s_apellido'] = set_value('s_apellido');
 		$datos['p_nombre'] = set_value('p_nombre');
@@ -77,13 +79,16 @@ class Persona extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Additional Method JS','path' => base_url('assets/jqueryvalidate/dist/additional-methods.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
+
 		$datos['e_footer'][] = array('nombre' => 'Input Mask JS','path' => base_url('assets/AdminLTE/plugins/input-mask/jquery.inputmask.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'Input Mask Extension JS','path' => base_url('assets/AdminLTE/plugins/input-mask/jquery.inputmask.extensions.js'), 'ext' =>'js');
+
 		$datos['e_footer'][] = array('nombre' => 'DatePicker JS','path' => base_url('assets/AdminLTE/plugins/datepicker/bootstrap-datepicker.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DatePicker Languaje JS','path' => base_url('assets/AdminLTE/plugins/datepicker/locales/bootstrap-datepicker.es.js'), 'ext' =>'js');
+		$datos['e_header'][] = array('nombre' => 'DatePicker CSS','path' => base_url('assets/AdminLTE/plugins/datepicker/datepicker3.css'), 'ext' =>'css');
+
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/persona/v_persona_form.js'), 'ext' =>'js');
 		
-		$datos['e_header'][] = array('nombre' => 'DatePicker CSS','path' => base_url('assets/AdminLTE/plugins/datepicker/datepicker3.css'), 'ext' =>'css');
 
 		$this->load->view('template/template',$datos);
 	}
@@ -136,6 +141,8 @@ class Persona extends CI_Controller {
 			$datos['btn_action'] = "Actualizar";
 			$datos['contenido'] = "persona/persona_form";
 
+			$datos['cedula_config'] = array('readonly' => 'readonly');
+
 			$datos['p_apellido'] = set_value('p_apellido',$item['p_apellido']);
 			$datos['s_apellido'] = set_value('s_apellido',$item['s_apellido']);
 			$datos['p_nombre'] = set_value('p_nombre',$item['p_nombre']);
@@ -171,7 +178,7 @@ class Persona extends CI_Controller {
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
-			$this->editar();
+			$this->editar($this->input->post('id_dato_personal'));
 		}else
 		{
 			$up = $this->Persona_M->editar_persona($this->input->post());
@@ -197,7 +204,7 @@ class Persona extends CI_Controller {
 						alert("No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este items");
 						window.location="'.base_url('Persona').'";
 					</script>'; 
-			}elseif( $delete === false ){
+			}elseif( $delete === FALSE ){
 				echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
 						window.location="'.base_url('Persona').'";

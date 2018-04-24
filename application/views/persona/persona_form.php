@@ -64,7 +64,7 @@
           <?php
             echo form_input('cedula'
                 ,$cedula
-                ,array('class' => 'form-control','placeholder' => 'Cedula:','maxlength'=>'8')
+                ,array('class' => 'form-control','placeholder' => 'Cedula:','maxlength'=>'8')+$cedula_config
               );
             echo form_error('cedula');
           ?>
@@ -74,7 +74,7 @@
           <?php
             echo form_input('fecha_nacimiento'
                 ,$fecha_nacimiento
-                ,array('class' => 'form-control','placeholder' => 'Fecha nacimiento:')
+                ,array('class' => 'form-control','placeholder' => 'dd/mm/aaaa')
               );
             echo form_error('fecha_nacimiento');
           ?>

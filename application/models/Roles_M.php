@@ -16,10 +16,7 @@ class Roles_M extends CI_Model {
 	}
 
 	function agregar_item($datos){
-		unset($datos['id']);
-		if( empty($datos['descripcion']) )
-			unset($datos['descripcion']);
-		
+		unset($datos['id_rol']);
 		$status = $this->db->insert('seguridad.roles',$datos);
 		return $status;
 	}
@@ -35,9 +32,7 @@ class Roles_M extends CI_Model {
 
 	function actualizar_item($datos){
 		$id = array_pop($datos);
-		if( empty($datos['descripcion']) )
-			unset($datos['descripcion']);
-		$status = $this->db->where('a.id',$id)
+		$status = $this->db->where('a.id_rol',$id)
 							->update('seguridad.roles AS a',$datos);
 		return $status;
 	}
@@ -55,7 +50,7 @@ class Roles_M extends CI_Model {
 		if( $dependencia ){
 			return null;
 		}else{
-			$status = $this->db->where('id',$id)->delete('seguridad.roles');
+			$status = $this->db->where('id_rol',$id)->delete('seguridad.roles');
 			if( $status != false )
 				return true;
 			return $status;

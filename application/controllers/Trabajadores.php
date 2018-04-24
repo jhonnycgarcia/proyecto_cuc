@@ -12,15 +12,15 @@ class Trabajadores extends CI_Controller {
 
 	public function index()
 	{
-		$this->lista();
+		$this->lista_activos();
 	}
 
-	public function lista(){
+	public function lista_activos(){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
 
-		$datos['titulo_contenedor'] = 'Cargos o Puestos de trabajo';
-		$datos['titulo_descripcion'] = 'Lista de items';
-		$datos['contenido'] = 'trabajadores/trabajadores_lista';
+		$datos['titulo_contenedor'] = 'Trabajadores Activos';
+		$datos['titulo_descripcion'] = 'Lista';
+		$datos['contenido'] = 'trabajadores/trabajadores_lista_activos';
 
 		$datos['e_footer'][] = array('nombre' => 'DataTable JS','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
@@ -29,117 +29,250 @@ class Trabajadores extends CI_Controller {
 		$this->load->view('template/template',$datos);
 	}
 
-	public function agregar()
+	/**
+	 * Funcion para cargar la vista de ingresar trabajador
+	 * @param  [type] $id_dato_personal [description]
+	 * @return [type]                   [description]
+	 */
+	public function ingresar($id_dato_personal)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
 
-		$datos['titulo_contenedor'] = 'Condiciones Laborales';
-		$datos['titulo_descripcion'] = 'Agregar';
-		$datos['form_action'] = 'Cargos/validar_agregar';
-		$datos['btn_action'] = 'Agregar';
-		$datos['contenido'] = 'cargos/cargos_form';
+		$persona = $this->Trabajadores_M->consultar_personal($id_dato_personal);
+		if( is_null($persona)){
+			echo '<script language="javascript">
+						alert("No se encontro el item deseado, favor intente nuevamente");
+						window.location="'.base_url('Persona').'";
+					</script>';
+		}else{
+			$datos['titulo_contenedor'] = 'Trabajador';
+			$datos['titulo_descripcion'] = 'Ingresar';
+			$datos['form_action'] = 'Trabajadores/validar_ingresar';
+			$datos['btn_action'] = 'Ingresar';
+			$datos['btn_cancelar'] = 'Persona';
+			$datos['contenido'] = 'trabajadores/trabajadores_form';
 
-		$datos['cargo'] = set_value('cargo');
-		$datos['estatus'] = set_value('estatus');
-		$datos['id_cargo'] = set_value('id_cargo');
+			$datos['persona'] = $persona;
+			$datos['coordinacion_id'] = set_value('coordinacion_id');
+			$datos['condicion_laboral_id'] = set_value('condicion_laboral_id');
+			$datos['cargo_id'] = set_value('cargo_id');
+			$datos['fecha_ingreso'] = set_value('fecha_ingreso');
+			$datos['fecha_egreso'] = set_value('fecha_egreso');
+			$datos['asistencia_obligatoria'] = set_value('asistencia_obligatoria');
+			$datos['id_trabajador'] = set_value('id_trabajador');
+			$datos['dato_personal_id'] = set_value('dato_personal_id',$persona['id_dato_personal']);
 
-		$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
-		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
-		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/cargo/v_cargo_form.js'), 'ext' =>'js');
+			$datos['coordinacion_id_opciones'] = array();
+			$datos['condicion_laboral_id_opciones'] = array();
+			$datos['cargo_id_opciones'] = array();
+			$datos['fecha_ingreso_opciones'] = array();
+			$datos['fecha_egreso_opciones'] = array('disabled'=>'disabled');
+			$datos['asistencia_obligatoria_opciones'] = array();
 
-		$this->load->view('template/template',$datos);
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/trabajadores/v_trabajadores_ingreso_form.js'), 'ext' =>'js');
+
+			$datos['e_footer'][] = array('nombre' => 'DatePicker JS','path' => base_url('assets/AdminLTE/plugins/datepicker/bootstrap-datepicker.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'DatePicker Languaje JS','path' => base_url('assets/AdminLTE/plugins/datepicker/locales/bootstrap-datepicker.es.js'), 'ext' =>'js');
+			$datos['e_header'][] = array('nombre' => 'DatePicker CSS','path' => base_url('assets/AdminLTE/plugins/datepicker/datepicker3.css'), 'ext' =>'css');
+		
+
+			$this->load->view('template/template',$datos);
+		}
 	}
 
-	public function validar_agregar()
+	/**
+	 * Funcion para el CALLBACK para verificar que la persona a registrar como trabajador no se encuentre activa ya como trabajador dentro del sistema
+	 *
+	 * Consultar persona no activa en trabajadores
+	 * @param  [type] $id_dato_personal [description]
+	 * @return [type]                   [description]
+	 */
+	public function check_persona_na($id_dato_personal){
+		$ans = FALSE;
+		$this->form_validation->set_message('check_persona_na', 'La <b>{field}</b> ingresada ya se encuentra registrada.');
+		if( !is_null($id_dato_personal) ) $ans = $this->Trabajadores_M->check_persona_na($id_dato_personal);
+		return $ans;
+	}
+
+	/**
+	 * Funcion para validar los datos provenientes del formulario de ingresar trabajador
+	 * @return [type] [description]
+	 */
+	public function validar_ingresar()
 	{
-		if( count( $this->input->post() ) == 0 ) redirect("Cargos");
+		if( count( $this->input->post() ) == 0 ) redirect("Trabajadores");
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
-		if( !$this->form_validation->run() ){ $this->agregar(); }
+		if( !$this->form_validation->run() ){ $this->ingresar($this->input->post('id_dato_personal')); }
 		else{
-			$add = $this->Trabajadores_M->agregar_cargo($this->input->post());
-			if($add){redirect('Cargos');
+			$add = $this->Trabajadores_M->registrar_trabajador($this->input->post());
+			if($add){
+				$this->Trabajadores_M->estatus_persona($this->input->post('dato_personal_id'),true);
+				redirect('Trabajadores');
 			}else{
 				echo '<script language="javascript">
-						alert("No se pudo crear el Cargo, favor intente nuevamente");
-						window.location="'.base_url('Cargos').'";
+						alert("No se pudo registrar el trabajador, favor intente nuevamente");
+						window.location="'.base_url('Persona').'";
 					</script>'; }
 		}
 	}
 
-	public function editar($id=NULL)
-	{
+	public function detalles($id){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Cargos");
+		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Trabajadores");
 
-		$item = $this->Trabajadores_M->consultar_cargo($id);
-		if(is_null($item)){
+		$trabajador = $this->Trabajadores_M->consultar_trabajador($id);
+		if( is_null($trabajador) ){
 			echo '<script language="javascript">
-						alert("No se encontro el item deseado, favor intente nuevamente");
-						window.location="'.base_url('Cargos').'";
+						alert("No se encontro el registro deseado, favor intente nuevamente");
+						window.location="'.base_url('Trabajadores').'";
 					</script>';
 		}else{
-			$datos['titulo_contenedor'] = 'Cargos';
-			$datos['titulo_descripcion'] = 'Editar';
-			$datos['form_action'] = 'Cargos/validar_editar';
-			$datos['btn_action'] = 'Actualizar';
-			$datos['contenido'] = 'cargos/cargos_form';
+			$datos['titulo_contenedor'] = 'Trabajador';
+			$datos['titulo_descripcion'] = 'Detalles';
+			$datos['contenido'] = 'trabajadores/trabajadores_detalles';
+			$datos['trabajador'] = $trabajador;
+			$datos['btn_cancelar'] = 'Trabajadores/lista_activos';
 
-			$datos['cargo'] = set_value('cargo',$item['cargo']);
-			$datos['estatus'] = set_value('estatus',$item['estatus']);
-			$datos['id_cargo'] = set_value('id_cargo',$item['id_cargo']);
+			$this->load->view('template/template',$datos);
+		}
+	}
+
+	public function egresar($id){
+		$this->seguridad_lib->acceso_metodo(__METHOD__);
+		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Trabajadores");
+
+		$trabajador = $this->Trabajadores_M->consultar_trabajador($id);
+		if( is_null($trabajador) ){
+			echo '<script language="javascript">
+						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
+						window.location="'.base_url('Trabajadores').'";
+					</script>';
+		}else{
+			$datos['titulo_contenedor'] = 'Trabajador';
+			$datos['titulo_descripcion'] = 'Egresar';
+			$datos['form_action'] = 'Trabajadores/validar_egresar';
+			$datos['btn_action'] = 'Egresar';
+			$datos['btn_cancelar'] = 'Trabajadores';
+			$datos['contenido'] = 'trabajadores/trabajadores_form';
+
+			$datos['persona'] = $trabajador;
+			$datos['coordinacion_id'] = set_value('coordinacion_id',$trabajador['coordinacion_id']);
+			$datos['condicion_laboral_id'] = set_value('condicion_laboral_id',$trabajador['condicion_laboral_id']);
+			$datos['cargo_id'] = set_value('cargo_id',$trabajador['cargo_id']);
+			$datos['fecha_ingreso'] = set_value('fecha_ingreso',$trabajador['fecha_ingreso']);
+			$datos['fecha_egreso'] = set_value('fecha_egreso');
+			$datos['asistencia_obligatoria'] = set_value('asistencia_obligatoria',$trabajador['asistencia_obligatoria']);
+			$datos['id_trabajador'] = set_value('id_trabajador',$trabajador['id_trabajador']);
+			$datos['dato_personal_id'] = set_value('dato_personal_id',$trabajador['dato_personal_id']);
+
+			$datos['coordinacion_id_opciones'] = array('disabled'=>'disabled');
+			$datos['condicion_laboral_id_opciones'] = array('disabled'=>'disabled');
+			$datos['cargo_id_opciones'] = array('disabled'=>'disabled');
+			$datos['fecha_ingreso_opciones'] = array('disabled'=>'disabled');
+			$datos['fecha_egreso_opciones'] = array();
+			$datos['asistencia_obligatoria_opciones'] = array('disabled'=>'disabled');
 
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
-			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/cargo/v_cargo_form.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/trabajadores/v_trabajadores_egreso_form.js'), 'ext' =>'js');
+
+			$datos['e_footer'][] = array('nombre' => 'DatePicker JS','path' => base_url('assets/AdminLTE/plugins/datepicker/bootstrap-datepicker.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'DatePicker Languaje JS','path' => base_url('assets/AdminLTE/plugins/datepicker/locales/bootstrap-datepicker.es.js'), 'ext' =>'js');
+			$datos['e_header'][] = array('nombre' => 'DatePicker CSS','path' => base_url('assets/AdminLTE/plugins/datepicker/datepicker3.css'), 'ext' =>'css');
+		
+			$this->load->view('template/template',$datos);
+		}
+	}
+
+	public function validar_egresar(){
+		if( count( $this->input->post() ) == 0 ) redirect("Trabajadores");
+
+		$this->form_validation->set_error_delimiters('<span>','</span>');
+		if( !$this->form_validation->run() ){
+			$this->egresar($this->input->post('id_trabajador'));
+		}else{
+			$datos = $this->input->post();
+			$id_dato_personal = array_pop($datos);
+			$up = $this->Trabajadores_M->egresar_trabajador($datos);
+			if($up){
+				$this->Trabajadores_M->estatus_persona($id_dato_personal,false);
+				$this->Trabajadores_M->estatus_usuario($datos['id_trabajador'],false);
+				redirect("Trabajadores");
+			}else{
+				echo '<script language="javascript">
+						alert("No se pudo actualizar los datos, favor intente nuevamente");
+						window.location="'.base_url('Trabajadores').'";
+					</script>'; }
+		}
+	}
+
+	public function editar($id)
+	{
+		$this->seguridad_lib->acceso_metodo(__METHOD__);
+		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Trabajadores");
+
+		$trabajador = $this->Trabajadores_M->consultar_trabajador($id);
+		if( is_null($trabajador) ){
+			echo '<script language="javascript">
+						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
+						window.location="'.base_url('Trabajadores').'";
+					</script>';
+		}else{
+			$datos['titulo_contenedor'] = 'Trabajador';
+			$datos['titulo_descripcion'] = 'Actualizar';
+			$datos['form_action'] = 'Trabajadores/validar_editar';
+			$datos['btn_action'] = 'Actualizar';
+			$datos['btn_cancelar'] = 'Trabajadores';
+			$datos['contenido'] = 'trabajadores/trabajadores_form';
+
+			$datos['persona'] = $trabajador;
+			$datos['coordinacion_id'] = set_value('coordinacion_id',$trabajador['coordinacion_id']);
+			$datos['condicion_laboral_id'] = set_value('condicion_laboral_id',$trabajador['condicion_laboral_id']);
+			$datos['cargo_id'] = set_value('cargo_id',$trabajador['cargo_id']);
+			$datos['fecha_ingreso'] = set_value('fecha_ingreso',$trabajador['fecha_ingreso']);
+			$datos['fecha_egreso'] = set_value('fecha_egreso');
+			$datos['asistencia_obligatoria'] = set_value('asistencia_obligatoria',$trabajador['asistencia_obligatoria']);
+			$datos['id_trabajador'] = set_value('id_trabajador',$trabajador['id_trabajador']);
+			$datos['dato_personal_id'] = set_value('dato_personal_id',$trabajador['dato_personal_id']);
+
+			$datos['coordinacion_id_opciones'] = array('disabled'=>'disabled');
+			$datos['condicion_laboral_id_opciones'] = array('disabled'=>'disabled');
+			$datos['cargo_id_opciones'] = array('disabled'=>'disabled');
+			$datos['fecha_ingreso_opciones'] = array('disabled'=>'disabled');
+			$datos['fecha_egreso_opciones'] = array('disabled'=>'disabled');
+			$datos['asistencia_obligatoria_opciones'] = array();
 
 			$this->load->view('template/template',$datos);
 		}
 	}
 
 	public function validar_editar(){
-		if( count( $this->input->post() ) == 0 ) redirect("Cargos");
+		if( count( $this->input->post() ) == 0 ) redirect("Trabajadores");
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
-			$this->editar();
-		}else
-		{
-			$up=$this->Trabajadores_M->editar_cargo($this->input->post());
-			if($up){ redirect("Cargos");
+			$this->editar($this->input->post('id_trabajador'));
+		}else{
+			$up = $this->Trabajadores_M->editar_ao_trabajador($this->input->post('id_trabajador'),$this->input->post('asistencia_obligatoria'));
+			if($up){ redirect("Trabajadores");
 			}else{
 				echo '<script language="javascript">
-						alert("No se actualizar los datos del Cargo, favor intente nuevamente");
-						window.location="'.base_url('Cargos').'";
+						alert("No se pudo actualizar los datos del trabajador, favor intente nuevamente");
+						window.location="'.base_url('Trabajadores').'";
 					</script>'; }
 		}
 	}
 
-	public function eliminar($id)
-	{
+	public function egresados(){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Cargos");
 
-		$item = $this->Trabajadores_M->consultar_cargo($id);
-		if( !is_null($item) ){
-			$delete = $this->Trabajadores_M->eliminar_cargo($id);
-			if( is_null($delete) ){
-				echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este items");
-						window.location="'.base_url('Cargos').'";
-					</script>'; 
-			}elseif( $delete === false ){
-				echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-						window.location="'.base_url('Cargos').'";
-					</script>';
-			}else{
-				redirect('Cargos'); }
-		}else{
-			echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
-						window.location="'.base_url('Cargos').'";
-					</script>'; }
+		$datos['titulo_contenedor'] = 'Trabajador';
+		$datos['titulo_descripcion'] = 'Egresos';
+		$datos['contenido'] = 'trabajadores/trabajadores_lista_egresos';
+
+		$this->load->view('template/template',$datos);
 	}
-
 }

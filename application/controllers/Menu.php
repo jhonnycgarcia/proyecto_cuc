@@ -26,6 +26,7 @@ class Menu extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'DataTable JS','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'Menu List JS','path' => base_url('assets/js/menu/v_menu_list.js'), 'ext' =>'js');
 		
 		$this->load->view('template/template',$datos);
 	}

@@ -3,9 +3,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 class Persona_M extends CI_Model {
 
-	public $ans = null;
-	public $estatus = false;
-
 	function __construct(){
 		parent::__construct();
 		$this->load->database();
@@ -37,9 +34,9 @@ class Persona_M extends CI_Model {
 								->join("estatico.tipos_sangre AS c","a.tipo_sangre_id = c.id_tipo_sangre")
 							->where(array('id_dato_personal'=>$id))
 							->get()->result_array();
-			if(count($query)>0) $this->ans = $query[0];
+			if(count($query)>0) return $query[0];
 		} 
-		return $this->ans;
+		return NULL;
 	}
 
 	/**
@@ -86,29 +83,30 @@ class Persona_M extends CI_Model {
 	function agregar_persona($datos){
 		unset($datos['id_dato_personal']);
 		$datos = $this->limpiar_datos($datos);
-		$this->estatus = $this->db->insert("administrativo.datos_personales",$datos);
-		return $this->estatus;
+		$sql = $this->db->insert("administrativo.datos_personales",$datos);
+		return $sql;
 	}
 
 	function editar_persona($datos){
 		$id = array_pop($datos);
 		$datos = $this->limpiar_datos($datos);
-		$this->estatus = $this->db->where('id_dato_personal',$id)->update('administrativo.datos_personales',$datos);
-		return $this->estatus;
+		$sql = $this->db->where('id_dato_personal',$id)->update('administrativo.datos_personales',$datos);
+		return $sql;
 	}
 
 	function consultar_dependencias($id){
 		$query = $this->db->get_where('administrativo.trabajadores',array('dato_personal_id' => $id) )->result_array();
-		if( count($query) > 0 ) $this->estatus = true;
-		return $this->estatus;
+		if( count($query) > 0 ) return TRUE;
+		return FALSE;
 	}
 
 	function eliminar_persona($id){
+
 		$dependencia = $this->consultar_dependencias($id);
-		if($dependencia) return $this->ans;
+		if($dependencia) return NULL;
 		$query = $this->db->where('id_dato_personal',$id)->delete('administrativo.datos_personales');
-		if($query!=false) $this->estatus=true;
-		return $this->estatus;
+		if($query!=false) return TRUE;
+		return $query;
 	}
 
 

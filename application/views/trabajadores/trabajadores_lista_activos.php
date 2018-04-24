@@ -1,6 +1,6 @@
 <div class="box box-default"> 
   <div class="box-body"> <!-- Box-Body -->
-  <?php echo anchor('Trabajador/registrar/','<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>',array('class'=>'btn btn-primary btn-sm pull-right'));?>
+  <?php //echo anchor('Trabajadores/registrar/','<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>',array('class'=>'btn btn-primary btn-sm pull-right'));?>
   
   <div class="table-responsive">
     <table class="table table-striped table-hover table-bordered" id="list">
@@ -11,14 +11,14 @@
           <th class="text-center">Apellidos y Nombres</th>
           <th class="text-center">Condicion Laboral</th>
           <th class="text-center">Cargo</th>
-          <th class="text-center">Fecha ingreso</th>
+          <th class="text-center">Coordinación</th>
           <th class="text-center">Estatus</th>
           <th class="col-md-1 col-sm-1 col-xs-1">Opciones</th>
         </tr>
       </thead>
       <tbody>
   <?php
-    $lista = $this->Trabajadores_M->consultar_lista();
+    $lista = $this->Trabajadores_M->consultar_lista(true,array('campo'=>'cedula','orden'=>'ASC'));
     $i = 0;
     foreach ($lista as $key => $value) {
     $i++;
@@ -29,7 +29,7 @@
           <td class="text-center"><?= $value['apellido_nombre']; ?></td>
           <td class="text-center"><?= $value['condicion_laboral']; ?></td>
           <td class="text-center"><?= $value['cargo']; ?></td>
-          <td class="text-center"><?= $value['fecha_ingreso']; ?></td>
+          <td class="text-center"><?= $value['coordinacion']; ?></td>
           <td class="text-center">
             <?= ( $value['estatus'] == 't' )
               ?'<span class="label label-success">Activo</span>'
@@ -43,8 +43,9 @@
               </button>
 
               <ul class="dropdown-menu" rle="menu" aria-labelledby="dropdown_menu<?= $i; ?>">
-                <li role="presentation"><?= anchor( site_url('Cargos/editar/'.$value['id_trabajador']),"Editar",array("role" =>"item")  )?></li>
-                <li role="presentation"><?= anchor( site_url('Cargos/eliminar/'.$value['id_trabajador']),"Eliminar",array("role" =>"item")  )?></li>
+                <li role="presentation"><?= anchor( site_url('Trabajadores/detalles/'.$value['id_trabajador']),"Detalles",array("role" =>"item")  )?></li>
+                <li role="presentation"><?= anchor( site_url('Trabajadores/editar/'.$value['id_trabajador']),"Editar",array("role" =>"item")  )?></li>
+                <li role="presentation"><?= anchor( site_url('Trabajadores/egresar/'.$value['id_trabajador']),"Egresar",array("role" =>"item","onclick" => "javasciprt: return confirm('¿Esta seguro que desea egresar al trabajador seleccionado?');")  )?></li>
               </ul>
             </div>
           </td>

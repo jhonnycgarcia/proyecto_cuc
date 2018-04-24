@@ -28,19 +28,9 @@
           ?>
         </div>  
       </div>
-      <div class="form-group">
-        <label for="descripcion" class="control-label col-md-2">Descripcion:</label>
-        <div class="col-md-10">
-          <?php
-            $attribute_descripcion = array('class' => 'form-control','placeholder' => 'Descripcion:', 'style' => 'resize: vertical;');
-            echo form_textarea('descripcion',$descripcion,$attribute_descripcion);
-            echo form_error('descripcion');
-          ?>
-        </div>  
-      </div>
       <div>
         <?php
-          echo form_hidden('id',$id);
+          echo form_hidden('id_rol',$id_rol);
         ?>
       </div>
       <div class="form-group">

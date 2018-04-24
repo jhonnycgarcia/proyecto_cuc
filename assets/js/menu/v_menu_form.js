@@ -8,7 +8,7 @@ $(document).ready(function() {
 			},
 			link : {
 				required : true,
-				minlength : 3
+				minlength : 1
 			},
 			icono : {
 				required : true,

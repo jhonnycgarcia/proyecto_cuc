@@ -36,14 +36,13 @@ class Roles extends CI_Controller {
 		$datos['btn_action'] = 'Agregar';
 		$datos['contenido'] = 'roles/roles_form';
 
-		$datos['id'] = set_value('id');
+		$datos['id_rol'] = set_value('id_rol');
 		$datos['rol'] = set_value('rol');
 		$datos['estatus'] = set_value('estatus');
-		$datos['descripcion'] = set_value('descripcion');
 
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
-		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/menu/v_roles_form.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/roles/v_roles_form.js'), 'ext' =>'js');
 
 		$this->load->view("template/template",$datos);
 	}
@@ -87,14 +86,13 @@ class Roles extends CI_Controller {
 			$datos['btn_action'] = 'Actualizar';
 			$datos['contenido'] = 'roles/roles_form';
 
-			$datos['id'] = set_value('id',$item['id']);
+			$datos['id_rol'] = set_value('id_rol',$item['id_rol']);
 			$datos['rol'] = set_value('rol',$item['rol']);
 			$datos['estatus'] = set_value('estatus',$item['estatus']);
-			$datos['descripcion'] = set_value('descripcion',$item['descripcion']);
 
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
-			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/menu/v_roles_form.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/roles/v_roles_form.js'), 'ext' =>'js');
 
 			$this->load->view("template/template",$datos);
 		}
