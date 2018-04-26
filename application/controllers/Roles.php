@@ -16,7 +16,7 @@ class Roles extends CI_Controller {
 	}
 
 	public function lista(){
-		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
+		$this->seguridad_lib->acceso_metodo(__METHOD__);
 
 		$datos['titulo_contenedor'] = 'Roles';
 		$datos['titulo_descripcion'] = 'Lista de items';
@@ -30,6 +30,8 @@ class Roles extends CI_Controller {
 	}
 
 	public function agregar(){
+		$this->seguridad_lib->acceso_metodo(__METHOD__);
+		
 		$datos['titulo_contenedor'] = 'Roles';
 		$datos['titulo_descripcion'] = 'Agregar';
 		$datos['form_action'] = 'Roles/validar_agregar';
@@ -48,8 +50,7 @@ class Roles extends CI_Controller {
 	}
 
 	public function validar_agregar(){
-		if( count( $this->input->post() ) == 0 )
-			redirect('Roles');
+		if( count( $this->input->post() ) == 0 ) redirect(__CLASS__);
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
@@ -57,27 +58,27 @@ class Roles extends CI_Controller {
 		}else{
 			$add = $this->Roles_M->agregar_item( $this->input->post() );
 			if( $add ){
-				redirect("Roles");
+				redirect(__CLASS__);
 			}else{
 				echo '<script language="javascript">
 						alert("No se pudo crear el item, favor intente nuevamente");
-						window.location="'.base_url('Roles').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; 
 			}
 		}
 
 	}
 
-	public function editar($id){
-		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) )
-			redirect("Roles");
+	public function editar($id = NULL){
+		$this->seguridad_lib->acceso_metodo(__METHOD__);
+		if( !isset($id) ) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
 		$item = $this->Roles_M->consultar_item($id);
 		if( is_null($item) ){
 			echo '<script language="javascript">
 						alert("No se encontro el item deseado, favor intente nuevamente");
-						window.location="'.base_url('Roles').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 		}else{
 			$datos['titulo_contenedor'] = 'Roles';
@@ -86,9 +87,9 @@ class Roles extends CI_Controller {
 			$datos['btn_action'] = 'Actualizar';
 			$datos['contenido'] = 'roles/roles_form';
 
-			$datos['id_rol'] = set_value('id_rol',$item['id_rol']);
 			$datos['rol'] = set_value('rol',$item['rol']);
 			$datos['estatus'] = set_value('estatus',$item['estatus']);
+			$datos['id_rol'] = set_value('id_rol',$item['id_rol']);
 
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
@@ -99,51 +100,50 @@ class Roles extends CI_Controller {
 	}
 
 	public function validar_editar(){
-		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
-		if( count( $this->input->post() ) == 0 )
-			redirect("Roles");
+		if( count( $this->input->post() ) == 0 ) redirect(__CLASS__);
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
-			$this->editar();
+			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_rol'),'encrypt',__CLASS__);
+			$this->editar($id);
 		}else{
 			$up = $this->Roles_M->actualizar_item( $this->input->post() );
 			if( $up ){
-				redirect("Roles");
+				redirect(__CLASS__);
 			}else{
 				echo '<script language="javascript">
 						alert("No se pudo actualizar el item, favor intente nuevamente");
-						window.location="'.base_url('Roles').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 			}
 		}
 	}
 
-	public function eliminar($id){
-		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) )
-			redirect("Roles");
+	public function eliminar($id = NULL){
+		$this->seguridad_lib->acceso_metodo(__METHOD__);
+		if( !isset($id) ) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
 		$item = $this->Roles_M->consultar_item($id);
 		if( is_null($item) ){
 			echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-						window.location="'.base_url('Roles').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 		}else{
 			$delete = $this->Roles_M->eliminar_item($id);
 			if( is_null($delete) ){
 				echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este items");
-						window.location="'.base_url('Roles').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; 
 			}elseif ( !$delete ) {
 				echo '<script language="javascript">
 					alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-					window.location="'.base_url('Roles').'";
+					window.location="'.base_url(__CLASS__).'";
 				</script>'; 
 			}else{
-				redirect("Roles");
+				redirect(__CLASS__);
 			}
 		}
 	}

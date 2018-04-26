@@ -29,17 +29,17 @@ class Persona extends CI_Controller {
 		$this->template_lib->render($datos);
 	}
 
-	public function consultar($id=NULL)
+	public function consultar($id = NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) ) redirect("Persona");
-		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Persona");
+		if( !isset($id) ) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
 		$persona = $this->Persona_M->consultar_persona($id);
 		if(is_null($persona)){
 			echo '<script language="javascript">
 						alert("No se encontro el registro deseado, favor intente nuevamente");
-						window.location="'.base_url('Persona').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 		}else{
 			$datos['titulo_contenedor'] = 'Persona';
@@ -110,32 +110,32 @@ class Persona extends CI_Controller {
 	}
 
 	public function validar_agregar(){
-		if( count( $this->input->post() ) == 0 ) redirect("Persona");
+		if( count( $this->input->post() ) == 0 ) redirect(__CLASS__);
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){ $this->agregar(); }
 		else{
 			$add=$this->Persona_M->agregar_persona($this->input->post());
-			if($add){ redirect("Persona");
+			if($add){ redirect(__CLASS__);
 			}else{
 				echo '<script language="javascript">
 						alert("No se pudo registrar la persona, favor intente nuevamente");
-						window.location="'.base_url('Persona').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; }
 		}
 	}
 
-	public function editar($id=NULL)
+	public function editar($id = NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) ) redirect("Persona");
-		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Persona");
+		if( !isset($id) ) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
 		$item = $this->Persona_M->consultar_persona($id);
 		if(is_null($item)){
 			echo '<script language="javascript">
 						alert("No se encontro el item deseado, favor intente nuevamente");
-						window.location="'.base_url('Persona').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 		}else{
 			$datos['titulo_contenedor'] = 'Persona';
@@ -177,29 +177,29 @@ class Persona extends CI_Controller {
 	}
 
 	public function validar_editar(){
-		if( count( $this->input->post() ) == 0 ) redirect("Persona");
+		if( count( $this->input->post() ) == 0 ) redirect(__CLASS__);
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
-			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_dato_personal'),'encrypt',"Persona");
+			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_dato_personal'),'encrypt',__CLASS__);
 			$this->editar($id);
 		}else
 		{
 			$up = $this->Persona_M->editar_persona($this->input->post());
-			if($up){ redirect("Persona");
+			if($up){ redirect(__CLASS__);
 			}else{
 				echo '<script language="javascript">
 						alert("No se pudo actualizar los datos, favor intente nuevamente");
-						window.location="'.base_url('Persona').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; }
 		}
 	}
 
-	public function eliminar($id=NULL)
+	public function eliminar($id = NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) ) redirect("Persona");
-		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Persona");
+		if( !isset($id) ) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
 		$item = $this->Persona_M->consultar_persona($id);
 		if( !is_null($item) ){
@@ -207,19 +207,19 @@ class Persona extends CI_Controller {
 			if( is_null($delete) ){
 				echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este items");
-						window.location="'.base_url('Persona').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; 
 			}elseif( $delete === FALSE ){
 				echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-						window.location="'.base_url('Persona').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 			}else{
-				redirect('Persona'); }
+				redirect(__CLASS__); }
 		}else{
 			echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
-						window.location="'.base_url('Persona').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; }
 	}
 

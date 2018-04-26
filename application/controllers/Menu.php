@@ -59,8 +59,7 @@ class Menu extends CI_Controller {
 	}
 
 	public function validar_agregar(){
-		if( count( $this->input->post() ) == 0 )
-			redirect('Menu');
+		if( count( $this->input->post() ) == 0 ) redirect(__CLASS__);
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 
@@ -69,26 +68,26 @@ class Menu extends CI_Controller {
 		}else{
 			$add = $this->Menu_M->agregar_item( $this->input->post() );
 			if( $add ){
-				redirect('Menu');
+				redirect(__CLASS__);
 			}else{
 				echo '<script language="javascript">
 						alert("No se pudo crear el item, favor intente nuevamente");
-						window.location="'.base_url('Menu').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; 
 			}
 		}
 	}
 
-	public function editar($id=NULL){
+	public function editar($id = NULL){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
-		if( !isset($id) ) redirect("Menu");
-		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Menu");
+		if( !isset($id) ) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
 		$item = $this->Menu_M->consultar_item($id);
 		if( is_null($item) ){
 			echo '<script language="javascript">
 						alert("No se encontro el item deseado, favor intente nuevamente");
-						window.location="'.base_url('Menu').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 		}else{
 			
@@ -119,35 +118,35 @@ class Menu extends CI_Controller {
 	}
 
 	function validar_editar(){
-		if( count( $this->input->post() ) == 0 ) redirect("Menu");
+		if( count( $this->input->post() ) == 0 ) redirect(__CLASS__);
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 
 		if( !$this->form_validation->run() ){
-			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_menu'),'encrypt',"Menu");
+			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_menu'),'encrypt',__CLASS__);
 			$this->editar($id);
 		}else{
 			$up = $this->Menu_M->actualizar_item( $this->input->post() );
 			if( $up ){
-				redirect('Menu');
+				redirect(__CLASS__);
 			}else{
 				echo '<script language="javascript">
 						alert("No se pudo actualizar el item, favor intente nuevamente");
-						window.location="'.base_url('Menu').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 			}
 		}
 	}
 
-	public function eliminar($id=NULL){
+	public function eliminar($id = NULL){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
-		if( !isset($id) ) redirect("Menu");
-		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Menu");
+		if( !isset($id) ) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
 		$datos = $this->Menu_M->consultar_item($id);
 		if( is_null($datos) ){
 			echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-						window.location="'.base_url('Menu').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 		}else{
 			$delete = $this->Menu_M->eliminar_item($id,$datos['relacion']);
@@ -155,15 +154,15 @@ class Menu extends CI_Controller {
 			if( is_null($delete) ){
 				echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este items");
-						window.location="'.base_url('Menu').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; 
 			}elseif ( $delete == false ) {
 				echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-						window.location="'.base_url('Menu').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; 
 			}else{
-				redirect("Menu");
+				redirect(__CLASS__);
 			}
 		}
 	}

@@ -38,18 +38,18 @@ class Configuraciones extends CI_Controller {
 	 * @param  [type] $id [description]
 	 * @return [type]     [description]
 	 */
-	public function detalles($id=null)
+	public function detalles($id = null)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) ) redirect("Configuraciones");
+		if( !isset($id) ) redirect(__CLASS__);
 
-		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Configuraciones");
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
 		$configuracion = $this->Configuraciones_M->consultar_configuracion($id);
 		if(is_null($configuracion)){
 			echo '<script language="javascript">
 						alert("No se encontro el registro deseado, favor intente nuevamente");
-						window.location="'.base_url('Configuraciones').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 		}else{
 			$datos['titulo_contenedor'] = 'Configuraciones';
@@ -95,7 +95,7 @@ class Configuraciones extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function validar_agregar(){
-		if( count( $this->input->post() ) == 0 ) redirect("Configuraciones");
+		if( count( $this->input->post() ) == 0 ) redirect(__CLASS__);
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
@@ -103,11 +103,11 @@ class Configuraciones extends CI_Controller {
 		}else
 		{
 			$add = $this->Configuraciones_M->agregar_configuracion($this->input->post());
-			if($add){redirect('Configuraciones');
+			if($add){redirect(__CLASS__);
 			}else{
 				echo '<script language="javascript">
 						alert("No se pudo crear el registro de configuracion, favor intente nuevamente");
-						window.location="'.base_url('Configuraciones').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; }
 		}
 	}
@@ -117,17 +117,17 @@ class Configuraciones extends CI_Controller {
 	 * @param  [type] $id [description]
 	 * @return [type]     [description]
 	 */
-	public function editar($id)
+	public function editar($id = NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if(!isset($id)) redirect("Configuraciones");
-		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Configuraciones");
+		if(!isset($id)) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
 		$configuracion = $this->Configuraciones_M->consultar_configuracion($id);
 		if(is_null($configuracion)){
 			echo '<script language="javascript">
 						alert("No se encontro el item deseado, favor intente nuevamente");
-						window.location="'.base_url('Configuraciones').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 		}else{
 			$datos['titulo_contenedor'] = 'Configuraciones';
@@ -156,20 +156,20 @@ class Configuraciones extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function validar_editar(){
-		if( count( $this->input->post() ) == 0 ) redirect("Configuraciones");
+		if( count( $this->input->post() ) == 0 ) redirect(__CLASS__);
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
-			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_configuracion'),'encrypt',"Configuraciones");
+			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_configuracion'),'encrypt',__CLASS__);
 			$this->editar($id);
 		}else
 		{
 			$up = $this->Configuraciones_M->editar_configuracion($this->input->post());
-			if($up){ redirect("Configuraciones");
+			if($up){ redirect(__CLASS__);
 			}else{
 				echo '<script language="javascript">
 						alert("No se actualizar los datos del Cargo, favor intente nuevamente");
-						window.location="'.base_url('Configuraciones').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; }
 		}
 	}
@@ -179,24 +179,24 @@ class Configuraciones extends CI_Controller {
 	 * @param  [type] $id [description]
 	 * @return [type]     [description]
 	 */
-	public function activar($id=NULL){
+	public function activar($id = NULL){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if(!isset($id)) redirect("Configuraciones");
-		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Configuraciones");
+		if(!isset($id)) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 		
 		$configuracion = $this->Configuraciones_M->consultar_configuracion($id);
 		if( is_null($configuracion)){
 			echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
-						window.location="'.base_url('Configuraciones').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 		}else{
 			$up = $this->Configuraciones_M->activar_configuracion($configuracion['id_configuracion']);
-			if($up){ redirect("Configuraciones");
+			if($up){ redirect(__CLASS__);
 			}else{
 				echo '<script language="javascript">
 						alert("No se activar la configuracion, favor intente nuevamente");
-						window.location="'.base_url('Configuraciones').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; }
 		}
 	}
@@ -207,10 +207,10 @@ class Configuraciones extends CI_Controller {
 	 * @param  [type] $id [description]
 	 * @return [type]     [description]
 	 */
-	public function eliminar($id=NULL){
+	public function eliminar($id = NULL){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if(!isset($id)) redirect("Configuraciones");
-		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Configuraciones");
+		if(!isset($id)) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
 		$configuracion = $this->Configuraciones_M->consultar_configuracion($id);
 		if( !is_null($configuracion) ){
@@ -218,19 +218,19 @@ class Configuraciones extends CI_Controller {
 			if( is_null($delete) ){
 				echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción debido a que ocurrio un inconveniente, favor intente nuevamente");
-						window.location="'.base_url('Configuraciones').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; 
 			}elseif( $delete === false ){
 				echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-						window.location="'.base_url('Configuraciones').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 			}else{
-				redirect('Configuraciones'); }
+				redirect(__CLASS__); }
 		}else{
 			echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
-						window.location="'.base_url('Configuraciones').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; }
 	}
 }

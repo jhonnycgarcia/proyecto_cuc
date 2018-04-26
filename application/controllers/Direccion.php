@@ -53,32 +53,32 @@ class Direccion extends CI_Controller {
 	}
 
 	public function validar_agregar(){
-		if( count( $this->input->post() ) == 0 ) redirect("Direccion");
+		if( count( $this->input->post() ) == 0 ) redirect(__CLASS__);
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){ $this->agregar(); }
 		else{
 			$add = $this->Direccion_M->agregar_direccion($this->input->post() );
-			if( $add ){ redirect('Direccion');
+			if( $add ){ redirect(__CLASS__);
 			}else{
 				echo '<script language="javascript">
 						alert("No se pudo crear la Dirección, favor intente nuevamente");
-						window.location="'.base_url('Direccion').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; 
 			}
 		}
 	}
 
-	public function editar( $id = NULL ){
+	public function editar($id = NULL){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
-		if( !isset($id) ) redirect("Direccion");
-		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Direccion");
+		if( !isset($id) ) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
 		$item = $this->Direccion_M->consultar_direccion($id);
 		if( is_null($item) ){
 			echo '<script language="javascript">
 						alert("No se encontro el item deseado, favor intente nuevamente");
-						window.location="'.base_url('Direccion').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 		}else{
 			$datos['contenido'] = 'direccion/direccion_form';
@@ -99,28 +99,28 @@ class Direccion extends CI_Controller {
 	}
 
 	public function validar_editar(){
-		if( count( $this->input->post() ) == 0 ) redirect("Direccion");
+		if( count( $this->input->post() ) == 0 ) redirect(__CLASS__);
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
-			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_direccion'),'encrypt',"Direccion");
+			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_direccion'),'encrypt',__CLASS__);
 			$this->editar($id);
 		}else{
 			$up = $this->Direccion_M->editar_direccion( $this->input->post() );
-			if( $up ){ redirect('Direccion');
+			if( $up ){ redirect(__CLASS__);
 			}else{
 				echo '<script language="javascript">
 						alert("No se actualizar los datos de la dirección, favor intente nuevamente");
-						window.location="'.base_url('Direccion').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; }
 		}
 
 	}
 
-	public function eliminar($id=NULL){
+	public function eliminar($id = NULL){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Direccion");
-		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Direccion");
+		if( !isset($id) ) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
 		$item = $this->Direccion_M->consultar_direccion($id);
 		if( !is_null($item) ){
@@ -128,19 +128,19 @@ class Direccion extends CI_Controller {
 			if( is_null($delete) ){
 				echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este items");
-						window.location="'.base_url('Direccion').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; 
 			}elseif( $delete === false ){
 				echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-						window.location="'.base_url('Direccion').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 			}else{
-				redirect('Direccion'); }
+				redirect(__CLASS__); }
 		}else{
 			echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
-						window.location="'.base_url('Direccion').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; }
 	}
 }

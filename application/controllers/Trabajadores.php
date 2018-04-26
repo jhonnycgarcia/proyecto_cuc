@@ -38,17 +38,17 @@ class Trabajadores extends CI_Controller {
 	 * @param  [type] $id_dato_personal [description]
 	 * @return [type]                   [description]
 	 */
-	public function ingresar($id_dato_personal=NULL)
+	public function ingresar($id_dato_personal = NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id_dato_personal) ) redirect('Trabajadores');
-		$id_dato_personal = $this->seguridad_lib->execute_encryp($id_dato_personal,'decrypt',"Trabajadores");
+		if( !isset($id_dato_personal) ) redirect(__CLASS__);
+		$id_dato_personal = $this->seguridad_lib->execute_encryp($id_dato_personal,'decrypt',__CLASS__);
 
 		$persona = $this->Trabajadores_M->consultar_personal($id_dato_personal);
 		if( is_null($persona)){
 			echo '<script language="javascript">
 						alert("No se encontro el item deseado, favor intente nuevamente");
-						window.location="'.base_url('Trabajadores').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 		}else{
 			$datos['titulo_contenedor'] = 'Trabajador';
@@ -108,21 +108,21 @@ class Trabajadores extends CI_Controller {
 	 */
 	public function validar_ingresar()
 	{
-		if( count( $this->input->post() ) == 0 ) redirect("Trabajadores");
+		if( count( $this->input->post() ) == 0 ) redirect(__CLASS__);
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
-			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_dato_personal'),'encrypt',"Trabajadores");
+			$id = $this->seguridad_lib->execute_encryp($this->input->post('dato_personal_id'),'encrypt',__CLASS__);
 			$this->ingresar($id); 
 		}else{
 			$add = $this->Trabajadores_M->registrar_trabajador($this->input->post());
 			if($add){
 				$this->Trabajadores_M->estatus_persona($this->input->post('dato_personal_id'),true);
-				redirect('Trabajadores');
+				redirect(__CLASS__);
 			}else{
 				echo '<script language="javascript">
 						alert("No se pudo registrar el trabajador, favor intente nuevamente");
-						window.location="'.base_url('Trabajadores').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; }
 		}
 	}
@@ -132,17 +132,16 @@ class Trabajadores extends CI_Controller {
 	 * @param  [integer] 		$id 		[ID del trabajador]
 	 * @return [type]     [description]
 	 */
-	public function detalles($id=NULL){
+	public function detalles($id = NULL){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) ) redirect("Trabajadores");
-
-		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Trabajadores");
+		if( !isset($id) ) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
 		$trabajador = $this->Trabajadores_M->consultar_trabajador($id);
 		if( is_null($trabajador) ){
 			echo '<script language="javascript">
 						alert("No se encontro el registro deseado, favor intente nuevamente");
-						window.location="'.base_url('Trabajadores').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 		}else{
 			$datos['titulo_contenedor'] = 'Trabajador';
@@ -160,17 +159,16 @@ class Trabajadores extends CI_Controller {
 	 * @param  [integer] 		$id 		[ID del trabajador]
 	 * @return [type]     [description]
 	 */
-	public function egresar($id){
+	public function egresar($id = NULL){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) ) redirect("Trabajadores");
-
-		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Trabajadores");
+		if( !isset($id) ) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
 		$trabajador = $this->Trabajadores_M->consultar_trabajador($id);
 		if( is_null($trabajador) ){
 			echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
-						window.location="'.base_url('Trabajadores').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 		}else{
 			$datos['titulo_contenedor'] = 'Trabajador';
@@ -214,11 +212,11 @@ class Trabajadores extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function validar_egresar(){
-		if( count( $this->input->post() ) == 0 ) redirect("Trabajadores");
+		if( count( $this->input->post() ) == 0 ) redirect(__CLASS__);
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
-			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_trabajador'),'encrypt',"Trabajadores");
+			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_trabajador'),'encrypt',__CLASS__);
 			$this->egresar($id);
 		}else{
 			$datos = $this->input->post();
@@ -227,11 +225,11 @@ class Trabajadores extends CI_Controller {
 			if($up){
 				$this->Trabajadores_M->estatus_persona($id_dato_personal,false);
 				$this->Trabajadores_M->estatus_usuario($datos['id_trabajador'],false);
-				redirect("Trabajadores");
+				redirect(__CLASS__);
 			}else{
 				echo '<script language="javascript">
 						alert("No se pudo actualizar los datos, favor intente nuevamente");
-						window.location="'.base_url('Trabajadores').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; }
 		}
 	}
@@ -241,18 +239,17 @@ class Trabajadores extends CI_Controller {
 	 * @param  [integer] 		$id 		[ID del trabajador]
 	 * @return [type]     [description]
 	 */
-	public function editar($id=NULL)
+	public function editar($id = NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) ) redirect("Trabajadores");
-
-		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Trabajadores");
+		if( !isset($id) ) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
 		$trabajador = $this->Trabajadores_M->consultar_trabajador($id);
 		if( is_null($trabajador) ){
 			echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
-						window.location="'.base_url('Trabajadores').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 		}else{
 			$datos['titulo_contenedor'] = 'Trabajador';
@@ -288,19 +285,19 @@ class Trabajadores extends CI_Controller {
 	 * @return [type] [description]
 	 */
 	public function validar_editar(){
-		if( count( $this->input->post() ) == 0 ) redirect("Trabajadores");
+		if( count( $this->input->post() ) == 0 ) redirect(__CLASS__);
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
-			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_trabajador'),'encrypt',"Trabajadores");
+			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_trabajador'),'encrypt',__CLASS__);
 			$this->editar($id);
 		}else{
 			$up = $this->Trabajadores_M->editar_ao_trabajador($this->input->post('id_trabajador'),$this->input->post('asistencia_obligatoria'));
-			if($up){ redirect("Trabajadores");
+			if($up){ redirect(__CLASS__);
 			}else{
 				echo '<script language="javascript">
 						alert("No se pudo actualizar los datos del trabajador, favor intente nuevamente");
-						window.location="'.base_url('Trabajadores').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; }
 		}
 	}

@@ -104,7 +104,7 @@ Class Seguridad_lib {
 	   	// Encriptar la llave
 	   	$this->secret_key = hash('sha256',SEMILLA);				
 	    // Encriptar el vector inicial
-	    $this->secret_iv = substr(hash('sha256',$this->ci->session->userdata('usuario')),0,16);		
+	    $this->secret_iv = substr(hash('sha256',$this->ci->session->userdata('usuario').$controller),0,16);		
 
 	    if(strtolower($accion) == 'encrypt'){
 	    	return $this->encrypt($cadena);

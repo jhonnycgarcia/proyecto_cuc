@@ -51,32 +51,32 @@ class Condicion_Laboral extends CI_Controller {
 
 	public function validar_agregar()
 	{
-		if( count( $this->input->post() ) == 0 ) redirect("Condicion_Laboral");
+		if( count( $this->input->post() ) == 0 ) redirect(__CLASS__);
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){ $this->agregar(); }
 		else{
 			$add = $this->Condicion_Laboral_M->agregar_condicion_laboral($this->input->post());
-			if($add){redirect('Condicion_Laboral');
+			if($add){redirect(__CLASS__);
 			}else{
 				echo '<script language="javascript">
 						alert("No se pudo crear la Condicion Laboral, favor intente nuevamente");
-						window.location="'.base_url('Condicion_Laboral').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; }
 		}
 	}
 
-	public function editar($id=NULL)
+	public function editar($id = NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) ) redirect("Condicion_Laboral");
-		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Condicion_Laboral");
+		if( !isset($id) ) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
 		$item = $this->Condicion_Laboral_M->consultar_condicion_laboral($id);
 		if(is_null($item)){
 			echo '<script language="javascript">
 						alert("No se encontro el item deseado, favor intente nuevamente");
-						window.location="'.base_url('Condicion_Laboral').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 		}else{
 			$datos['titulo_contenedor'] = 'Condiciones Laborales';
@@ -97,29 +97,29 @@ class Condicion_Laboral extends CI_Controller {
 	}
 
 	public function validar_editar(){
-		if( count( $this->input->post() ) == 0 ) redirect("Condicion_Laboral");
+		if( count( $this->input->post() ) == 0 ) redirect(__CLASS__);
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
-			$id = $this->seguridad_lib->execute_encryp($id,'encrypt',"Condicion_Laboral");
+			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_condicion_laboral'),'encrypt',__CLASS__);
 			$this->editar($id);
 		}else
 		{
 			$up=$this->Condicion_Laboral_M->editar_condicion_laboral($this->input->post());
-			if($up){ redirect("Condicion_Laboral");
+			if($up){ redirect(__CLASS__);
 			}else{
 				echo '<script language="javascript">
 						alert("No se actualizar los datos de la Coordinacion, favor intente nuevamente");
-						window.location="'.base_url('Condicion_Laboral').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; }
 		}
 	}
 
-	public function eliminar($id=NULL)
+	public function eliminar($id = NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) ) redirect("Condicion_Laboral");
-		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Condicion_Laboral");
+		if( !isset($id) ) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
 		$item = $this->Condicion_Laboral_M->consultar_condicion_laboral($id);
 		if( !is_null($item) ){
@@ -127,19 +127,19 @@ class Condicion_Laboral extends CI_Controller {
 			if( is_null($delete) ){
 				echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este items");
-						window.location="'.base_url('Condicion_Laboral').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; 
 			}elseif( $delete === false ){
 				echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-						window.location="'.base_url('Condicion_Laboral').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>';
 			}else{
-				redirect('Condicion_Laboral'); }
+				redirect(__CLASS__); }
 		}else{
 			echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
-						window.location="'.base_url('Condicion_Laboral').'";
+						window.location="'.base_url(__CLASS__).'";
 					</script>'; }
 	}
 
