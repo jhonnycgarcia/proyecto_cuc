@@ -26,7 +26,7 @@ class Coordinacion extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
 
-		$this->load->view('template/template',$datos);
+		$this->template_lib->render($datos);
 	}
 
 	public function agregar(){
@@ -48,7 +48,7 @@ class Coordinacion extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/coordinacion/v_coordinacion_form.js'), 'ext' =>'js');
 
-		$this->load->view('template/template',$datos);
+		$this->template_lib->render($datos);
 	}
 
 	public function validar_agregar(){
@@ -68,9 +68,10 @@ class Coordinacion extends CI_Controller {
 	}
 
 
-	public function editar($id=null){
+	public function editar($id=NULL){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Coordinacion");
+		if( !isset($id) ) redirect("Coordinacion");
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Coordinacion");
 
 		$item = $this->Coordinacion_M->consultar_coordinacion($id);
 		if(is_null($item)){
@@ -95,7 +96,7 @@ class Coordinacion extends CI_Controller {
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/coordinacion/v_coordinacion_form.js'), 'ext' =>'js');
 
-			$this->load->view('template/template',$datos);
+			$this->template_lib->render($datos);
 		}
 	}
 
@@ -104,7 +105,8 @@ class Coordinacion extends CI_Controller {
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
-			$this->editar();
+			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_coordinacion'),'encrypt',"Coordinacion");
+			$this->editar($id);
 		}else{
 			$up = $this->Coordinacion_M->editar_coordinacion($this->input->post());
 			if($up){ redirect("Coordinacion");
@@ -116,9 +118,10 @@ class Coordinacion extends CI_Controller {
 		}
 	}
 
-	public function eliminar($id){
+	public function eliminar($id=NULL){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Coordinacion");
+		if( !isset($id)) redirect("Coordinacion");
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Coordinacion");
 
 		$item = $this->Coordinacion_M->consultar_coordinacion($id);
 		if( !is_null($item) ){

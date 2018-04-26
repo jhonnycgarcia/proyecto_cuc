@@ -26,7 +26,7 @@ class Cargos extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
 
-		$this->load->view('template/template',$datos);
+		$this->template_lib->render($datos);
 	}
 
 	public function agregar()
@@ -47,7 +47,7 @@ class Cargos extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/cargo/v_cargo_form.js'), 'ext' =>'js');
 
-		$this->load->view('template/template',$datos);
+		$this->template_lib->render($datos);
 	}
 
 	public function validar_agregar()
@@ -70,7 +70,8 @@ class Cargos extends CI_Controller {
 	public function editar($id=NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Cargos");
+		if( !isset($id) ) redirect("Cargos");
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Cargos");
 
 		$item = $this->Cargos_M->consultar_cargo($id);
 		if(is_null($item)){
@@ -93,7 +94,7 @@ class Cargos extends CI_Controller {
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/cargo/v_cargo_form.js'), 'ext' =>'js');
 
-			$this->load->view('template/template',$datos);
+			$this->template_lib->render($datos);
 		}
 	}
 
@@ -102,7 +103,8 @@ class Cargos extends CI_Controller {
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
-			$this->editar();
+			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_cargo'),'encrypt',"Cargos");
+			$this->editar($id);
 		}else
 		{
 			$up=$this->Cargos_M->editar_cargo($this->input->post());
@@ -115,10 +117,12 @@ class Cargos extends CI_Controller {
 		}
 	}
 
-	public function eliminar($id)
+	public function eliminar($id=NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Cargos");
+		if( !isset($id) ) redirect("Cargos");
+
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Cargos");
 
 		$item = $this->Cargos_M->consultar_cargo($id);
 		if( !is_null($item) ){

@@ -9,9 +9,4 @@ class Asistencia extends CI_Controller {
 		$this->load->library( array('form_validation') );
 	}
 
-	public function index()
-	{
-		
-		$this->load->view('template/template');
-	}
 }

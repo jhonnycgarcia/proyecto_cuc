@@ -1,6 +1,6 @@
 <div class="box box-default"> 
   <div class="box-body"> <!-- Box-Body -->
-  <?php echo anchor('Roles/agregar/','<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>',array('class'=>'btn btn-primary btn-sm pull-right'));?>
+  <?php echo anchor('Roles/agregar/','<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>',array('class'=>'btn btn-primary btn-sm col-md-offset-1','id'=>'btn_add'));?>
 
     <div class="table-responsive">
       <table class="table table-striped table-hover table-bordered" id="list">

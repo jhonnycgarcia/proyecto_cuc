@@ -12,8 +12,8 @@ class Menu extends CI_Controller {
 
 	public function index()
 	{
-		// $this->lista();
-		redirect('Menu/lista');
+		$this->lista();
+		// redirect('Menu/lista');
 	}
 
 	public function lista(){
@@ -28,7 +28,7 @@ class Menu extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'Menu List JS','path' => base_url('assets/js/menu/v_menu_list.js'), 'ext' =>'js');
 		
-		$this->load->view('template/template',$datos);
+		$this->template_lib->render($datos);
 	}
 
 	public function agregar(){
@@ -55,7 +55,7 @@ class Menu extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/menu/v_menu_form.js'), 'ext' =>'js');
 
-		$this->load->view('template/template',$datos);
+		$this->template_lib->render($datos);
 	}
 
 	public function validar_agregar(){
@@ -79,9 +79,10 @@ class Menu extends CI_Controller {
 		}
 	}
 
-	public function editar($id){
+	public function editar($id=NULL){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Menu");
+		if( !isset($id) ) redirect("Menu");
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Menu");
 
 		$item = $this->Menu_M->consultar_item($id);
 		if( is_null($item) ){
@@ -112,7 +113,7 @@ class Menu extends CI_Controller {
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/menu/v_menu_form.js'), 'ext' =>'js');
 
-			$this->load->view('template/template',$datos);
+			$this->template_lib->render($datos);
 
 		}
 	}
@@ -122,7 +123,8 @@ class Menu extends CI_Controller {
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 
 		if( !$this->form_validation->run() ){
-			$this->editar();
+			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_menu'),'encrypt',"Menu");
+			$this->editar($id);
 		}else{
 			$up = $this->Menu_M->actualizar_item( $this->input->post() );
 			if( $up ){
@@ -136,9 +138,10 @@ class Menu extends CI_Controller {
 		}
 	}
 
-	public function eliminar($id){
+	public function eliminar($id=NULL){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Menu");
+		if( !isset($id) ) redirect("Menu");
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Menu");
 
 		$datos = $this->Menu_M->consultar_item($id);
 		if( is_null($datos) ){

@@ -7,9 +7,8 @@
                 warningTimer: 5000,                 // el tiempo que transcurre por segundo antes del logout Timer running every second to countdown to logout
                 sessionSecondsRemaining: 0,         // tiempo para esperar del segundo conteo
                 logout: function () {       //Logout function once warningTimeout has expired
-                        //window.location = settings.autologout.logouturl;
                         console.log('cierre de session');
-                    },
+                    }
             }
 
 
@@ -37,7 +36,7 @@
                         session.logout();
                         clearInterval(session.warningTimer);
                         $( document ).idleTimer("destroy");
-                        window.location.replace(_base_url+'/salir');
+                        // window.location.replace(_base_url+'/salir');
                     }
                 },1000);
 
@@ -46,6 +45,7 @@
 
             $(document).on("active.idleTimer", function (event, elem, obj) {
                 console.log('Usuario Activo');
+                clearTimeout(session.warningTimer);
             });
 
             //inicializar contador

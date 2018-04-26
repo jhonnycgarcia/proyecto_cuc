@@ -26,7 +26,7 @@ class Condicion_Laboral extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
 
-		$this->load->view('template/template',$datos);
+		$this->template_lib->render($datos);
 	}
 
 	public function agregar()
@@ -46,7 +46,7 @@ class Condicion_Laboral extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/condicion_laboral/v_condicion_laboral_form.js'), 'ext' =>'js');
 
-		$this->load->view('template/template',$datos);
+		$this->template_lib->render($datos);
 	}
 
 	public function validar_agregar()
@@ -69,7 +69,8 @@ class Condicion_Laboral extends CI_Controller {
 	public function editar($id=NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Condicion_Laboral");
+		if( !isset($id) ) redirect("Condicion_Laboral");
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Condicion_Laboral");
 
 		$item = $this->Condicion_Laboral_M->consultar_condicion_laboral($id);
 		if(is_null($item)){
@@ -91,7 +92,7 @@ class Condicion_Laboral extends CI_Controller {
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/condicion_laboral/v_condicion_laboral_form.js'), 'ext' =>'js');
 
-			$this->load->view('template/template',$datos);
+			$this->template_lib->render($datos);
 		}
 	}
 
@@ -100,7 +101,8 @@ class Condicion_Laboral extends CI_Controller {
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
-			$this->editar();
+			$id = $this->seguridad_lib->execute_encryp($id,'encrypt',"Condicion_Laboral");
+			$this->editar($id);
 		}else
 		{
 			$up=$this->Condicion_Laboral_M->editar_condicion_laboral($this->input->post());
@@ -113,10 +115,11 @@ class Condicion_Laboral extends CI_Controller {
 		}
 	}
 
-	public function eliminar($id)
+	public function eliminar($id=NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Condicion_Laboral");
+		if( !isset($id) ) redirect("Condicion_Laboral");
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Condicion_Laboral");
 
 		$item = $this->Condicion_Laboral_M->consultar_condicion_laboral($id);
 		if( !is_null($item) ){

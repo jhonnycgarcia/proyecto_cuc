@@ -76,4 +76,6 @@ $(document).ready(function() {
 
 		});
 
+		$("#btn_add").appendTo("#list_filter");
+
 } );

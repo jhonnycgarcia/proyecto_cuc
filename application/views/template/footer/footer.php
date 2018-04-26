@@ -10,7 +10,9 @@
  	?>
 </div>
 <!-- ./wrapper -->
-
+<script>
+	var _base_url = "<?= base_url(); ?>";
+</script>
 <!-- REQUIRED JS SCRIPTS -->
 <script> _base_url = '<?= base_url(); ?>'; </script>
 <!-- jQuery 2.2.3 JS -->
@@ -27,6 +29,8 @@
 <script src="<?= base_url('assets/jquery-idletimer/dist/idle-timer.js'); ?>"></script>
 <!-- IdLetimer Config Js -->
 <!-- <script src="<?= base_url('assets/js/template/v_login.js'); ?>"></script> -->
+<!-- Config Template -->
+<script src="<?= base_url('assets/js/template/config.js'); ?>"></script>
 
 <?php
 	if( isset($e_footer) && !is_null($e_footer) ) // etiquetas precargadas en el header

@@ -1,6 +1,6 @@
 <div class="box box-default"> 
   <div class="box-body"> <!-- Box-Body -->
-    <?php echo anchor('Direccion/agregar/','<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>',array('class'=>'btn btn-primary btn-sm pull-right'));?>
+    <?php echo anchor('Direccion/agregar/','<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>',array('class'=>'btn btn-primary btn-sm col-md-offset-1','id'=>'btn_add'));?>
     <div class="table-responsive">
       <table class="table table-striped table-hover table-bordered" id="list">
         <thead>
@@ -17,6 +17,8 @@
   $lista = $this->Direccion_M->obtener_todos();
   $i = 0;
   foreach ($lista as $key => $value) {
+    $i++;
+    $id = $this->seguridad_lib->execute_encryp($value['id_direccion'],'encrypt',"Direccion");
 ?>
           <tr>
             <td><?= $value['id_direccion']; ?></td>
@@ -35,8 +37,8 @@
                 </button>
 
                 <ul class="dropdown-menu" rle="menu" aria-labelledby="dropdown_menu<?= $i; ?>">
-                  <li role="presentation"><?= anchor( site_url('Direccion/editar/'.$value['id_direccion']),"Editar",array("role" =>"item")  )?></li>
-                  <li role="presentation"><?= anchor( site_url('Direccion/eliminar/'.$value['id_direccion']),"Eliminar",array("role" =>"item")  )?></li>
+                  <li role="presentation"><?= anchor( site_url('Direccion/editar/'.$id),"Editar",array("role" =>"item")  )?></li>
+                  <li role="presentation"><?= anchor( site_url('Direccion/eliminar/'.$id),"Eliminar",array("role" =>"item")  )?></li>
                 </ul>
               </div>
             </td>

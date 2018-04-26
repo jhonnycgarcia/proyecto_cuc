@@ -26,7 +26,7 @@ class Roles extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
 
-		$this->load->view('template/template',$datos);
+		$this->template_lib->render($datos);
 	}
 
 	public function agregar(){
@@ -44,7 +44,7 @@ class Roles extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/roles/v_roles_form.js'), 'ext' =>'js');
 
-		$this->load->view("template/template",$datos);
+		$this->template_lib->render($datos);
 	}
 
 	public function validar_agregar(){
@@ -77,7 +77,7 @@ class Roles extends CI_Controller {
 		if( is_null($item) ){
 			echo '<script language="javascript">
 						alert("No se encontro el item deseado, favor intente nuevamente");
-						window.location="'.base_url('Menu').'";
+						window.location="'.base_url('Roles').'";
 					</script>';
 		}else{
 			$datos['titulo_contenedor'] = 'Roles';
@@ -94,7 +94,7 @@ class Roles extends CI_Controller {
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/roles/v_roles_form.js'), 'ext' =>'js');
 
-			$this->load->view("template/template",$datos);
+			$this->template_lib->render($datos);
 		}
 	}
 

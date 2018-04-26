@@ -1,6 +1,5 @@
 <div class="box box-default"> 
   <div class="box-body"> <!-- Box-Body -->
-  <?php //echo anchor('Trabajadores/registrar/','<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>',array('class'=>'btn btn-primary btn-sm pull-right'));?>
   
   <div class="table-responsive">
     <table class="table table-striped table-hover table-bordered" id="list">
@@ -22,6 +21,7 @@
     $i = 0;
     foreach ($lista as $key => $value) {
     $i++;
+    $id = $this->seguridad_lib->execute_encryp($value['id_trabajador'],'encrypt',"Trabajadores");
 ?>
        <tr>
           <td><?= $i;?></td>
@@ -43,9 +43,9 @@
               </button>
 
               <ul class="dropdown-menu" rle="menu" aria-labelledby="dropdown_menu<?= $i; ?>">
-                <li role="presentation"><?= anchor( site_url('Trabajadores/detalles/'.$value['id_trabajador']),"Detalles",array("role" =>"item")  )?></li>
-                <li role="presentation"><?= anchor( site_url('Trabajadores/editar/'.$value['id_trabajador']),"Editar",array("role" =>"item")  )?></li>
-                <li role="presentation"><?= anchor( site_url('Trabajadores/egresar/'.$value['id_trabajador']),"Egresar",array("role" =>"item","onclick" => "javasciprt: return confirm('¿Esta seguro que desea egresar al trabajador seleccionado?');")  )?></li>
+                <li role="presentation"><?= anchor( site_url('Trabajadores/detalles/'.$id),"Detalles",array("role" =>"item")  )?></li>
+                <li role="presentation"><?= anchor( site_url('Trabajadores/editar/'.$id),"Editar",array("role" =>"item")  )?></li>
+                <li role="presentation"><?= anchor( site_url('Trabajadores/egresar/'.$id),"Egresar",array("role" =>"item","onclick" => "javasciprt: return confirm('¿Esta seguro que desea egresar al trabajador seleccionado?');")  )?></li>
               </ul>
             </div>
           </td>

@@ -6,8 +6,38 @@
  */
 Class Template_lib {
 
+
+	function __construct(){
+		$this->ci =& get_instance();				// Cargar librerias de CodeIgniter
+		$this->ci->load->model('Configuraciones_M');		// Cargar modelo
+	}
+
+	/**
+	 * Funcion para renderiza la vista
+	 * @param  array  $config  			Variable de configuracion para la carga del template
+	 * 
+	 *                            		'e_header' [ARRAY]
+	 *                            				'nombre'		=> Descripcion que aparecera en la DOM
+	 *                            				'path'			=> Ubicacion en el servidor del archivo
+	 *                            				'ext'			=> Extension del archivo JS, CSS
+	 *                            				
+	 *                            		'e_footer' [ARRAY]
+	 *                            				'nombre'		=> Descripcion que aparecera en la DOM
+	 *                            				'path'			=> Ubicacion en el servidor del archivo
+	 *                            				'ext'			=> Extension del archivo JS, CSS
+	 *                            				
+	 *                            		'titulo_contenedor'		=> El titulo que aparecera sobre el conrenedor
+	 *                            		'titulo_descripcion'	=> El texto que acompañara el titulo del contenedor
+	 *                            		'contenido'				=> La vista a cargar
+	 *                            		
+	 *                              	dentro de esta variable se puede definir otras claves  que el usuario vaya a utilizar.
+	 * 	
+	 * 					
+	 * @return [type]         [description]
+	 */
 	public function render($config = array() ){
-		// echo "string";
+		$this->configuracion();
+		$this->ci->load->view('template/template',$config);
 	}
 
 	function cargar_etiquetas($etiquetas){
@@ -73,5 +103,22 @@ Class Template_lib {
 			$e_script [1] = $path;
 			echo implode('', $e_script)."\n";
 		endif;
+	}
+
+	function configuracion($retornar=false){
+		$consulta = $this->ci->Configuraciones_M->consultar_lista(true);
+		if( count($consulta)> 0){
+			if( $retornar){
+				echo json_encode($consulta[0]);
+			}else{
+				$consulta = $consulta[0];
+				$configuracion['tema_template'] = $consulta['tema_template'];
+				$configuracion['tiempo_max_inactividad'] = $consulta['tiempo_max_inactividad'];
+				$configuracion['tiempo_max_alerta'] = $consulta['tiempo_max_alerta'];
+				$configuracion['tiempo_max_espera'] = $consulta['tiempo_max_espera'];
+				$configuracion['camara'] = $consulta['camara'];
+				$this->ci->session->set_userdata('configuracion',$configuracion);
+			}
+		}
 	}
 }

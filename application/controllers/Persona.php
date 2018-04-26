@@ -26,12 +26,14 @@ class Persona extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
 
-		$this->load->view('template/template',$datos);
+		$this->template_lib->render($datos);
 	}
 
-	public function consultar($id)
+	public function consultar($id=NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
+		if( !isset($id) ) redirect("Persona");
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Persona");
 
 		$persona = $this->Persona_M->consultar_persona($id);
 		if(is_null($persona)){
@@ -45,7 +47,7 @@ class Persona extends CI_Controller {
 			$datos['contenido'] = 'persona/persona_consultar';
 			$datos['datos'] = $persona;
 
-			$this->load->view('template/template',$datos);
+			$this->template_lib->render($datos);
 		}
 	}
 
@@ -90,7 +92,7 @@ class Persona extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/persona/v_persona_form.js'), 'ext' =>'js');
 		
 
-		$this->load->view('template/template',$datos);
+		$this->template_lib->render($datos);
 	}
 
 	/**
@@ -123,10 +125,11 @@ class Persona extends CI_Controller {
 		}
 	}
 
-	public function editar($id)
+	public function editar($id=NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Persona");
+		if( !isset($id) ) redirect("Persona");
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Persona");
 
 		$item = $this->Persona_M->consultar_persona($id);
 		if(is_null($item)){
@@ -169,7 +172,7 @@ class Persona extends CI_Controller {
 			
 			$datos['e_header'][] = array('nombre' => 'DatePicker CSS','path' => base_url('assets/AdminLTE/plugins/datepicker/datepicker3.css'), 'ext' =>'css');
 
-			$this->load->view('template/template',$datos);
+			$this->template_lib->render($datos);
 		}
 	}
 
@@ -178,7 +181,8 @@ class Persona extends CI_Controller {
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
-			$this->editar($this->input->post('id_dato_personal'));
+			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_dato_personal'),'encrypt',"Persona");
+			$this->editar($id);
 		}else
 		{
 			$up = $this->Persona_M->editar_persona($this->input->post());
@@ -191,10 +195,11 @@ class Persona extends CI_Controller {
 		}
 	}
 
-	public function eliminar($id)
+	public function eliminar($id=NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Persona");
+		if( !isset($id) ) redirect("Persona");
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Persona");
 
 		$item = $this->Persona_M->consultar_persona($id);
 		if( !is_null($item) ){

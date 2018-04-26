@@ -27,7 +27,7 @@ class Direccion extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
 
-		$this->load->view('template/template',$datos);
+		$this->template_lib->render($datos);
 	}
 
 	public function agregar(){
@@ -49,14 +49,14 @@ class Direccion extends CI_Controller {
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/direccion/v_direccion_form.js'), 'ext' =>'js');
 
-		$this->load->view('template/template',$datos);
+		$this->template_lib->render($datos);
 	}
 
 	public function validar_agregar(){
 		if( count( $this->input->post() ) == 0 ) redirect("Direccion");
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
-		if( !$this->form_validation->run() ){ $this->editar(); }
+		if( !$this->form_validation->run() ){ $this->agregar(); }
 		else{
 			$add = $this->Direccion_M->agregar_direccion($this->input->post() );
 			if( $add ){ redirect('Direccion');
@@ -69,16 +69,16 @@ class Direccion extends CI_Controller {
 		}
 	}
 
-	public function editar( $id = null ){
+	public function editar( $id = NULL ){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) )
-			redirect("Direccion");
+		if( !isset($id) ) redirect("Direccion");
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Direccion");
 
 		$item = $this->Direccion_M->consultar_direccion($id);
 		if( is_null($item) ){
 			echo '<script language="javascript">
 						alert("No se encontro el item deseado, favor intente nuevamente");
-						window.location="'.base_url('Menu').'";
+						window.location="'.base_url('Direccion').'";
 					</script>';
 		}else{
 			$datos['contenido'] = 'direccion/direccion_form';
@@ -94,7 +94,7 @@ class Direccion extends CI_Controller {
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/direccion/v_direccion_form.js'), 'ext' =>'js');
 
-			$this->load->view('template/template',$datos);
+			$this->template_lib->render($datos);
 		}
 	}
 
@@ -103,7 +103,8 @@ class Direccion extends CI_Controller {
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
-			$this->editar();
+			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_direccion'),'encrypt',"Direccion");
+			$this->editar($id);
 		}else{
 			$up = $this->Direccion_M->editar_direccion( $this->input->post() );
 			if( $up ){ redirect('Direccion');
@@ -116,9 +117,10 @@ class Direccion extends CI_Controller {
 
 	}
 
-	public function eliminar($id){
+	public function eliminar($id=NULL){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);				// Validar acceso
 		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Direccion");
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Direccion");
 
 		$item = $this->Direccion_M->consultar_direccion($id);
 		if( !is_null($item) ){

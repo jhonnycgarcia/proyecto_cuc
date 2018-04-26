@@ -11,6 +11,20 @@ class Trabajadores_M extends CI_Model {
 		$this->load->database();
 	}
 
+	/**
+	 * Funcion para obtener el listado de trabajadores
+	 * @param  [BOOLEAN-NULL] 		$opcion   	[valor para establecer clausula del where]
+	 *                                     		't' 	= para obtener solos los registros que se encuentren activos
+	 *                                     		'f' 	= para obtener solo los registros que se encuentren en false
+	 *                                     		null 	=  para obtener todos los registros, sin clausula.
+	 *                                     		
+	 * @param  [ARRAY] 				$order_by 	[clausulas para establecer el orden de los registros]
+	 *                                			esta variable solo acepta dos posiciones ['campo'] y ['orden']
+	 *                                			'campo'	= el campo mendiante el cual se organizaran los registros
+	 *                                			'orden'	= el orden que se utilizara ya sea 'ASC' o 'DESC'
+	 *                                			
+	 * @return [ARRAY]           				[se retornan el resultado de la consulta]
+	 */
 	function consultar_lista($opcion=null,$order_by=null){
 		$query = $this->db->select("a.id_trabajador ,a.dato_personal_id, b.cedula"
 							.", CONCAT(b.p_apellido,' ',b.p_nombre) AS apellido_nombre"
@@ -32,7 +46,12 @@ class Trabajadores_M extends CI_Model {
 		return $query;
 	}
 
-
+	/**
+	 * Funcion para obtener los datos de un registro de PERSONAS en especifico.
+	 * @param  [INTEGER] 			$id_dato_personal 		[ID del registro a consultar]
+	 * 
+	 * @return [ARRAY]                   					[se retornan el resultado de la consulta]
+	 */
 	function consultar_personal($id_dato_personal){
 		$query = $this->db->select("a.id_dato_personal, a.cedula"
 							.", CONCAT(a.p_apellido,' ',a.s_apellido,' ',a.p_nombre,' ',a.s_nombre) AS apellidos_nombres")
@@ -43,6 +62,11 @@ class Trabajadores_M extends CI_Model {
 		return NULL;
 	}
 
+	/**
+	 * Funcion para obtener los datos de un registro de TRABAJADORES en especifico
+	 * @param  [type] $id [description]
+	 * @return [type]     [description]
+	 */
 	function consultar_trabajador($id){
 		$query = $this->db->select("a.id_trabajador "
 							.", a.dato_personal_id, b.cedula"
@@ -64,19 +88,30 @@ class Trabajadores_M extends CI_Model {
 		return NULL;
 	}
 
-
+	/**
+	 * Funcion para obtener todas las coordinaciones ACTIVAS
+	 * @return [type] [description]
+	 */
 	function obtener_coordinaciones(){
 		$query = $this->db->order_by('coordinacion','ASC')
 							->get_where('administrativo.coordinaciones',array('estatus'=>'t'))->result_array();
 		return $query;
 	}
 
+	/**
+	 * Funcion para obtener todas las condiciones laborales
+	 * @return [type] [description]
+	 */
 	function obtener_condiciones_laborales(){
 		$query = $this->db->order_by('condicion_laboral','ASC')
 							->get('administrativo.condiciones_laborales')->result_array();
 		return $query;
 	}
 
+	/**
+	 * Funcion para obtener todos los cargos ACTIVOS
+	 * @return [type] [description]
+	 */
 	function obtener_cargos(){
 		$query = $this->db->order_by('cargo','ASC')
 							->get_where('administrativo.cargos',array('estatus'=>'t'))->result_array();
@@ -144,6 +179,16 @@ class Trabajadores_M extends CI_Model {
 		return $sql;
 	}
 
+	/**
+	 * Funcion para editar el campo ASISTENCIA_OBLIGATORIA (AO) de un registro de TRABAJADORES
+	 * @param  INTEGER  	$id_trabajador 		[description]
+	 * 
+	 * @param  boolean 		$opcion        		[description]
+	 * 
+	 * @return BOOLEAN 							true = en caso de exito
+	 *                            				false = en caso de error
+	 *                                 
+	 */
 	function editar_ao_trabajador($id_trabajador,$opcion = FALSE){
 		$sql = $this->db->where('id_trabajador',$id_trabajador)
 						->update('administrativo.trabajadores',array('asistencia_obligatoria'=>$opcion));

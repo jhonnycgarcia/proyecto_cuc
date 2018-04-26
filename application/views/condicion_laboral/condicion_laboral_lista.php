@@ -17,6 +17,7 @@
     $i = 0;
     foreach ($lista as $key => $value) {
     $i++;
+    $id = $this->seguridad_lib->execute_encryp($value['id_condicion_laboral'],'encrypt',"Condicion_Laboral");
 ?>
        <tr>
           <td><?= $value['id_condicion_laboral'];?></td>
@@ -29,8 +30,8 @@
               </button>
 
               <ul class="dropdown-menu" rle="menu" aria-labelledby="dropdown_menu<?= $i; ?>">
-                <li role="presentation"><?= anchor( site_url('Condicion_Laboral/editar/'.$value['id_condicion_laboral']),"Editar",array("role" =>"item")  )?></li>
-                <li role="presentation"><?= anchor( site_url('Condicion_Laboral/eliminar/'.$value['id_condicion_laboral']),"Eliminar",array("role" =>"item")  )?></li>
+                <li role="presentation"><?= anchor( site_url('Condicion_Laboral/editar/'.$id),"Editar",array("role" =>"item")  )?></li>
+                <li role="presentation"><?= anchor( site_url('Condicion_Laboral/eliminar/'.$id),"Eliminar",array("role" =>"item")  )?></li>
               </ul>
             </div>
           </td>

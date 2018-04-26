@@ -65,7 +65,14 @@ desired effect
 |               | sidebar-mini                            |
 |---------------------------------------------------------|
 -->
-<body class="hold-transition skin-blue sidebar-mini">
+<?php 
+  $config = $this->session->userdata('configuracion');
+  $tema = "skin-blue" ;
+  if( isset($config['tema_template']) ) $tema = $config['tema_template']; 
+
+  echo '<body class="hold-transition '.$tema.' sidebar-mini">';
+?>
+<!-- <body class="hold-transition skin-blue sidebar-mini"> -->
 
   <div class="wrapper">
 
@@ -84,7 +91,7 @@ desired effect
 <?php 
   
   // NavBar
-  $this->load->view('Template/header/navbar/navbar') 
+  $this->load->view('Template/header/navbar/navbar');
 
 ?> 
     </header> <!-- Header -->

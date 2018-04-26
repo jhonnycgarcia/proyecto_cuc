@@ -1,6 +1,6 @@
 <div class="box box-default"> 
   <div class="box-body"> <!-- Box-Body -->
-  <?php echo anchor('Menu/agregar/','<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>',array('class'=>'btn btn-primary btn-sm pull-right'));?>
+  <?php echo anchor('Menu/agregar/','<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>',array('class'=>'btn btn-primary btn-sm col-md-offset-1','id'=>'btn_add'));?>
   
   <div class="table-responsive hidden" id="contenedor_lista">
     <table class="table table-striped table-hover table-bordered" id="list">
@@ -23,6 +23,7 @@
     $i = 0;
     foreach ($lista as $key => $value) {
     $i++;
+    $id = $this->seguridad_lib->execute_encryp($value['id_menu'],'encrypt',"Menu");
 ?>
         <tr>
           <td><?= $value['id_menu'];?></td>
@@ -53,8 +54,8 @@
               </button>
 
               <ul class="dropdown-menu" rle="menu" aria-labelledby="dropdown_menu<?= $i; ?>">
-                <li role="presentation"><?= anchor( site_url('Menu/editar/'.$value['id_menu']),"Editar",array("role" =>"item")  )?></li>
-                <li role="presentation"><?= anchor( site_url('Menu/eliminar/'.$value['id_menu']),"Eliminar",array("role" =>"item","onclick" => "javasciprt: return confirm('¿Esta seguro que desea eliminar este registro?');")  )?></li>
+                <li role="presentation"><?= anchor( site_url('Menu/editar/'.$id),"Editar",array("role" =>"item")  )?></li>
+                <li role="presentation"><?= anchor( site_url('Menu/eliminar/'.$id),"Eliminar",array("role" =>"item","onclick" => "javasciprt: return confirm('¿Esta seguro que desea eliminar este registro?');")  )?></li>
               </ul>
             </div>
           </td>

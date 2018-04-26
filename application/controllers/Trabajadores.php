@@ -15,6 +15,10 @@ class Trabajadores extends CI_Controller {
 		$this->lista_activos();
 	}
 
+	/**
+	 * Funcion para cargar la vista del listado de todos los Trabajadores activos
+	 * @return [type] [description]
+	 */
 	public function lista_activos(){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
 
@@ -26,7 +30,7 @@ class Trabajadores extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
 
-		$this->load->view('template/template',$datos);
+		$this->template_lib->render($datos);
 	}
 
 	/**
@@ -34,15 +38,17 @@ class Trabajadores extends CI_Controller {
 	 * @param  [type] $id_dato_personal [description]
 	 * @return [type]                   [description]
 	 */
-	public function ingresar($id_dato_personal)
+	public function ingresar($id_dato_personal=NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
+		if( !isset($id_dato_personal) ) redirect('Trabajadores');
+		$id_dato_personal = $this->seguridad_lib->execute_encryp($id_dato_personal,'decrypt',"Trabajadores");
 
 		$persona = $this->Trabajadores_M->consultar_personal($id_dato_personal);
 		if( is_null($persona)){
 			echo '<script language="javascript">
 						alert("No se encontro el item deseado, favor intente nuevamente");
-						window.location="'.base_url('Persona').'";
+						window.location="'.base_url('Trabajadores').'";
 					</script>';
 		}else{
 			$datos['titulo_contenedor'] = 'Trabajador';
@@ -78,7 +84,7 @@ class Trabajadores extends CI_Controller {
 			$datos['e_header'][] = array('nombre' => 'DatePicker CSS','path' => base_url('assets/AdminLTE/plugins/datepicker/datepicker3.css'), 'ext' =>'css');
 		
 
-			$this->load->view('template/template',$datos);
+			$this->template_lib->render($datos);
 		}
 	}
 
@@ -105,8 +111,10 @@ class Trabajadores extends CI_Controller {
 		if( count( $this->input->post() ) == 0 ) redirect("Trabajadores");
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
-		if( !$this->form_validation->run() ){ $this->ingresar($this->input->post('id_dato_personal')); }
-		else{
+		if( !$this->form_validation->run() ){
+			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_dato_personal'),'encrypt',"Trabajadores");
+			$this->ingresar($id); 
+		}else{
 			$add = $this->Trabajadores_M->registrar_trabajador($this->input->post());
 			if($add){
 				$this->Trabajadores_M->estatus_persona($this->input->post('dato_personal_id'),true);
@@ -114,14 +122,21 @@ class Trabajadores extends CI_Controller {
 			}else{
 				echo '<script language="javascript">
 						alert("No se pudo registrar el trabajador, favor intente nuevamente");
-						window.location="'.base_url('Persona').'";
+						window.location="'.base_url('Trabajadores').'";
 					</script>'; }
 		}
 	}
 
-	public function detalles($id){
+	/**
+	 * Funcion para ver los detalles de un registro de trabajador
+	 * @param  [integer] 		$id 		[ID del trabajador]
+	 * @return [type]     [description]
+	 */
+	public function detalles($id=NULL){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Trabajadores");
+		if( !isset($id) ) redirect("Trabajadores");
+
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Trabajadores");
 
 		$trabajador = $this->Trabajadores_M->consultar_trabajador($id);
 		if( is_null($trabajador) ){
@@ -136,13 +151,20 @@ class Trabajadores extends CI_Controller {
 			$datos['trabajador'] = $trabajador;
 			$datos['btn_cancelar'] = 'Trabajadores/lista_activos';
 
-			$this->load->view('template/template',$datos);
+			$this->template_lib->render($datos);
 		}
 	}
 
+	/**
+	 * Funcion para cargar el fomulario de egreso de trabajadores
+	 * @param  [integer] 		$id 		[ID del trabajador]
+	 * @return [type]     [description]
+	 */
 	public function egresar($id){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Trabajadores");
+		if( !isset($id) ) redirect("Trabajadores");
+
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Trabajadores");
 
 		$trabajador = $this->Trabajadores_M->consultar_trabajador($id);
 		if( is_null($trabajador) ){
@@ -183,16 +205,21 @@ class Trabajadores extends CI_Controller {
 			$datos['e_footer'][] = array('nombre' => 'DatePicker Languaje JS','path' => base_url('assets/AdminLTE/plugins/datepicker/locales/bootstrap-datepicker.es.js'), 'ext' =>'js');
 			$datos['e_header'][] = array('nombre' => 'DatePicker CSS','path' => base_url('assets/AdminLTE/plugins/datepicker/datepicker3.css'), 'ext' =>'css');
 		
-			$this->load->view('template/template',$datos);
+			$this->template_lib->render($datos);
 		}
 	}
 
+	/**
+	 * Funcion para validar los datos provenientes del formulario para egresar trabajadores
+	 * @return [type] [description]
+	 */
 	public function validar_egresar(){
 		if( count( $this->input->post() ) == 0 ) redirect("Trabajadores");
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
-			$this->egresar($this->input->post('id_trabajador'));
+			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_trabajador'),'encrypt',"Trabajadores");
+			$this->egresar($id);
 		}else{
 			$datos = $this->input->post();
 			$id_dato_personal = array_pop($datos);
@@ -209,10 +236,17 @@ class Trabajadores extends CI_Controller {
 		}
 	}
 
-	public function editar($id)
+	/**
+	 * Funcion para editar un registro de trabajadores
+	 * @param  [integer] 		$id 		[ID del trabajador]
+	 * @return [type]     [description]
+	 */
+	public function editar($id=NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		if( !isset($id) || !is_numeric($id) || ($id == 0 ) ) redirect("Trabajadores");
+		if( !isset($id) ) redirect("Trabajadores");
+
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',"Trabajadores");
 
 		$trabajador = $this->Trabajadores_M->consultar_trabajador($id);
 		if( is_null($trabajador) ){
@@ -245,16 +279,21 @@ class Trabajadores extends CI_Controller {
 			$datos['fecha_egreso_opciones'] = array('disabled'=>'disabled');
 			$datos['asistencia_obligatoria_opciones'] = array();
 
-			$this->load->view('template/template',$datos);
+			$this->template_lib->render($datos);
 		}
 	}
 
+	/**
+	 * Funcion para validar los datos provenientes del formulario de editar trabajadores
+	 * @return [type] [description]
+	 */
 	public function validar_editar(){
 		if( count( $this->input->post() ) == 0 ) redirect("Trabajadores");
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){
-			$this->editar($this->input->post('id_trabajador'));
+			$id = $this->seguridad_lib->execute_encryp($this->input->post('id_trabajador'),'encrypt',"Trabajadores");
+			$this->editar($id);
 		}else{
 			$up = $this->Trabajadores_M->editar_ao_trabajador($this->input->post('id_trabajador'),$this->input->post('asistencia_obligatoria'));
 			if($up){ redirect("Trabajadores");
@@ -266,6 +305,10 @@ class Trabajadores extends CI_Controller {
 		}
 	}
 
+	/**
+	 * Funcion para mostrar el listado de trabajadores egresados
+	 * @return [type] [description]
+	 */
 	public function egresados(){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
 
@@ -273,6 +316,11 @@ class Trabajadores extends CI_Controller {
 		$datos['titulo_descripcion'] = 'Egresos';
 		$datos['contenido'] = 'trabajadores/trabajadores_lista_egresos';
 
-		$this->load->view('template/template',$datos);
+		$datos['e_footer'][] = array('nombre' => 'DataTable JS','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.min.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
+
+
+		$this->template_lib->render($datos);
 	}
 }

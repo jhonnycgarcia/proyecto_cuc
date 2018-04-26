@@ -288,7 +288,7 @@
 									'field' => 'direccion',
 									'label' => '<b>Dirección</b>',
 									'rules' => 'trim|required|strip_tags|xss_clean'
-									),
+									)
 								),
 // -----------------------------------------------------------------------------------------------------------
 			'Trabajadores/validar_ingresar' => array(
@@ -337,6 +337,42 @@
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									)
 							),
+// -----------------------------------------------------------------------------------------------------------
+			'Configuraciones/validar_agregar' => array(
+								array(
+									'field' => 'tiempo_max_inactividad',
+									'label' => '<b>Tiempo maximo de inactividad</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[4]|is_natural_no_zero'
+									),
+								array(
+									'field' => 'tiempo_max_alerta',
+									'label' => '<b>Tiempo maximo de alerta</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[4]|is_natural_no_zero'
+									),
+								array(
+									'field' => 'tiempo_max_espera',
+									'label' => '<b>Tiempo maximo de espera</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[4]|is_natural_no_zero'
+									)
+							),
+			'Configuraciones/validar_editar' => array(
+								array(
+									'field' => 'tiempo_max_inactividad',
+									'label' => '<b>Tiempo maximo de inactividad</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[4]|is_natural_no_zero'
+									),
+								array(
+									'field' => 'tiempo_max_alerta',
+									'label' => '<b>Tiempo maximo de alerta</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[4]|is_natural_no_zero'
+									),
+								array(
+									'field' => 'tiempo_max_espera',
+									'label' => '<b>Tiempo maximo de espera</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[4]|is_natural_no_zero'
+									)
+							),
+
 		);
 
 		
