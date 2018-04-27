@@ -372,7 +372,24 @@
 									'rules' => 'trim|required|strip_tags|xss_clean|min_length[4]|is_natural_no_zero'
 									)
 							),
-
+// -----------------------------------------------------------------------------------------------------------
+			'Usuarios/validar_asignar' => array(
+								array(
+									'field' => 'usuario',
+									'label' => '<b>Usuario</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[5]|callback_check_usuario'
+									),
+								array(
+									'field' => 'clave',
+									'label' => '<b>Clave</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[6]|max_length[12]'
+									),
+								array(
+									'field' => 're_clave',
+									'label' => '<b>Clave</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[6]|max_length[12]|matches[clave]'
+									)
+							)
 		);
 
 		

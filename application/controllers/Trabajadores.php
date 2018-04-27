@@ -34,6 +34,15 @@ class Trabajadores extends CI_Controller {
 	}
 
 	/**
+	 * Funcion para consultar listado de trabajadores por AJAX
+	 * @return [type] [description]
+	 */
+	public function lista_activos_ajax($opcion = NULL){
+		$trabajadores = $this->Trabajadores_M->consultar_lista($opcion);
+		echo  json_encode($trabajadores,JSON_UNESCAPED_UNICODE);
+	}
+
+	/**
 	 * Funcion para cargar la vista de ingresar trabajador
 	 * @param  [type] $id_dato_personal [description]
 	 * @return [type]                   [description]

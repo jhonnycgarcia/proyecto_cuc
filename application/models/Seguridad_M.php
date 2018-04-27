@@ -9,13 +9,11 @@ class Seguridad_M extends CI_Model {
 	}
 
 	function verificar_acceso($id_rol_usuario,$id_menu){
-		$ans = false;
 		$query = $this->db->get_where('seguridad.roles_menus AS a', 
 			array('a.rol_id' => $id_rol_usuario, 'a.menu_id' => $id_menu ) 
 			)->result_array();
-		if( count($query) > 0 )
-			$ans = true;
-		return $ans;
+		if(count($query)>0) return TRUE;
+		return FALSE;
 	}
 
 	function obtener_id_item($metodo){
@@ -28,11 +26,12 @@ class Seguridad_M extends CI_Model {
 	}
 
 	function obtener_rol_usuario($id_usuario){
-		$query = $this->db->select('a.id_usuario')
+		$query = $this->db->select('a.rol_id')
 							->from('seguridad.usuarios AS a')
 							->where('a.id_usuario',$id_usuario )
 							->get()->result_array();
-		return $query[0]['id_usuario'];
+		if(count($query)>0) return $query[0]['rol_id'];
+		return FALSE;
 	}
 
 	/**

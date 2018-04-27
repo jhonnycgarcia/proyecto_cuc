@@ -90,6 +90,10 @@ Class Seguridad_lib {
 		}
 	}
 
+	////////////////////////////////////////////////////////////////////
+	// Funciones para encriptar y desencriptar los parametros por ULR //
+	////////////////////////////////////////////////////////////////////
+	
 	/**
 	 * Funcion para gestionar el proceso de encriptacion y desencriptacion de datos
 	 * @param  [type] $cadena     [description]
