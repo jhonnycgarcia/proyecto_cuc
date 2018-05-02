@@ -382,12 +382,41 @@
 								array(
 									'field' => 'clave',
 									'label' => '<b>Clave</b>',
-									'rules' => 'trim|required|strip_tags|xss_clean|min_length[6]|max_length[12]'
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[5]|max_length[12]'
 									),
 								array(
 									'field' => 're_clave',
 									'label' => '<b>Clave</b>',
-									'rules' => 'trim|required|strip_tags|xss_clean|min_length[6]|max_length[12]|matches[clave]'
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[5]|max_length[12]|matches[clave]'
+									)
+							),
+			'Usuarios/validar_actualizar_clave' => array(
+								array(
+									'field' => 'clave_actual',
+									'label' => '<b>Clave Actual</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[5]|callback_check_clave_actual'
+									),
+								array(
+									'field' => 'clave_nueva',
+									'label' => '<b>Clave Nueva</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[5]|max_length[12]|differs[clave_actual]'
+									),
+								array(
+									'field' => 're_clave',
+									'label' => '<b>Confirmar Clave</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[5]|max_length[12]|matches[clave_nueva]'
+									)
+							),
+			'Usuarios/validar_restablecer_clave' => array(
+								array(
+									'field' => 'clave_nueva',
+									'label' => '<b>Clave Nueva</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[5]|max_length[12]'
+									),
+								array(
+									'field' => 're_clave',
+									'label' => '<b>Confirmar Clave</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[5]|max_length[12]|matches[clave_nueva]'
 									)
 							)
 		);

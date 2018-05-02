@@ -15,6 +15,10 @@ class Usuarios extends CI_Controller {
 		$this->lista();
 	}
 
+	/**
+	 * Funcion para cargar vista del listado de usuarios del sistema
+	 * @return [type] [description]
+	 */
 	public function lista(){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
 
@@ -29,6 +33,10 @@ class Usuarios extends CI_Controller {
 		$this->template_lib->render($datos);
 	}
 
+	/**
+	 * Funcion para cargar el formulario de asignar usuario a trabajador
+	 * @return [type] [description]
+	 */
 	public function asignar(){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
 
@@ -51,11 +59,21 @@ class Usuarios extends CI_Controller {
 		$this->template_lib->render($datos);
 	}
 
+	/**
+	 * Funcion de CALLBACK para validar que el usuario a asignar no se encuentre registrado
+	 * @param  [type] $usuario [description]
+	 * @return [type]          [description]
+	 */
 	public function check_usuario($usuario){
+		$this->form_validation->set_message('check_usuario', 'El {field} ya se encuentra asignado');
 		$consulta = $this->Usuarios_M->callback_check_usuario($usuario);
 		return $consulta;
 	}
 
+	/**
+	 * Funcion para validar los datos provenientes del formulario asignar usuario a trabajador
+	 * @return [type] [description]
+	 */
 	public function validar_asignar(){
 		if(count($this->input->post())==0) redirect(__CLASS__);
 
@@ -73,6 +91,11 @@ class Usuarios extends CI_Controller {
 		}
 	}
 
+	/**
+	 * Funcion para consultar los detalles de un usuario
+	 * @param  [type] $id [description]
+	 * @return [type]     [description]
+	 */
 	public function detalles($id = NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
@@ -94,6 +117,11 @@ class Usuarios extends CI_Controller {
 			$this->template_lib->render($datos); }
 	}
 
+	/**
+	 * Funcion para cargar el formulario de editar datos de un usuario
+	 * @param  [type] $id [description]
+	 * @return [type]     [description]
+	 */
 	public function editar($id = NULL){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
 		if(!isset($id)) redirect(__CLASS__);
@@ -119,6 +147,10 @@ class Usuarios extends CI_Controller {
 			$this->template_lib->render($datos); }
 	}
 
+	/**
+	 * Funcion para validar los datos provenientes del formulario editar usuario
+	 * @return [type] [description]
+	 */
 	public function validar_editar(){
 		if( count( $this->input->post() ) == 0 ) redirect(__CLASS__);
 
@@ -132,6 +164,71 @@ class Usuarios extends CI_Controller {
 					</script>';	}
 	}
 
+	/**
+	 * Funcion para cargar el formulario de auto gestion de actualziar clave
+	 * @return [type] [description]
+	 */
+	public function actualizar_clave(){
+		$this->seguridad_lib->acceso_metodo(__METHOD__);
+
+		$datos['titulo_contenedor'] = 'Usuario';
+		$datos['titulo_descripcion'] = 'Actualizar contraseña';
+		$datos['contenido'] = 'usuarios/usuarios_actualizar_clave_form';
+		$datos['form_action'] = 'Usuarios/validar_actualizar_clave';
+		$datos['btn_action'] = 'Actualizar';
+
+		$datos['clave_actual'] = set_value('clave_actual');
+		$datos['clave_nueva'] = set_value('clave_nueva');
+		$datos['re_clave'] = set_value('re_clave');
+		$datos['id_usuario'] = set_value('id_usuario',$this->session->userdata('id_usuario'));
+
+		$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/usuarios/v_usuarios_actualizar_clave_form.js'), 'ext' =>'js');
+
+		$this->template_lib->render($datos);
+	}
+
+	/**
+	 * Funcion de CALLBACK para validar que la contraseña actual coincida
+	 * @param  [type] $clave [description]
+	 * @return [type]        [description]
+	 */
+	public function check_clave_actual($clave){
+		$consulta = $this->Usuarios_M->callback_check_clave_actual($this->session->userdata('id_usuario'),do_hash( $clave.SEMILLA, 'md5' ));
+		$this->form_validation->set_message('check_clave_actual', 'La {field} no coincide');
+		return $consulta;
+	}
+
+	/**
+	 * Funcion para validar los datos provenientes del formulario de auto gestion actualizar clave
+	 * @return [type] [description]
+	 */
+	public function validar_actualizar_clave(){
+		if(count($this->input->post())==0) redirect(__CLASS__);
+
+		$this->form_validation->set_error_delimiters('<span>','</span>');
+		if( !$this->form_validation->run() ){
+			$this->actualizar_clave();
+		}else{
+			$datos['clave'] = do_hash( $this->input->post('clave_nueva').SEMILLA, 'md5' );
+			$datos['id_usuario'] = $this->input->post('id_usuario');
+			$up = $this->Usuarios_M->editar_usuario($datos);
+			if( $up){
+				redirect(__CLASS__);
+			}else{
+				echo '<script language="javascript">
+							alert("No se pudo actualizar la contraseña, favor intente nuevamente");
+							window.location="'.base_url(__CLASS__).'";
+						</script>';	}
+		}
+	}
+
+	/**
+	 * Funcion para eliminar un usuario
+	 * @param  [type] $id [description]
+	 * @return [type]     [description]
+	 */
 	public function eliminar($id = NULL){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
 		if( !isset($id) ) redirect(__CLASS__);
@@ -151,10 +248,66 @@ class Usuarios extends CI_Controller {
 				echo '<script language="javascript">
 						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
 						window.location="'.base_url(__CLASS__).'";
-					</script>';
-			}
+					</script>'; }
 		}
 	}
 
+	/**
+	 * Funcion para cargar la vista de restablecer la contraseña a un usuario en modo ADMINISTRADOR
+	 * @param  [type] $id [description]
+	 * @return [type]     [description]
+	 */
+	public function restablecer_clave($id = NULL){
+		$this->seguridad_lib->acceso_metodo(__METHOD__);
+		if( !isset($id) ) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
+
+		if(is_null($id)){
+			echo '<script language="javascript">
+						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
+						window.location="'.base_url(__CLASS__).'";
+					</script>';
+		}else{
+			$datos['titulo_contenedor'] = 'Usuario';
+			$datos['titulo_descripcion'] = 'Restablecer contraseña';
+			$datos['contenido'] = 'usuarios/usuarios_restablecer_clave_form';
+			$datos['form_action'] = 'Usuarios/validar_restablecer_clave';
+			$datos['btn_action'] = 'Restaurar';
+
+			$datos['clave_nueva'] = set_value('clave_nueva');
+			$datos['re_clave'] = set_value('re_clave');
+			$datos['id_usuario'] = set_value('id_usuario',$id);
+
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/usuarios/v_usuarios_restablecer_clave_form.js'), 'ext' =>'js');
+
+			$this->template_lib->render($datos);
+		}
+	}
+
+	/**
+	 * Funcion para validar los datos provenientes dle formulario restablecer contraseña
+	 * @return [type] [description]
+	 */
+	public function validar_restablecer_clave(){
+		if(count($this->input->post())==0) redirect(__CLASS__);
+
+		$this->form_validation->set_error_delimiters('<span>','</span>');
+		if( !$this->form_validation->run() ){
+			$this->actualizar_clave();
+		}else{
+			$datos['clave'] = do_hash( $this->input->post('clave_nueva').SEMILLA, 'md5' );
+			$datos['id_usuario'] = $this->input->post('id_usuario');
+			$up = $this->Usuarios_M->editar_usuario($datos);
+			if( $up){
+				redirect(__CLASS__);
+			}else{
+				echo '<script language="javascript">
+							alert("No se pudo actualizar la contraseña, favor intente nuevamente");
+							window.location="'.base_url(__CLASS__).'";
+						</script>';	}
+		}
+	}
 
 }

@@ -49,6 +49,9 @@
                 <li role="presentation"><?= anchor( site_url('Usuarios/editar/'.$id),"Editar",array("role" =>"item")  )?></li>
                 <?php } ?>
                 <li role="presentation"><?= anchor( site_url('Usuarios/eliminar/'.$id),"Eliminar",array("role" =>"item")  )?></li>
+                <?php if($value['sesion_activa'] != 't'){ ?>
+                <li role="presentation"><?= anchor( site_url('Usuarios/restablecer_clave/'.$id),"Restaurar clave",array("role" =>"item")  )?></li>
+                <?php } ?>
               </ul>
             </div>
           </td>
