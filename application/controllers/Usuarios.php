@@ -71,7 +71,89 @@ class Usuarios extends CI_Controller {
 						window.location="'.base_url(__CLASS__).'";
 					</script>'; }
 		}
+	}
 
+	public function detalles($id = NULL)
+	{
+		$this->seguridad_lib->acceso_metodo(__METHOD__);
+		if(!isset($id)) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
+		$usuario = $this->Usuarios_M->consultar_usuario($id);
+
+		if(is_null($usuario)){
+			echo '<script language="javascript">
+						alert("No se encontro el registro deseado, favor intente nuevamente");
+						window.location="'.base_url(__CLASS__).'";
+					</script>';
+		}else{
+			$datos['titulo_contenedor'] = 'Usuario';
+			$datos['titulo_descripcion'] = 'Detalles';
+			$datos['contenido'] = 'usuarios/usuarios_detalles';
+			$datos['usuario'] = $usuario;
+
+			$this->template_lib->render($datos); }
+	}
+
+	public function editar($id = NULL){
+		$this->seguridad_lib->acceso_metodo(__METHOD__);
+		if(!isset($id)) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
+		$usuario = $this->Usuarios_M->consultar_usuario($id);
+
+		if(is_null($usuario)){
+			echo '<script language="javascript">
+						alert("No se encontro el registro deseado, favor intente nuevamente");
+						window.location="'.base_url(__CLASS__).'";
+					</script>';
+		}else{
+			$datos['titulo_contenedor'] = 'Usuario';
+			$datos['titulo_descripcion'] = 'Editar';
+			$datos['contenido'] = 'usuarios/usuarios_editar_form';
+			$datos['form_action'] = 'Usuarios/validar_editar';
+			$datos['btn_action'] = 'Actualizar';
+
+			$datos['usuario'] = $usuario;
+			$datos['rol_id'] = set_value('rol_id',$usuario['rol_id']);
+			$datos['id_usuario'] = set_value('id_usuario',$usuario['id_usuario']);
+
+			$this->template_lib->render($datos); }
+	}
+
+	public function validar_editar(){
+		if( count( $this->input->post() ) == 0 ) redirect(__CLASS__);
+
+		$up = $this->Usuarios_M->editar_usuario($this->input->post());
+		if( $up){
+			redirect(__CLASS__);
+		}else{
+			echo '<script language="javascript">
+						alert("No se pudo actualizar los datos, favor intente nuevamente");
+						window.location="'.base_url(__CLASS__).'";
+					</script>';	}
+	}
+
+	public function eliminar($id = NULL){
+		$this->seguridad_lib->acceso_metodo(__METHOD__);
+		if( !isset($id) ) redirect(__CLASS__);
+		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
+		$usuario = $this->Usuarios_M->consultar_usuario($id);
+
+		if(is_null($usuario)){
+			echo '<script language="javascript">
+						alert("No se pudo realizar esta accion debido a que no se consigui el registro deseado, favor intente nuevamente");
+						window.location="'.base_url(__CLASS__).'";
+					</script>';
+		}else{
+			$delete = $this->Usuarios_M->eliminar_usuario($id);
+			if($delete){
+				redirect(__CLASS__);
+			}else{
+				echo '<script language="javascript">
+						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
+						window.location="'.base_url(__CLASS__).'";
+					</script>';
+			}
+		}
 	}
 
 

@@ -13,47 +13,14 @@
       <div class="form-group">
         <label for="trabajador_id" class="control-label col-md-2">Trabajador:</label>
         <div class="col-md-10">
-          <?php
-            $option_trabajador_id = array();
-            $sql = $this->Usuarios_M->consultar_trabajadores();
-            foreach ($sql as $key => $value) { $option_trabajador_id[$value['id_trabajador']] = $value['trabajador']; }
-
-            echo form_dropdown('trabajador_id'
-              ,$option_trabajador_id
-              ,$trabajador_id
-              ,array('class'=>'form-control','id'=>'trabajador_id')
-            );
-          ?>
+          <?= $usuario['apellidos_nombres'];?>
         </div>
       </div>
 
       <div class="form-group" id="c_usuario">
         <label for="usuario" class="control-label col-md-2">Usuario:</label>
         <div class="col-md-10">
-          <?=
-            form_input('usuario',$usuario,array('class'=>'form-control','placeholder'=>'Usuario:'))
-          ?>
-          <?= form_error('usuario');?>
-        </div>
-      </div>
-
-      <div class="form-group" id="c_clave">
-        <label for="clave" class="control-label col-md-2">Clave:</label>
-        <div class="col-md-10">
-          <?=
-            form_password('clave',$clave,array('class'=>'form-control','placeholder'=>'Clave:'))
-          ?>
-          <?= form_error('clave');?>
-        </div>
-      </div>
-
-      <div class="form-group" id="c_re_clave">
-        <label for="re_clave" class="control-label col-md-2">Confirmar clave:</label>
-        <div class="col-md-10">
-          <?=
-            form_password('re_clave',$re_clave,array('class'=>'form-control','placeholder'=>'Confirmar clave:'))
-          ?>
-          <?= form_error('re_clave');?>
+          <?= $usuario['usuario'];?>
         </div>
       </div>
 

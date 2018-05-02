@@ -20,7 +20,7 @@
     $i = 0;
     foreach ($lista as $key => $value) {
     $i++;
-    $id = $this->seguridad_lib->execute_encryp($value['id_coordinacion'],'encrypt',"Configuraciones");
+    $id = $this->seguridad_lib->execute_encryp($value['id_coordinacion'],'encrypt',"Coordinacion");
 ?>
        <tr>
           <td><?= $value['id_coordinacion'];?></td>

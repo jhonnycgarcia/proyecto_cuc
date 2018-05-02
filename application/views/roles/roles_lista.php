@@ -18,7 +18,7 @@
   $i = 0;
   foreach ($lista as $key => $value) {
     $i++;
-    $id = $this->seguridad_lib->execute_encryp($value['id_rol'],'encrypt',__CLASS__);
+    $id = $this->seguridad_lib->execute_encryp($value['id_rol'],'encrypt',"Roles");
 ?>
           <tr>
             <td class="text-center"><?= $value['id_rol']; ?></td>

@@ -10,7 +10,7 @@
           <th class="input-filter text-center">Usuario</th>
           <th class="input-filter text-center">Rol</th>
           <th class="text-center">Sesión Activa</th>
-          <th class="text-center">Estatus</th>
+          <!-- <th class="text-center">Estatus</th> -->
           <th class="col-md-1 col-sm-1 col-xs-1">Opciones</th>
         </tr>
       </thead>
@@ -20,7 +20,7 @@
     $i = 0;
     foreach ($lista as $key => $value) {
     $i++;
-    $id = $this->seguridad_lib->execute_encryp($value['id_usuario'],'encrypt',__CLASS__);
+    $id = $this->seguridad_lib->execute_encryp($value['id_usuario'],'encrypt',"Usuarios");
 ?>
        <tr>
           <td><?= $i;?></td>
@@ -31,11 +31,11 @@
               ?'<span class="label label-success">Activo</span>'
               :'<span class="label label-default">Inactivo</span>'; ?>
           </td>
-          <td class="text-center">
+<!--           <td class="text-center">
             <?= ( $value['estatus'] == 't' )
               ?'<span class="label label-success">Activo</span>'
               :'<span class="label label-default">Inactivo</span>'; ?>
-          </td>
+          </td> -->
           <td>
             <div class="dropdown">
               <button class="btn btn-xs btn-default dropdown-toggle" type="button" id="dropdown_menu<?= $i; ?>" data-toggle="dropdown" aria-extended="true">
@@ -45,7 +45,7 @@
 
               <ul class="dropdown-menu" rle="menu" aria-labelledby="dropdown_menu<?= $i; ?>">
                 <li role="presentation"><?= anchor( site_url('Usuarios/detalles/'.$id),"Detalles",array("role" =>"item")  )?></li>
-                <?php if($value['estatus'] != 't'){ ?>
+                <?php if($value['sesion_activa'] != 't'){ ?>
                 <li role="presentation"><?= anchor( site_url('Usuarios/editar/'.$id),"Editar",array("role" =>"item")  )?></li>
                 <?php } ?>
                 <li role="presentation"><?= anchor( site_url('Usuarios/eliminar/'.$id),"Eliminar",array("role" =>"item")  )?></li>

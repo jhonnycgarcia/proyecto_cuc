@@ -93,7 +93,7 @@ Class Seguridad_lib {
 	////////////////////////////////////////////////////////////////////
 	// Funciones para encriptar y desencriptar los parametros por ULR //
 	////////////////////////////////////////////////////////////////////
-	
+
 	/**
 	 * Funcion para gestionar el proceso de encriptacion y desencriptacion de datos
 	 * @param  [type] $cadena     [description]
@@ -104,6 +104,7 @@ Class Seguridad_lib {
 	function execute_encryp($cadena=NULL,$accion=NULL,$controller=NULL){
 		if( is_null($cadena) || ($cadena === FALSE) 
 			|| is_null($accion) || is_null($controller) ) return NULL;
+
 
 	   	// Encriptar la llave
 	   	$this->secret_key = hash('sha256',SEMILLA);				
@@ -118,7 +119,8 @@ Class Seguridad_lib {
 				echo '<script language="javascript">
 					alert("No se encontro el registro deseado, favor intente nuevamente");
 					window.location="'.base_url($controller).'";
-				</script>'; }
+				</script>'; 
+				}
 			return $ans;
 	    }else{ return NULL; }
 	}
@@ -148,14 +150,14 @@ Class Seguridad_lib {
 	 */
 	function decrypt($cadena){
 
-		// var_export($cadena);exit();
 		$cadena = base64_decode($cadena);
 		if( $cadena === FALSE) return NULL;			// error en desencriptar base64
 
 		$cadena = preg_replace('([^A-Za-z0-9=+/])', '',$cadena);
 		if( $cadena === FALSE) return NULL;			// error en sustituir caracteres especiales
-
+		
 		if( strlen($cadena)<24) return NULL;		// error en la cantidad de caracteres a procesar
+		// var_export($cadena);exit();
 
 		$cadena = trim(strval($cadena));
 		$out = openssl_decrypt(
@@ -165,6 +167,7 @@ Class Seguridad_lib {
 			,$this->options
 			,$this->secret_iv
 		);
+		// var_export($out);exit();
 		if($out === FALSE ) return NULL;
 		return $out;
 	}

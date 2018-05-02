@@ -58,4 +58,43 @@ class Usuarios_M extends CI_Model {
 		$query = $this->db->insert("seguridad.usuarios",$datos);
 		return $query;
 	}
+
+	function consultar_usuario($id_usuario){
+		$query = $this->db->select("a.id_usuario, a.usuario"
+						.", a.rol_id, b.rol"
+						.", a.trabajador_id, CONCAT(d.p_apellido,' ',d.p_nombre) AS apellidos_nombres"
+						.", a.estatus, a.sesion_activa")
+						->from("seguridad.usuarios AS a")
+							->join("seguridad.roles AS b","a.rol_id = b.id_rol")
+							->join("administrativo.trabajadores AS c","a.trabajador_id = c.id_trabajador")
+							->join("administrativo.datos_personales AS d","c.dato_personal_id = d.id_dato_personal")
+						->where( array("a.id_usuario" => $id_usuario) )
+						->get()->result_array();
+		if(count($query)>0) return $query[0];
+		return NULL;
+	}
+
+	/**
+	 * Funcion para actualizar los datos de un usuario
+	 * @param  [type] $datos [description]
+	 * @return [type]        [description]
+	 */
+	function editar_usuario($datos){
+		$id_usuario = array_pop($datos);
+		$query = $this->db->where("id_usuario",$id_usuario)
+							->update("seguridad.usuarios",$datos);
+		return $query;
+	}
+
+	/**
+	 * Funcion para eliminar un usuario
+	 * @param  [type] $id_usuario [description]
+	 * @return [type]             [description]
+	 */
+	function eliminar_usuario($id_usuario){
+		$query = $this->db->where("id_usuario",$id_usuario)
+						->delete("seguridad.usuarios");
+		if($query!=FALSE) return TRUE;
+		return $query;
+	}			
 }
