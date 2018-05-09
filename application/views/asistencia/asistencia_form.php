@@ -290,7 +290,10 @@
 			if( _fecha !== null){
 				var _msn = 'Usted tiene una salida pendiente sin registrar del dia '+_fecha+', favor comunicarse con los administradores para procesar el registro pendiente y poder registrarse nuevamente en el sistema.';
 				show_modal('warning','Alerta',_msn);
+<<<<<<< HEAD
 
+=======
+>>>>>>> 82c6e6102ecbce108593e5ab7780411afd205f52
 			}else{
 				var _msn = 'Usted ya cerro su registro de asistencia para el día de hoy, favor intente nuevamente mañana o pongase en contacto con un administrador en caso de que lo requiera.';
 				show_modal('warning','Alerta',_msn);
