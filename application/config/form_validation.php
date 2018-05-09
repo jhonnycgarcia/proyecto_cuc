@@ -418,7 +418,107 @@
 									'label' => '<b>Confirmar Clave</b>',
 									'rules' => 'trim|required|strip_tags|xss_clean|min_length[5]|max_length[12]|matches[clave_nueva]'
 									)
+							),
+// -----------------------------------------------------------------------------------------------------------
+			'Asistencia/validar_registro_asistencia_camara' => array(
+								array(
+									'field' => 'img',
+									'label' => "<b>Imagen</b>",
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'cedula',
+									'label' => '<b>Cedula</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[7]|max_length[8]'
+									),
+								array(
+									'field' => 'tipo_registro',
+									'label' => '<b>Tipo Registro</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'trabajador_id',
+									'label' => '<b>Trabajador</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									)
+							),
+			'Asistencia/validar_registro_asistencia' => array(
+								array(
+									'field' => 'cedula',
+									'label' => '<b>Cedula</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[7]|max_length[8]'
+									),
+								array(
+									'field' => 'tipo_registro',
+									'label' => '<b>Tipo Registro</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'trabajador_id',
+									'label' => '<b>Trabajador</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									)
+							),
+			'Asistencia/validar_registro_asistencia_manual' => array(
+								array(
+									'field' => 'hora',
+									'label' => '<b>Hora</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'fecha',
+									'label' => '<b>Fecha</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'tipo_registro',
+									'label' => '<b>Tipo Registro</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'trabajador_id',
+									'label' => '<b>Trabajador</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'observacion',
+									'label' => '<b>Observación</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[5]'
+									)
+							),
+			'Asistencia/validar_registro_asistencia_manual_camara' => array(
+								array(
+									'field' => 'imagen',
+									'label' => "<b>Imagen</b>",
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'hora',
+									'label' => '<b>Hora</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'fecha',
+									'label' => '<b>Fecha</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'tipo_registro',
+									'label' => '<b>Tipo Registro</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'trabajador_id',
+									'label' => '<b>Trabajador</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'observacion',
+									'label' => '<b>Observación</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|min_length[5]'
+									)
 							)
+
 		);
 
 		
