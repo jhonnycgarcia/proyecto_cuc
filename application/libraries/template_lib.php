@@ -10,6 +10,7 @@ Class Template_lib {
 	function __construct(){
 		$this->ci =& get_instance();				// Cargar librerias de CodeIgniter
 		$this->ci->load->model('Configuraciones_M');		// Cargar modelo
+		$this->ci->load->model('Template_M');		// Cargar modelo
 	}
 
 	/**
@@ -120,5 +121,12 @@ Class Template_lib {
 				$this->ci->session->set_userdata('configuracion',$configuracion);
 			}
 		}
+	}
+
+	function obtener_items_menu($usuario_id = NULL, $padre = 0, $estatus = TRUE){
+		if(is_null($usuario_id)) return NULL;
+		$consultar = $this->ci->Template_M->obtener_items_menu($usuario_id,$padre,$estatus);
+		if(is_null($consultar)) return NULL;
+		return $consultar;
 	}
 }

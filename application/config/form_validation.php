@@ -517,6 +517,36 @@
 									'label' => '<b>Observación</b>',
 									'rules' => 'trim|required|strip_tags|xss_clean|min_length[5]'
 									)
+							),
+// -----------------------------------------------------------------------------------------------------------
+			'Reportes/registros_asistencia1' => array(
+								array(
+									'field' => 'fdesde',
+									'label' => "<b>Fecha desde</b>",
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'fhasta',
+									'label' => "<b>Fecha hasta</b>",
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									)
+							),
+			'Reportes/registros_asistencia2' => array(
+								array(
+									'field' => 'fdesde',
+									'label' => "<b>Fecha desde</b>",
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'fhasta',
+									'label' => "<b>Fecha hasta</b>",
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'cargos_excluidos[]',
+									'label' => "<b>Cargos a excluir</b>",
+									'rules' => 'trim|strip_tags|xss_clean|is_natural'
+									),
 							)
 
 		);

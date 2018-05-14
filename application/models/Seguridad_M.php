@@ -8,6 +8,15 @@ class Seguridad_M extends CI_Model {
 		$this->load->database();
 	}
 
+	function verificar_estatus_activo($usuario_id){
+		$query = $this->db->get_where("seguridad.usuarios AS a"
+							,array("a.estatus"=>TRUE,"a.sesion_activa"=>TRUE,"a.id_usuario"=>$usuario_id)
+						)
+						->result_array();
+		if( count($query)>0) return TRUE;
+		return FALSE;
+	}
+
 	function verificar_acceso($id_rol_usuario,$id_menu){
 		$query = $this->db->get_where('seguridad.roles_menus AS a', 
 			array('a.rol_id' => $id_rol_usuario, 'a.menu_id' => $id_menu ) 

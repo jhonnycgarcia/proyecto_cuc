@@ -294,7 +294,6 @@
 		var _msn = 'Debe activar el uso de la camara compartida para poder registrarse';
 		$("#mymodal").attr('data-info', 'true');
 		show_modal('info','Cámara no detectada',_msn); // ventana modal
-
 		bloquear_campo('consultar');
 		bloquear_campo('limpiar');
 		bloquear_campo('cedula');
@@ -302,6 +301,7 @@
 
 	/* Al cargar la camara */
 	sayCheese.on('start', function(start) {
+		$("#contenedor_camara").removeClass('hidden');
 		desbloquear_campo('consultar');
 		desbloquear_campo('limpuar');
 		desbloquear_campo('cedula');
@@ -363,6 +363,9 @@
 $(document).ready(function() {
 	consultar_configuracion();
 	setInterval( consultar_configuracion , 20000);
+
+	bloquear_campo('cedula');
+	bloquear_campo('consultar');
 
 	/* Corregir solo numeros en campo cedula */
 	$("#cedula").keyup(function (){

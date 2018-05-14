@@ -147,5 +147,14 @@ class Asistencia_M extends CI_Model {
 		return $query;
 	}
 
+	/**
+	 * Funcion para consultar registros de asistencia de una fecha en especifico
+	 * @param  [type] $fecha [description]
+	 * @return [type]        [description]
+	 */
+	function consultar_registros_fecha($fecha){
+
+	}
+
 
 }

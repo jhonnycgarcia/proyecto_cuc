@@ -49,10 +49,10 @@ class Asistencia extends CI_Controller {
 		$mensaje_modal = array();
 		$opcion = "Asistencia/validar_registro_asistencia";
 
-		if( $configuracion['camara'] == 't'){ $opcion = "validar_registro_asistencia_camara"; }
-
+		if( $configuracion['camara'] == 't'){ $opcion = "Asistencia/validar_registro_asistencia_camara"; }
 		$this->form_validation->set_error_delimiters('','');
 		if( !$this->form_validation->run($opcion) ){
+
 			$mensaje_modal =	array(
 							'clase' => "danger",
 							'titulo' => "Alerta",
@@ -138,6 +138,10 @@ class Asistencia extends CI_Controller {
 		echo json_encode( $configuracion[0], JSON_UNESCAPED_UNICODE );
 	}
 
+	/**
+	 * Funcion para cargar el formulario de registro de asistencia manual
+	 * @return [type] [description]
+	 */
 	public function registro_manual(){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
 
@@ -173,6 +177,10 @@ class Asistencia extends CI_Controller {
 		$this->template_lib->render($datos);
 	}
 
+	/**
+	 * Funcion para validar los datos provenientes del formulario de registro de asistencia manual
+	 * @return [type] [description]
+	 */
 	public function validar_registro_manual(){
 		if( count($this->input->post()) < 5) redirect(__CLASS__);
 
@@ -181,7 +189,7 @@ class Asistencia extends CI_Controller {
 		$mensaje_modal = array();
 		$opcion = "Asistencia/validar_registro_asistencia_manual";
 
-		if( $configuracion['camara'] == 't'){ $opcion = "validar_registro_asistencia_manual_camara"; }
+		if( $configuracion['camara'] == 't'){ $opcion = "Asistencia/validar_registro_asistencia_manual_camara"; }
 
 		$this->form_validation->set_error_delimiters('','');
 		if( !$this->form_validation->run($opcion) ){
@@ -217,6 +225,27 @@ class Asistencia extends CI_Controller {
 			$this->session->set_flashdata('mensaje_modal',json_encode( $mensaje_modal,JSON_UNESCAPED_UNICODE) );
 			redirect('Asistencia/registro_manual');
 		}
+	}
+
+	function desactivar_registro(){
+		$this->seguridad_lib->acceso_metodo(__METHOD__);
+		
+		$datos['titulo_contenedor'] = 'Asistencia';
+		$datos['titulo_descripcion'] = 'Desactivar registro';
+		$datos['form_action'] = 'Asistencia/validar_registro_manual';
+		$datos['contenido'] = 'asistencia/desactivar_registro_lista';
+
+		$datos['e_footer'][] = array('nombre' => 'DataTable JS','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.min.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
+
+		$datos['e_footer'][] = array('nombre' => 'DatePicker JS','path' => base_url('assets/AdminLTE/plugins/datepicker/bootstrap-datepicker.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'DatePicker Languaje JS','path' => base_url('assets/AdminLTE/plugins/datepicker/locales/bootstrap-datepicker.es.js'), 'ext' =>'js');
+		$datos['e_header'][] = array('nombre' => 'DatePicker CSS','path' => base_url('assets/AdminLTE/plugins/datepicker/datepicker3.css'), 'ext' =>'css');
+		
+		$datos['e_footer'][] = array('nombre' => 'Config Form JS','path' => base_url('assets/js/asistencia/v_desactivar_registro.js'), 'ext' =>'js');
+
+		$this->template_lib->render($datos);
 	}
 
 }

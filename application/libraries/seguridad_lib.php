@@ -48,8 +48,13 @@ Class Seguridad_lib {
 	function login_in( $redireccionar = false ){
 		$data = $this->ci->session->userdata();
 		$ans = false;
-		if ( array_key_exists('id_usuario', $data) ) 			// No hay ningun usuario registrado
-			$ans = true;
+		if ( array_key_exists('id_usuario', $data) ){		// Hay un usuario activo
+			$consultar = $this->ci->Seguridad_M->verificar_estatus_activo($data['id_usuario']);
+			if( $consultar ) $ans = true;
+			if( !$consultar ){ 
+				redirect( base_url('salir') );
+			}
+		} 			
 		if( !$ans AND $redireccionar )									// Si se desea redireccionar
 			redirect( base_url() );
 		return $ans;

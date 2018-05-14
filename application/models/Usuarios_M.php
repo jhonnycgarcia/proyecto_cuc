@@ -115,7 +115,7 @@ class Usuarios_M extends CI_Model {
 	 */
 	function editar_usuario($datos){
 		$id_usuario = array_pop($datos);
-		$query = $this->db->where("id_usuario",$id_usuario)
+		$query = $this->db->where(array("id_usuario"=>$id_usuario,"sesion_activa"=>FALSE))
 							->update("seguridad.usuarios",$datos);
 		return $query;
 	}

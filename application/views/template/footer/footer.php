@@ -10,11 +10,22 @@
  	?>
 </div>
 <!-- ./wrapper -->
-<script>
-	var _base_url = "<?= base_url(); ?>";
-</script>
+
 <!-- REQUIRED JS SCRIPTS -->
-<script> _base_url = '<?= base_url(); ?>'; </script>
+<script> var _base_url = "<?= base_url(); ?>";</script>
+<script> 
+	window.onload = function(){
+		var _contenedor_preload = document.getElementById('contenedor_carga');
+		_contenedor_preload.style.visibility = 'hidden';
+		_contenedor_preload.style.opacity = '0';
+	}
+	window.onunload = function(){
+		var _contenedor_preload = document.getElementById('contenedor_carga');
+		_contenedor_preload.style.visibility = 'visible';
+		_contenedor_preload.style.opacity = '0.9';
+	}
+</script>
+<
 <!-- jQuery 2.2.3 JS -->
 <script src="<?= base_url('assets/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
 <!-- Bootstrap 3.3.6 JS -->

@@ -111,7 +111,7 @@
 				<span class="input-group-addon">
 					<span class="glyphicon glyphicon-user"></span>
 				</span>
-				<input type="text" class="form-control" placeholder="Cedula" name="cedula" id="cedula" maxlength="8">
+				<input type="text" class="form-control" placeholder="Cedula" name="cedula" id="cedula" maxlength="8" readonly="readonly">
 				<div class="input-group-btn">
 					<!-- <button class="btn btn-primary" id="consultar" >Consultar</button> -->
 					<button class="btn btn-primary" id="consultar" disabled="disabled">Consultar</button>
@@ -470,9 +470,13 @@
 		if( _mensaje !== null){
 			// mostrar resultado del proceso
 			show_modal(_mensaje.clase, _mensaje.titulo, _mensaje.mensaje);
+			btn_lock('consultar',false); // desbloquear boton consultar
+			btn_lock('limpiar',false); // desbloquear boton limpiar
+			lock_cedula();
 
 			// al cerrar la ventana modal, ejecutar una sola vez
 			$('#mymodal').one('hidden.bs.modal', function (e) {
+
 				if( _configuracion.camara == 't'){ 
 					sayCheese.start(); 
 				}else{

@@ -45,8 +45,8 @@
 ?>
     <fieldset>
       <div class="form-group hidden" id="contenedor_camara">
-        <div class=" col-md-offset-2 col-md-10">
-          <div class="camara" id="web">
+        <div class=" col-md-offset-2 col-md-10 text-center">
+          <div class="camara" id="webcam">
           </div>
         </div>
       </div>

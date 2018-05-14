@@ -1,0 +1,13 @@
+﻿- Se añade script para la espera de la carga dle DOM del documento dentro del sistema.
+- Se añade nuevos parametros de validacion de sesion activa dentro de la libreria Seguridad_lib para cerrar sesion cuando el usuario no se encuentre activo por DBA.
+- Se corriguen BUGS del renderizaje del menu en la libreria Template_lib para cargar los items correspondientes a cada rol.
+- Se habilita formulario para la consulta de los registros de asistencia en el modulo de REPORTES.
+- Se habilita reporte de registros de asistencia en un periodo de fecha seleccionado en el modulo de REPORTES.
+- Se habilita formulario para el registro de asistencia publica del modulo de ASISTENICA.
+- Se habilita formulario para el registro de asistencia manual en el modulo de ASISTENCIA.
+- Se añaden las validaciones correspondientes a de los formularios al archivo form_validation.php.
+- Se habilita formulario para la desactivacion de los registros de asistencia del modulo ASISTENCIA.
+
+## Pendientes ##
+@ corregir BUGS de validacion en el formulario para la consulta de registros de asistencia producidos por jQuery Validate.
+@ activar funciones del formulario para desactivar registros de asistencia del modulo de ASISTENCIA.

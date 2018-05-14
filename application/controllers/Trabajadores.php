@@ -51,7 +51,7 @@ class Trabajadores extends CI_Controller {
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
 		if( !isset($id_dato_personal) ) redirect(__CLASS__);
-		$id_dato_personal = $this->seguridad_lib->execute_encryp($id_dato_personal,'decrypt',__CLASS__);
+		$id_dato_personal = $this->seguridad_lib->execute_encryp($id_dato_personal,'decrypt',"Persona");
 
 		$persona = $this->Trabajadores_M->consultar_personal($id_dato_personal);
 		if( is_null($persona)){
