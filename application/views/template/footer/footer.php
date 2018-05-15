@@ -25,7 +25,6 @@
 		_contenedor_preload.style.opacity = '0.9';
 	}
 </script>
-<
 <!-- jQuery 2.2.3 JS -->
 <script src="<?= base_url('assets/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
 <!-- Bootstrap 3.3.6 JS -->

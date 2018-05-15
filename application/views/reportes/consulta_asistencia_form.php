@@ -11,7 +11,7 @@
   );
 ?>
   <fieldset>
-    <div class="form-group">
+    <div class="form-group ">
       <label for="fechas" class="control-label col-md-2">Fechas:</label>
       <div class="col-md-10">
         <div class="input-group input-daterange">
@@ -21,6 +21,12 @@
         </div>
       </div>
     </div>
+          <!-- Alerta -->
+    <div class="" id="form_errors">
+      <div class="col-md-offset-2 col-md-5" id="fdesde-error"></div>
+      <div class="col-md-offset-1 col-md-4" id="fhasta-error"></div>
+    </div>
+
     <div class="form-group">
       <label for="cargos" class="control-label col-md-2">Cargos a excluir:</label>
       <div class="col-md-10">
