@@ -25,8 +25,8 @@ $pdf = new Cezpdf('LETTER','portrait');
 
 $fonts = 'Helvetica';               // Establecer Fuente
 $pdf->selectFont($fonts);
-$pdf->ezSetCmMargins(3,2,2,2);      // Establecer Margenes
-$pdf->addInfo ('Title',"Reporte de Asistencia");
+$pdf->ezSetCmMargins(2,2,2,2);      // Establecer Margenes
+$pdf->addInfo ('Title',"Reporte de Inasistencias");
 // ******************************************************************
 
 // ****************** Header y Footer *******************************
@@ -51,9 +51,6 @@ $pdf->closeObject();
 $pdf->addObject($header_footer, "all");
 
 // ******************************************************************
-$r = (1/255) * 235;
-$g = (1/255) * 237;
-$b = (1/255) * 239;
 
 $newp = 0;
 foreach ($datos as $key => $value) {
@@ -64,70 +61,15 @@ foreach ($datos as $key => $value) {
 	$f_fecha = FechaEs('&diatexto &dianum de &mestexto del &año',strtotime($value['fecha']) );
 	
 	if( array_key_exists('registros', $value) AND count($value['registros']) > 0 ){
-		$pdf->ezText("Registros de Asistencia <b>".$f_fecha."</b>\n",12,array('justification'=>'centre'));
+		$pdf->ezText("Inasistencias del día <b>".$f_fecha."</b>\n",12,array('justification'=>'centre'));
 
 		$pdf->ezTable($value['registros']
 			,array(
 				'nro' => '#',
 				'cedula' => 'Cédula',
 				'apellidos_nombres' => 'Apellidos y Nombres',
-				'hora_entrada' => 'Hora Entrada',
-				'hora_salida' => 'Hora Salida',
 				'cargo' => 'Cargo',
 				'coordinacion' => 'Coordinación',
-				'observaciones' => 'Observaciones',
-			)
-			,''
-			,array(
-				'showHeadings' => 1
-				,'shadeHeadingCol'=> array($r,$g,$b)
-				'xOrientation' => 'centre',
-				'fontSize' => 7,
-				'gridlines'=> EZ_GRIDLINE_DEFAULT,
-				'width' => 550,
-				'maxWidth' => 550,
-				'cols' => array(
-							'cedula' => array(
-											'justification' => 'center',
-											'width' => 50
-										),
-							'hora_entrada' => array(
-											'justification' => 'center',
-											'width' => 55
-										),
-							'hora_salida' => array(
-											'justification' => 'center',
-											'width' => 55
-										),
-							'apellidos_nombres' => array(
-											'justification' => 'left',
-											'width' => 100
-										),
-							'cargo' => array(
-											'justification' => 'center',
-											'width' => 60
-										),
-							'coordinacion' => array(
-											'justification' => 'center',
-											'width' => 150
-										)
-						)
-			)
-		);
-	}
-
-	if( array_key_exists('entrada', $value) AND count($value['entrada']) > 0 ){
-		$pdf->ezText("Registros de Entrada\n",12,array('justification'=>'centre'));
-		$pdf->ezText($f_fecha."\n",12,array('justification'=>'centre'));
-
-		$pdf->ezTable($value['entrada']
-			,array(
-				'hora' => 'Hora',
-				'cedula' => 'Cédula',
-				'apellidos_nombres' => 'Apellidos y Nombres',
-				'cargo' => 'Cargo',
-				'coordinacion' => 'Coordinación',
-				'observaciones' => 'Observaciones',
 			)
 			,''
 			,array(
@@ -142,10 +84,7 @@ foreach ($datos as $key => $value) {
 											'justification' => 'center',
 											'width' => 50
 										),
-							'hora' => array(
-											'justification' => 'center',
-											'width' => 60
-										),
+
 							'apellidos_nombres' => array(
 											'justification' => 'left',
 											'width' => 100
@@ -156,60 +95,7 @@ foreach ($datos as $key => $value) {
 										),
 							'coordinacion' => array(
 											'justification' => 'center',
-											'width' => 150
-										)
-						)
-			)
-		);
-
-	}
-
-	if( (array_key_exists('entrada', $value) AND count($value['entrada']) > 0) AND
-		(array_key_exists('salida', $value) AND count($value['salida'] ) > 0) ){
-		$pdf->ezNewPage();
-	}
-
-	if ( array_key_exists('salida', $value) AND count($value['salida'] ) > 0 ) {
-		$pdf->ezText("Registros de Salida\n",12,array('justification'=>'centre'));
-		$pdf->ezText($f_fecha."\n",12,array('justification'=>'centre'));
-		
-		$pdf->ezTable($value['salida']
-			,array(
-				'hora' => 'Hora',
-				'cedula' => 'Cédula',
-				'apellidos_nombres' => 'Apellidos y Nombres',
-				'cargo' => 'Cargo',
-				'coordinacion' => 'Coordinación',
-				'observaciones' => 'Observaciones',
-			)
-			,''
-			,array(
-				'showHeadings' => 1,
-				'xOrientation' => 'centre',
-				'fontSize' => 7,
-				'gridlines'=> EZ_GRIDLINE_DEFAULT,
-				'width' => 550,
-				'maxWidth' => 550,
-				'cols' => array(
-							'cedula' => array(
-											'justification' => 'center',
-											'width' => 50
-										),
-							'hora' => array(
-											'justification' => 'center',
-											'width' => 60
-										),
-							'apellidos_nombres' => array(
-											'justification' => 'left',
-											'width' => 100
-										),
-							'cargo' => array(
-											'justification' => 'center',
-											'width' => 60
-										),
-							'coordinacion' => array(
-											'justification' => 'center',
-											'width' => 150
+											'width' => 300
 										)
 						)
 			)

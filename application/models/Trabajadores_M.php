@@ -89,6 +89,33 @@ class Trabajadores_M extends CI_Model {
 	}
 
 	/**
+	 * Funcion para obtener el historial de trabajo de un trabajador
+	 * @param  [type] $id_persona [description]
+	 * @return [type]             [description]
+	 */
+	function obtener_historial_trabajador($id_persona)
+	{
+		$query = $this->db->select("a.id_trabajador ,a.dato_personal_id, b.cedula"
+							.", CONCAT(b.p_apellido,' ',b.p_nombre) AS apellido_nombre"
+							.", a.condicion_laboral_id, c.condicion_laboral"
+							.", a.coordinacion_id, d.coordinacion"
+							.", a.cargo_id, e.cargo"
+							.", to_char(a.fecha_ingreso,'DD/MM/YYYY') AS fecha_ingreso"
+							.", COALESCE( to_char(a.fecha_egreso,'DD/MM/YYYY'),'Actual') AS fecha_egreso"
+							.", a.estatus, a.asistencia_obligatoria")
+						->from("administrativo.trabajadores AS a")
+							->join("administrativo.datos_personales AS b","a.dato_personal_id = b.id_dato_personal")
+							->join("administrativo.condiciones_laborales AS c","a.condicion_laboral_id = c.id_condicion_laboral")
+							->join("administrativo.coordinaciones AS d","a.coordinacion_id = d.id_coordinacion")
+							->join("administrativo.cargos AS e","a.cargo_id = e.id_cargo")
+						->where(array("b.id_dato_personal"=>$id_persona))
+						->order_by("a.fecha_egreso","DESC")
+						->get()->result_array();
+		if(count($query>0)) return $query;
+		return NULL;
+	}
+
+	/**
 	 * Funcion para obtener todas las coordinaciones ACTIVAS
 	 * @return [type] [description]
 	 */

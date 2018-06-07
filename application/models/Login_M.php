@@ -27,7 +27,13 @@ class Login_M extends CI_Model {
 							->join("administrativo.datos_personales AS d","d.id_dato_personal = c.dato_personal_id")
 							->join("administrativo.cargos AS e","c.cargo_id = e.id_cargo")
 							->join("administrativo.coordinaciones AS f","c.coordinacion_id = f.id_coordinacion")
-						->where( array("a.usuario" => $datos['usuario'],"a.clave" => $datos['clave']) )
+						->where( array("a.usuario" => $datos['usuario']
+								,"a.clave" => $datos['clave']
+								,"a.estatus" => TRUE
+								,"c.estatus" => TRUE
+								,"d.estatus" => TRUE
+								) 
+							)
 						->get()->result_array();
 		if( count($query) > 0 ){
 			$this->status = true;

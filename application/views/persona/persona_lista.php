@@ -51,11 +51,12 @@
                 <?php
                   if( $value['estatus']  !== 't'){
                 ?>
-                <li role="presentation"><?= anchor( site_url('Trabajadores/ingresar/'.$id),"Ingresar",array("role" =>"item", "onclick" => "javasciprt: return confirm('¿Desea ingresarlo como trabajador?');")  )?></li>
+                <li role="presentation"><?= anchor( site_url('Trabajadores/ingresar/'.$id),"Ingresar",array("role" =>"item","data"=>'ingresar')  )?></li>
+                <!-- <li role="presentation"><?= anchor( site_url('Trabajadores/ingresar/'.$id),"Ingresar",array("role" =>"item", "onclick" => "javasciprt: return confirm('¿Desea ingresarlo como trabajador?');")  )?></li> -->
                 <?php
                   }
                 ?>
-                <li role="presentation"><?= anchor( site_url('Persona/eliminar/'.$id),"Eliminar",array("role" =>"item", "onclick" => "javasciprt: return confirm('¿Esta seguro que desea eliminar este registro?');")  )?></li>
+                <li role="presentation"><?= anchor( site_url('Persona/eliminar/'.$id),"Eliminar",array("data"=>"eliminar","role" =>"item")  )?></li>
               </ul>
             </div>
           </td>

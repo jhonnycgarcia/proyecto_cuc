@@ -65,8 +65,10 @@ class Asistencia extends CI_Controller {
 			$datos['fecha'] = date('d-m-Y');
 			$datos['hora'] = date('h:i:s');
 			$datos['tipo_registro'] = $this->input->post('tipo_registro');
-			if( $configuracion['camara'] == 't'){$datos['imagen'] = $this->input->post('img');}
+			if( !empty( $_POST['observaciones'] ) ) $datos['observaciones'] = $this->input->post('observaciones');
 
+			if( $configuracion['camara'] == 't'){$datos['imagen'] = $this->input->post('img');}
+			
 			$add = $this->Asistencia_M->registrar_asistencia($datos);
 			if( $add ){
 				$mensaje_modal =	array(
@@ -88,6 +90,8 @@ class Asistencia extends CI_Controller {
 
 	/**
 	 * Funcion para consultar la cedula en el formulario de asistencia
+	 *
+	 * -- BLOQUEO EN CASO DE TENER EL DIA REGISTRADO (ENTRADA-SALIDA)
 	 * @return [type] [description]
 	 */
 	public function consultar_cedula(){
@@ -112,6 +116,34 @@ class Asistencia extends CI_Controller {
 			}
 			echo json_encode( $consulta, JSON_UNESCAPED_UNICODE );
 		}
+	}
+
+	public function consultar_cedula_manual(){
+		$consulta = $this->formato;
+		// $cedula = '21535233';
+		$cedula = $this->input->post('cedula');
+		if( is_null($cedula) ){ echo json_encode( $consulta, JSON_UNESCAPED_UNICODE );}
+		else{
+			$datos = $this->Asistencia_M->consultar_cedula($cedula);
+			if( !is_null($datos) ){
+				$consulta['consulta'] = TRUE;
+				$consulta['cedula'] = $datos['cedula'];
+				$consulta['apellidos'] = $datos['apellidos'];
+				$consulta['nombres'] = $datos['nombres'];
+				$consulta['cargo'] = $datos['cargo'];
+				$consulta['coordinacion'] = $datos['coordinacion'];
+				$consulta['condicion_laboral'] = $datos['condicion_laboral'];
+				if( $datos['bloqueo'] && is_null($datos['fecha']) ){
+					$consulta['bloqueo'] = FALSE;
+				}else{$consulta['bloqueo'] = $datos['bloqueo'];}
+				// $consulta['bloqueo'] = $datos['bloqueo'];
+				$consulta['fecha'] = $datos['fecha'];
+				$consulta['tipo_registro'] = $datos['tipo_registro'];
+				$consulta['trabajador_id'] = $datos['id_trabajador'];
+			}
+			echo json_encode( $consulta, JSON_UNESCAPED_UNICODE );
+		}
+
 	}
 
 	/**
@@ -196,7 +228,7 @@ class Asistencia extends CI_Controller {
 			$mensaje_modal =	array(
 							'clase' => "danger",
 							'titulo' => "Alerta",
-							'mensaje' => 'A ocurrido un inconveniente, favor intente nuevamente'
+							'mensaje' => 'A ocurrido un inconveniente,favor intente nuevamente'
 						);
 			$this->session->set_flashdata('mensaje_modal',json_encode( $mensaje_modal,JSON_UNESCAPED_UNICODE) );
 			redirect('Asistencia/registro_manual');
@@ -208,6 +240,17 @@ class Asistencia extends CI_Controller {
 			$datos['manual'] = true;
 
 			if( $configuracion['camara'] == 't'){$datos['imagen'] = $this->input->post('img');}
+
+			$check_day = $this->Asistencia_M->validar_registro_manual_fecha($datos['trabajador_id'],$datos['fecha'],$datos['tipo_registro']);
+			if(!$check_day){
+				$mensaje_modal =	array(
+							'clase' => "danger",
+							'titulo' => "Alerta",
+							'mensaje' => 'Ocurrio un inconveniente en el registro de la asistencia debido a que ya existen registros para este día '.$datos['fecha'].", favor intente nuevamente con otra fecha."
+						);
+				$this->session->set_flashdata('mensaje_modal',json_encode( $mensaje_modal,JSON_UNESCAPED_UNICODE) );
+				redirect('Asistencia/registro_manual');
+			}
 
 			$add = $this->Asistencia_M->registrar_asistencia($datos);
 			if( $add ){
@@ -227,13 +270,13 @@ class Asistencia extends CI_Controller {
 		}
 	}
 
-	function desactivar_registro(){
+	function consultar_registro(){
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
 		
 		$datos['titulo_contenedor'] = 'Asistencia';
-		$datos['titulo_descripcion'] = 'Desactivar registro';
+		$datos['titulo_descripcion'] = 'Consultar registro';
 		$datos['form_action'] = 'Asistencia/validar_registro_manual';
-		$datos['contenido'] = 'asistencia/desactivar_registro_lista';
+		$datos['contenido'] = 'asistencia/consultar_registro_lista';
 
 		$datos['e_footer'][] = array('nombre' => 'DataTable JS','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
@@ -242,10 +285,52 @@ class Asistencia extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'DatePicker JS','path' => base_url('assets/AdminLTE/plugins/datepicker/bootstrap-datepicker.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DatePicker Languaje JS','path' => base_url('assets/AdminLTE/plugins/datepicker/locales/bootstrap-datepicker.es.js'), 'ext' =>'js');
 		$datos['e_header'][] = array('nombre' => 'DatePicker CSS','path' => base_url('assets/AdminLTE/plugins/datepicker/datepicker3.css'), 'ext' =>'css');
+
+		$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Additional Method','path' => base_url('assets/jqueryvalidate/dist/additional-methods.js'), 'ext' =>'js');
+
+		$datos['e_footer'][] = array('nombre' => 'SweetAlert JS','path' => base_url('assets/sweetalert2/sweetalert2.all.js'), 'ext' =>'js');
 		
-		$datos['e_footer'][] = array('nombre' => 'Config Form JS','path' => base_url('assets/js/asistencia/v_desactivar_registro.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'Config Form JS','path' => base_url('assets/js/asistencia/v_consultar_registro.js'), 'ext' =>'js');
 
 		$this->template_lib->render($datos);
+	}
+
+	public function detalles_registro(){
+		$datos = NULL;
+		if( !isset($_POST['id_registro']) ) echo json_encode($datos,JSON_UNESCAPED_UNICODE);
+		
+		$id_registro = $this->input->post('id_registro');
+		$consulta = $this->Asistencia_M->consultar_registro_unico($id_registro);
+
+		echo json_encode($consulta,JSON_UNESCAPED_UNICODE);
+	}
+
+	public function ajax_consultar_registros_dia(){
+		$datos = NULL;
+		if( !isset($_POST['fecha']) ) {
+			echo json_encode($datos,JSON_UNESCAPED_UNICODE);
+		}else{
+			$fecha = $this->input->post('fecha');
+			$consulta = $this->Asistencia_M->registros_asistencia_por_fecha($fecha);
+
+			echo json_encode($consulta,JSON_UNESCAPED_UNICODE);
+		}
+
+	}
+
+	public function ajax_desactivar_registro_dia(){
+		$datos = NULL;
+		if( !isset($_POST['id_registro']) ) {
+			echo json_encode($datos,JSON_UNESCAPED_UNICODE);
+		}else{
+			$id_registro = $this->input->post('id_registro');
+			$consulta = $this->Asistencia_M->desactivar_registro_unico($id_registro);
+
+			echo json_encode($consulta,JSON_UNESCAPED_UNICODE);
+		}
+
 	}
 
 }

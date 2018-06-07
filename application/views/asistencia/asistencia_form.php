@@ -160,6 +160,14 @@
 			</div>
 		</div>
 
+		<div class="form-group">
+			<div class="input-group">
+				<span class="input-group-addon">Observación</span>
+				<textarea class="form-control" name="observaciones" id="observaciones" cols="30" rows="1" style="resize: vertical;" disabled="disabled"  placeholder="Observación"></textarea>
+				<!-- <input type="text" class="form-control" placeholder="Hora" name="hora" id="hora-servidor" disabled="disabled"> -->
+			</div>
+		</div>
+
 		<div>
 			<input type="hidden" name="tipo_registro" id="tipo_registro" value="">
 		</div>
@@ -271,6 +279,7 @@
 		$("#departamento").val('');
 		$("#cargo").val('');
 		$("#tipo_registro").val('');
+		$("#observaciones").val('').attr('disabled', 'disabled');
 
 		btn_lock('entrada',false); // bloquear boton de entrada
 		btn_lock('salida',false); // bloquear boton de salida
@@ -299,9 +308,11 @@
 			if(_tipo_registro == "ENTRADA"){
 				btn_lock('salida',true);
 				$("#tipo_registro").val('SALIDA');
+				$("#observaciones").removeAttr('disabled');
 			}else{
 				btn_lock('entrada',true);
 				$("#tipo_registro").val('ENTRADA');
+				$("#observaciones").removeAttr('disabled');
 			}
 		}
 	}

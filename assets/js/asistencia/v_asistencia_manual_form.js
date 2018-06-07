@@ -4,7 +4,7 @@
 	//////////////////////////////////
 
 	var _rule1 = {
-		observacion : {
+		observaciones : {
 			required : true,
 				minlength : 5
 			},
@@ -15,7 +15,7 @@
 			required : true
 			}
 	}, _rule2 = {
-		observacion : {
+		observaciones : {
 			required : true,
 				minlength : 5
 			},
@@ -65,7 +65,7 @@
 	////////////////////////////////////////////////////
 	consultar = function(cedula){
 		$.ajax({
-			url: _base_url+"Asistencia/consultar_cedula",
+			url: _base_url+"Asistencia/consultar_cedula_manual",
 			type: 'POST',
 			dataType: 'json',
 			data: { cedula: cedula },
@@ -109,11 +109,12 @@
 	 	bloquear_campo('limpiar');
 		// console.log(e);
 		if (_bloqueo == true || (_bloqueo == false && _fecha !== null)) {
+			console.log("bloque = "+_bloqueo+" fecha= "+_fecha);
 			if( _fecha !== null){
 				var _msn = 'Usted tiene una salida pendiente sin registrar del dia '+_fecha+', favor cierre el dia para poder realizar cualquier otra peticion';
 				show_modal('info','Alerta',_msn,false);
 				desbloquear_campo('hora');
-				desbloquear_campo('observacion');
+				desbloquear_campo('observaciones');
 
 				$("#hora").wickedpicker({
 					twentyFour: false,
@@ -134,7 +135,7 @@
 		}else{
 			desbloquear_campo('fecha');
 			desbloquear_campo('hora');
-			desbloquear_campo('observacion');
+			desbloquear_campo('observaciones');
 
 			$("#fecha").datepicker({autoclose: true
 				,language:'es'

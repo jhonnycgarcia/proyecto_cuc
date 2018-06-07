@@ -1,14 +1,26 @@
 $(document).ready(function() {
-	
-	$("#form_persona").validate({
+
+	jQuery.validator.addMethod("lettersonly", function(value, element) {
+  		return this.optional(element) || /^[a-z]+$/i.test(value);
+	}, "Debe ingresar solo caracteres alfabeticos"); 
+
+	var _form_persona_ingresar = $("#form_persona").validate({
 		rules : {
 			p_apellido : {
 				required : true,
-				minlength : 3
+				minlength : 3,
+				lettersonly : true
+			},
+			s_apellido : {
+				lettersonly : true
 			},
 			p_nombre : {
 				required : true,
-				minlength : 3
+				minlength : 3,
+				lettersonly : true
+			},
+			s_nombre : {
+				lettersonly : true
 			},
 			cedula : {
 				required : true,
@@ -29,12 +41,25 @@ $(document).ready(function() {
 			},
 			email : {
 				email : true
+			},
+			imagen : {
+				extension: "png|jpg|jpeg"
 			}
 		}
 	});
 
+	_form_persona_ingresar.form();
+
 	 $("input[name='telefono_1']").inputmask({"mask":"(999) 999-9999"});
 	 $("input[name='telefono_2']").inputmask({"mask":"(999) 999-9999"});
-	 $("input[name='fecha_nacimiento']").datepicker({autoclose: true,language:'es',format: 'dd/mm/yyyy'});
+	 $("input[name='fecha_nacimiento']").datepicker({autoclose: true,language:'es',format: 'dd/mm/yyyy',startView: 2});
 
+	 $("input").on('change',  function(event) {
+	 	_form_persona_ingresar.form();
+	 });
+	 
+	 $("#limpiar_file").on('click', function(event) {
+	 	$("#imagen").val('');
+	 	_form_persona_ingresar.form();
+	 });
 });

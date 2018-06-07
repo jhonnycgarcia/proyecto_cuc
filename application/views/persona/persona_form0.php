@@ -8,7 +8,7 @@
                 'id' => 'form_persona'
                 ,'class' => 'form-horizontal'
                   );
-  echo form_open_multipart($form_action,$form_attributes);
+  echo form_open($form_action,$form_attributes);
 ?>
   <fieldset>
       <!-- Apellidos  -->
@@ -74,7 +74,7 @@
           <?php
             echo form_input('fecha_nacimiento'
                 ,$fecha_nacimiento
-                ,array('class' => 'form-control','placeholder' => 'dd/mm/aaaa','readonly'=>'readonly')
+                ,array('class' => 'form-control','placeholder' => 'dd/mm/aaaa')
               );
             echo form_error('fecha_nacimiento');
           ?>
@@ -174,25 +174,6 @@
           ?>
         </div>
       </div>
-
-      <?php if($act == 'add') {?>
-      <div class="form-group">
-        <label for="imagen" class="control-label col-md-2">Foto:</label>
-        <div class="col-md-10">
-
-          <div class="input-group col-md-6">
-            <input type="file" class="" name="imagen" id="imagen" class="">
-            <span class="input-group-btn">
-              <button type="button" class="btn btn-default btn-sm" onclick="" id="limpiar_file">Limpiar</button>
-            </span>
-          </div>  
-          <p class="help-block">Solo debe seleccionar archivos con la extension <kbd>.jpg</kbd>,<kbd>.jpeg</kbd> o <kbd>.png</kbd> y deben pesar menos de 1 megabyte .</p>
-          <?php echo form_error('imagen')."\n"; ?>
-          <?php echo $error_upload; ?>
-
-        </div>
-      </div>
-      <?php }?>
 
       <div>
         <?= form_hidden('id_dato_personal',$id_dato_personal); ?>

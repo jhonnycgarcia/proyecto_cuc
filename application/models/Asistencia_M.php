@@ -96,6 +96,24 @@ class Asistencia_M extends CI_Model {
 	}
 
 	/**
+	 * Funcion para verificar si la fecha en la que se quiere crear un registro manual no exista ya registros anteriores
+	 * @param  [type] $id_trabajador [description]
+	 * @param  [type] $fecha         [description]
+	 * @param  [type] $tipo_registro [description]
+	 * @return [type]                [description]
+	 */
+	function validar_registro_manual_fecha($id_trabajador,$fecha,$tipo_registro)
+	{
+		$query = $this->db->get_where("asistencia.registros_asistencia AS a"
+					, array("a.trabajador_id"=>$id_trabajador
+							,"a.fecha" => $fecha
+							,"a.tipo_registro" =>$tipo_registro ) 
+					)->result_array();
+		if(count($query)>0) return FALSE;
+		return TRUE;
+	}
+
+	/**
 	 * Funcion para obtener los ultimos registros de asistencia
 	 * @param  integer $cantidad [description]
 	 * @return [type]            [description]
@@ -152,9 +170,92 @@ class Asistencia_M extends CI_Model {
 	 * @param  [type] $fecha [description]
 	 * @return [type]        [description]
 	 */
-	function consultar_registros_fecha($fecha){
+	function registros_asistencia_por_fecha($fecha)
+	{
+		$query = $this->db->select("a.id_registro_asistencia ,a.trabajador_id, a.hora, c.cedula"
+						.", CONCAT(c.p_apellido,' ',c.p_nombre) AS apellidos_nombres"
+						.", b.cargo_id, d.cargo"
+						.", b.coordinacion_id, e.coordinacion"
+						.",to_char(a.fecha,'DD/MM/YYYY') AS fecha "
+						.",  a.observaciones, a.tipo_registro")
+						->from("asistencia.registros_asistencia AS a")
+							->join("administrativo.trabajadores AS b","a.trabajador_id = b.id_trabajador")
+							->join("administrativo.datos_personales AS c","b.dato_personal_id = c.id_dato_personal")
+							->join("administrativo.cargos AS d","b.cargo_id = d.id_cargo")
+							->join("administrativo.coordinaciones AS e","b.coordinacion_id = e.id_coordinacion")
+						->where("a.fecha",$fecha)
+						->where("a.estatus",'t')
+						->where("b.estatus",'t')
+						->order_by('a.hora','ASC')
+						->get()->result_array();
+		if( count($query) == 0 ) return NULL;
 
+		if( count($query) > 0 ){
+			foreach ($query as $key => $value) {
+				$f_hora = "".date('h:i:s A',strtotime($value['hora']))."";
+				$query[$key]['hora'] = $f_hora;
+			}
+		}
+
+		return $query;
 	}
 
+	/**
+	 * Funcion para obtener los detalles de un registro de asistencia en especifico
+	 * @param  [type] $id_registro [description]
+	 * @return [type]              [description]
+	 */
+	function consultar_registro_unico($id_registro){
+		$query = $this->db->select("a.id_registro_asistencia ,a.trabajador_id, a.hora, c.cedula"
+						.", CONCAT(c.p_apellido,' ',c.p_nombre) AS apellidos_nombres"
+						.", b.cargo_id, d.cargo"
+						.", b.coordinacion_id, e.coordinacion"
+						.",to_char(a.fecha,'DD/MM/YYYY') AS fecha "
+						.",  a.observaciones, a.tipo_registro, a.imagen")
+						->from("asistencia.registros_asistencia AS a")
+							->join("administrativo.trabajadores AS b","a.trabajador_id = b.id_trabajador")
+							->join("administrativo.datos_personales AS c","b.dato_personal_id = c.id_dato_personal")
+							->join("administrativo.cargos AS d","b.cargo_id = d.id_cargo")
+							->join("administrativo.coordinaciones AS e","b.coordinacion_id = e.id_coordinacion")
+						->where("a.id_registro_asistencia",$id_registro)
+						->where("a.estatus",'t')
+						->where("b.estatus",'t')
+						->order_by('a.hora','ASC')
+						->get()->result_array();
+		if( count($query) == 0 ) return NULL;
 
+		if( count($query) > 0 ){
+			$query = $query[0];
+			$query['hora'] = "".date('h:i:s A',strtotime($query['hora']))."";
+		}
+		return $query;	
+	}
+
+	function consultar_tipo_registro($id_registro){
+		$query = $this->db->select('a.tipo_registro, a.fecha')
+						->get_where('asistencia.registros_asistencia As a', array('a.estatus' => 'true', 'a.id_registro_asistencia' => $id_registro))
+						->result_array();
+		if( count($query) > 0){
+			if( $query[0]['tipo_registro'] == 'ENTRADA') return array(TRUE,$query[0]['fecha']);
+			if( $query[0]['tipo_registro'] == 'SALIDA') return array(FALSE,$query[0]['fecha']);
+		}
+		return NULL;
+	}
+
+	/**
+	 * Funcion para desactivar un registro de asistencia
+	 * @param  [type] $id_registro [description]
+	 * @return [type]              [description]
+	 */
+	function desactivar_registro_unico($id_registro){
+		$condicion = array();
+		$consulta = $this->consultar_tipo_registro($id_registro);
+		if( $consulta === NULL ) return NULL;
+		if( $consulta[0] ) $condicion['fecha'] = $consulta[1];
+		if( $consulta[0] === FALSE ) $condicion['id_registro_asistencia'] = $id_registro;
+
+		$query = $this->db->where($condicion)
+						->delete("asistencia.registros_asistencia");
+		return $query;
+	}
 }

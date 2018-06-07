@@ -45,7 +45,8 @@
               <ul class="dropdown-menu" rle="menu" aria-labelledby="dropdown_menu<?= $i; ?>">
                 <li role="presentation"><?= anchor( site_url('Trabajadores/detalles/'.$id),"Detalles",array("role" =>"item")  )?></li>
                 <li role="presentation"><?= anchor( site_url('Trabajadores/editar/'.$id),"Editar",array("role" =>"item")  )?></li>
-                <li role="presentation"><?= anchor( site_url('Trabajadores/egresar/'.$id),"Egresar",array("role" =>"item","onclick" => "javasciprt: return confirm('¿Esta seguro que desea egresar al trabajador seleccionado?');")  )?></li>
+                <li role="presentation"><?= anchor( site_url('Trabajadores/egresar/'.$id),"Egresar",array("role" =>"item","data"=>"egresar")  )?></li>
+                <!-- <li role="presentation"><?= anchor( site_url('Trabajadores/egresar/'.$id),"Egresar",array("role" =>"item","onclick" => "javasciprt: return confirm('¿Esta seguro que desea egresar al trabajador seleccionado?');")  )?></li> -->
               </ul>
             </div>
           </td>

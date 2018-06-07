@@ -462,59 +462,59 @@
 			'Asistencia/validar_registro_asistencia_manual' => array(
 								array(
 									'field' => 'hora',
-									'label' => '<b>Hora</b>',
+									'label' => 'Hora',
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									),
 								array(
 									'field' => 'fecha',
-									'label' => '<b>Fecha</b>',
+									'label' => 'Fecha',
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									),
 								array(
 									'field' => 'tipo_registro',
-									'label' => '<b>Tipo Registro</b>',
+									'label' => 'Tipo Registro',
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									),
 								array(
 									'field' => 'trabajador_id',
-									'label' => '<b>Trabajador</b>',
+									'label' => 'Trabajador',
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									),
 								array(
-									'field' => 'observacion',
-									'label' => '<b>Observación</b>',
+									'field' => 'observaciones',
+									'label' => 'Observaciones',
 									'rules' => 'trim|required|strip_tags|xss_clean|min_length[5]'
 									)
 							),
 			'Asistencia/validar_registro_asistencia_manual_camara' => array(
 								array(
 									'field' => 'imagen',
-									'label' => "<b>Imagen</b>",
+									'label' => "Imagen",
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									),
 								array(
 									'field' => 'hora',
-									'label' => '<b>Hora</b>',
+									'label' => 'Hora',
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									),
 								array(
 									'field' => 'fecha',
-									'label' => '<b>Fecha</b>',
+									'label' => 'Fecha',
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									),
 								array(
 									'field' => 'tipo_registro',
-									'label' => '<b>Tipo Registro</b>',
+									'label' => 'Tipo Registro',
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									),
 								array(
 									'field' => 'trabajador_id',
-									'label' => '<b>Trabajador</b>',
+									'label' => 'Trabajador',
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									),
 								array(
-									'field' => 'observacion',
-									'label' => '<b>Observación</b>',
+									'field' => 'observaciones',
+									'label' => 'Observaciones',
 									'rules' => 'trim|required|strip_tags|xss_clean|min_length[5]'
 									)
 							),
@@ -540,6 +540,25 @@
 								array(
 									'field' => 'fhasta',
 									'label' => "<b>Fecha hasta</b>",
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									),
+								array(
+									'field' => 'cargos_excluidos[]',
+									'label' => "<b>Cargos a excluir</b>",
+									'rules' => 'trim|strip_tags|xss_clean|is_natural'
+									),
+							),
+			'Reportes/reporte_horas_extras1' => array(
+								array(
+									'field' => 'fecha',
+									'label' => "<b>Fechas</b>",
+									'rules' => 'trim|required|strip_tags|xss_clean'
+									)
+							),
+			'Reportes/reporte_horas_extras2' => array(
+								array(
+									'field' => 'fecha',
+									'label' => "<b>Fechas</b>",
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									),
 								array(

@@ -5,7 +5,20 @@
   <div class="box-body"> <!-- Box-Body -->
 
     <div class="row">
-      <div class="col-md-offset-1 col-md-6 col-sm-12">
+      <div class="col-md-5 col-sm-12 col-md-push-6 text-center">
+      <?php
+        if(is_null($datos['imagen'])){
+      ?>
+        <img src="<?= base_url('assets/images/fotos/default.png'); ?>" class="user-image img-thumbnail" alt="User Image"> 
+      <?php
+        }else{
+          echo "tiene foto";
+        }
+      ?>
+      </div>
+      <br>
+
+      <div class="col-md-offset-1 col-md-6 col-md-pull-5 col-sm-12">
         <div class="row">
           <div class="col-md-3 col-sm-3"><b>Primer Apellido:</b></div>
           <div class="col-md-3 col-sm-3"><?=$datos['p_apellido'];?></div>
@@ -67,21 +80,39 @@
         </div>
 
       </div>
-
-      <div class="col-md-5 col-sm-12 text-center">
-      <?php
-        if(is_null($datos['imagen'])){
-      ?>
-        <img src="<?= base_url('assets/images/fotos/default.png'); ?>" class="user-image" alt="User Image"> 
-      <?php
-        }else{
-          echo "string";
-        }
-      ?>
-      </div>
     </div>
-<br>
 
+  <?php
+    if(!is_null($datos['historial']) && count($datos['historial']) >0 ){ ?>
+    <p class="divider"></p>
+      <h4>Historial</h4>
+        <div class="table-responsive">
+          <table class="table table-hover" id="list">
+            <thead>
+              <tr>
+                <th>Cargo</th>
+                <th>Condición Laboral</th>
+                <th>Coordinación</th>
+                <th>Fecha Ingreso</th>
+                <th>Fecha Egreso</th>
+              </tr>
+            </thead>
+            <tbody>
+      <?php $i=0; foreach ($datos['historial'] as $key => $value) { ?>
+              <tr>
+                <td><?=$value['cargo'];?></td>
+                <td><?=$value['condicion_laboral'];?></td>
+                <td><?=$value['coordinacion'];?></td>
+                <td><?=$value['fecha_ingreso'];?></td>
+                <td><?=$value['fecha_egreso'];?></td>
+              </tr>
+      <?php } ?>
+            </tbody>
+          </table>
+        </div>
+      <?php } ?>
+
+    <p class="divider"></p>
     <div class="row">
       <div class="col-md-offset-1 col-md-2">
         <a href="<?= base_url('Persona');?>" class="btn btn-danger">Volver</a>

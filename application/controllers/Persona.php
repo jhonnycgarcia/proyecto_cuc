@@ -19,12 +19,15 @@ class Persona extends CI_Controller {
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
 
 		$datos['titulo_contenedor'] = 'Persona';
-		$datos['titulo_descripcion'] = 'Lista de items';
+		$datos['titulo_descripcion'] = 'Lista del personal';
 		$datos['contenido'] = 'persona/persona_lista';
 
 		$datos['e_footer'][] = array('nombre' => 'DataTable JS','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
+
+		$datos['e_footer'][] = array('nombre' => 'SweetAlert JS','path' => base_url('assets/sweetalert2/sweetalert2.all.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/persona/v_persona_lista.js'), 'ext' =>'js');
 
 		$this->template_lib->render($datos);
 	}
@@ -37,16 +40,27 @@ class Persona extends CI_Controller {
 
 		$persona = $this->Persona_M->consultar_persona($id);
 		if(is_null($persona)){
-			echo '<script language="javascript">
-						alert("No se encontro el registro deseado, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se encontro el registro deseado, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);
 		}else{
+			$this->load->model('Trabajadores_M');
 			$datos['titulo_contenedor'] = 'Persona';
 			$datos['titulo_descripcion'] = 'Consultar';
 			$datos['contenido'] = 'persona/persona_consultar';
+			$persona += array(
+				'historial'=> $this->Trabajadores_M->obtener_historial_trabajador($persona['id_dato_personal'])
+			);
 			$datos['datos'] = $persona;
 
+			$datos['e_footer'][] = array('nombre' => 'DataTable JS','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.min.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
+			// $datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/js/persona/v_persona_consultar.js'), 'ext' =>'js');
+			
 			$this->template_lib->render($datos);
 		}
 	}
@@ -76,7 +90,17 @@ class Persona extends CI_Controller {
 		$datos['telefono_1'] = set_value('telefono_1');
 		$datos['telefono_2'] = set_value('telefono_2');
 		$datos['direccion'] = set_value('direccion');
+		$datos['imagen'] = set_value('imagen');
+		$datos['act'] = "up";
+		// $datos['act'] = "add";
+
+		if ( isset($_SESSION['error_upload']) ) {
+			$datos['error_upload'] = $_SESSION['error_upload'];
+		}else{ $datos['error_upload'] = NULL; }
+		
 		$datos['id_dato_personal'] = set_value('id_dato_personal');
+
+
 
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Additional Method JS','path' => base_url('assets/jqueryvalidate/dist/additional-methods.js'), 'ext' =>'js');
@@ -109,19 +133,86 @@ class Persona extends CI_Controller {
 		return $ans;
 	}
 
+	private function cargar_imagen_servidor($imagen){
+		$config['upload_path'] = "./assets/images/fotos/";
+		$config['allowed_types'] = "png|jpg|jpeg";
+		$config['max_size'] = 1024;
+		$config['file_name'] = $this->input->post('cedula').'.jpg';
+		$config['overwrite'] = TRUE;
+
+		$this->load->library('upload', $config);
+		$this->upload->display_errors('<b>', '</b>');
+		if ( ! $this->upload->do_upload('imagen') ) { 
+			return array('estatus' => FALSE
+				,'error' => $this->upload->display_errors()
+				,'data' => array()
+			);
+		}else{
+			unset($config);
+			$config['source_image'] = './assets/images/fotos/'.$this->upload->data('file_name');
+			$config['width'] = '160';
+			$config['height'] = '160';
+			$this->load->library('image_lib', $config);
+			if( !$this->image_lib->resize() ){
+				return array('estatus' => FALSE
+					,'error' => $this->image_lib->display_errors()
+					,'data' => $this->upload->data()
+				);
+			}
+
+			return array('estatus' => TRUE
+				,'error' => NULL
+				,'data' => $this->upload->data()
+			);
+		}
+	}
+
+	private function eliminar_imagen_servidor($imagen){
+		$delete = unlink('./assets/images/fotos/'.$upload_img['data']['file_name']);
+		return $delete;
+	}
+
 	public function validar_agregar(){
 		if( count( $this->input->post() ) == 0 ) redirect(__CLASS__);
 
 		$this->form_validation->set_error_delimiters('<span>','</span>');
 		if( !$this->form_validation->run() ){ $this->agregar(); }
 		else{
-			$add=$this->Persona_M->agregar_persona($this->input->post());
-			if($add){ redirect(__CLASS__);
+
+			/* Validar si ingreso algun tipo de imagen */
+			$upload_img = array();
+			if($_FILES['imagen']['size'] > 0){
+				$upload_img = $this->cargar_imagen_servidor($_FILES['imagen']);
+				if( !$upload_img['estatus'] ){
+					if( count($upload_img['data']) > 0){
+						$delete_img = $this->eliminar_imagen_servidor($upload_img['data']['file_name']);
+					}
+					$this->session->set_flashdata('error_upload',$upload_img['error']);
+					$this->agregar();
+				}
+			}
+
+			$datos = $this->input->post();
+			if(count($upload_img)>0) $datos['imagen'] = $upload_img['data']['file_name'];
+
+			$add=$this->Persona_M->agregar_persona($datos);
+			if($add){
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se creo el registro de la persona satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__); 
 			}else{
-				echo '<script language="javascript">
-						alert("No se pudo registrar la persona, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+				$delete_img = $this->eliminar_imagen_servidor($upload_img['data']['file_name']);
+				$merror['title'] = 'Error';
+				$merror['text'] = 'Ocurrio un inconveniente al momento de registrar a la persona, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
+			}
+			
 		}
 	}
 
@@ -133,10 +224,13 @@ class Persona extends CI_Controller {
 
 		$item = $this->Persona_M->consultar_persona($id);
 		if(is_null($item)){
-			echo '<script language="javascript">
-						alert("No se encontro el item deseado, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se encontro el registro deseado, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__); 
+
 		}else{
 			$datos['titulo_contenedor'] = 'Persona';
 			$datos['titulo_descripcion'] = 'Editar';
@@ -159,6 +253,13 @@ class Persona extends CI_Controller {
 			$datos['telefono_1'] = set_value('telefono_1',$item['telefono_1']);
 			$datos['telefono_2'] = set_value('telefono_2',$item['telefono_2']);
 			$datos['direccion'] = set_value('direccion',$item['direccion']);
+			$datos['imagen'] = set_value('imagen',$item['imagen']);
+			$datos['act'] = "up";
+
+			if ( isset($_SESSION['error_upload']) ) {
+				$datos['error_upload'] = $_SESSION['error_upload'];
+			}else{ $datos['error_upload'] = NULL; }
+
 			$datos['id_dato_personal'] = set_value('id_dato_personal',$item['id_dato_personal']);
 
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
@@ -186,12 +287,21 @@ class Persona extends CI_Controller {
 		}else
 		{
 			$up = $this->Persona_M->editar_persona($this->input->post());
-			if($up){ redirect(__CLASS__);
+			if($up){ 
+				$merror['title'] = 'Registro Actualizado';
+				$merror['text'] = 'Se actualizaron los datos del registro de manera exitosa';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__); 
 			}else{
-				echo '<script language="javascript">
-						alert("No se pudo actualizar los datos, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+				$merror['title'] = 'Error';
+				$merror['text'] = 'Ocurrio un inconveniente al momento de procesar los cambios, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
+			}
 		}
 	}
 
@@ -201,26 +311,54 @@ class Persona extends CI_Controller {
 		if( !isset($id) ) redirect(__CLASS__);
 		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
+		$merror = array(
+			'title'=>'',
+			'text'=>"",
+			'type'=>'',
+			'confirmButtonText'=>'',
+			'showCancelButton'=>false,
+			'cancelButtonText'=>'',
+			'confirmButtonColor'=>'#3085d6',
+  			'cancelButtonColor'=>'#d33'
+		);
+
 		$item = $this->Persona_M->consultar_persona($id);
 		if( !is_null($item) ){
 			$delete = $this->Persona_M->eliminar_persona($id);
 			if( is_null($delete) ){
-				echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este items");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; 
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este registro';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
+
 			}elseif( $delete === FALSE ){
-				echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo llevar a cabo esta acción ya que ocurrio un inconveniente, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
+
 			}else{
+				$merror['title'] = 'Eliminado';
+				$merror['text'] = 'Se elimino el registro satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
 				redirect(__CLASS__); }
 		}else{
-			echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);
+		}
 	}
 
 

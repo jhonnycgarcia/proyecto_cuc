@@ -11,22 +11,40 @@
 </div>
 <!-- ./wrapper -->
 
+<!-- jQuery 2.2.3 JS -->
+<script src="<?= base_url('assets/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
 <!-- REQUIRED JS SCRIPTS -->
-<script> var _base_url = "<?= base_url(); ?>";</script>
 <script> 
 	window.onload = function(){
 		var _contenedor_preload = document.getElementById('contenedor_carga');
 		_contenedor_preload.style.visibility = 'hidden';
 		_contenedor_preload.style.opacity = '0';
-	}
+	} 
+
 	window.onunload = function(){
 		var _contenedor_preload = document.getElementById('contenedor_carga');
 		_contenedor_preload.style.visibility = 'visible';
 		_contenedor_preload.style.opacity = '0.9';
 	}
+
+	function espera(opcion = false){
+		if( opcion == false){
+			$("#contenedor_carga").css({
+				visibility: 'hidden',
+				opacity: '0'
+			});
+		}else{
+			$("#contenedor_carga").css({
+				visibility: 'visible',
+				opacity: '0.9'
+			});
+		}
+	}
+	
+	var _base_url = "<?= base_url(); ?>";
+	var _merror = '<?= (!isset($_SESSION["merror"]))?"null":$_SESSION["merror"]; ?>';
+	if(_merror !== 'null' ){ _merror = JSON.parse(_merror);	}else{ _merror = null;}
 </script>
-<!-- jQuery 2.2.3 JS -->
-<script src="<?= base_url('assets/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
 <!-- Bootstrap 3.3.6 JS -->
 <script src="<?= base_url('assets/AdminLTE/bootstrap/js/bootstrap.min.js'); ?>"></script>
 <!-- AdminLTE App JS -->

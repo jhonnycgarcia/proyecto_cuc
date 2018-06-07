@@ -8,6 +8,11 @@ class Persona_M extends CI_Model {
 		$this->load->database();
 	}
 
+	/**
+	 * Funcion para obtener el listado de todo el personal registrado dentro del sistema
+	 * @param  [type] $opcion [description]
+	 * @return [type]         [description]
+	 */
 	function consultar_lista($opcion=null)
 	{
 		$query = $this->db->select("a.id_dato_personal, a.cedula, "
@@ -21,6 +26,11 @@ class Persona_M extends CI_Model {
 		return $query;
 	}
 
+	/**
+	 * Funcion para obtener
+	 * @param  [type] $id [description]
+	 * @return [type]     [description]
+	 */
 	function consultar_persona($id=null)
 	{
 		if(!is_null($id)){

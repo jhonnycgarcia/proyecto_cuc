@@ -45,11 +45,11 @@
       }
     ?>
     <div class="form-group has-feedback">
-      <input type="text" class="form-control" placeholder="Usuario" name="usuario" id="usuario" value="" maxlength="12">
+      <input type="text" class="form-control" placeholder="Usuario" name="usuario" id="usuario" value="" maxlength="24">
       <span class="glyphicon glyphicon-user form-control-feedback"></span>
     </div>
     <div class="form-group has-feedback">
-      <input type="password" class="form-control" placeholder="Contraseña" maxlength="6" name="contraseña" id="contraseña" value="" maxlength="12">
+      <input type="password" class="form-control" placeholder="Contraseña" maxlength="24" name="contraseña" id="contraseña" value="" maxlength="12">
       <span class="glyphicon glyphicon-lock form-control-feedback"></span>
     </div>
     <div class="row">

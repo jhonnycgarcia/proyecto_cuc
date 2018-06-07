@@ -30,6 +30,9 @@ class Trabajadores extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
 
+		$datos['e_footer'][] = array('nombre' => 'SweetAlert JS','path' => base_url('assets/sweetalert2/sweetalert2.all.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/trabajadores/v_trabajadores_lista_activos.js'), 'ext' =>'js');
+
 		$this->template_lib->render($datos);
 	}
 
@@ -55,10 +58,12 @@ class Trabajadores extends CI_Controller {
 
 		$persona = $this->Trabajadores_M->consultar_personal($id_dato_personal);
 		if( is_null($persona)){
-			echo '<script language="javascript">
-						alert("No se encontro el item deseado, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se encontro el registro de la persona a registrar, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect("Persona");
 		}else{
 			$datos['titulo_contenedor'] = 'Trabajador';
 			$datos['titulo_descripcion'] = 'Ingresar';
@@ -86,12 +91,16 @@ class Trabajadores extends CI_Controller {
 
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
-			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/trabajadores/v_trabajadores_ingreso_form.js'), 'ext' =>'js');
+			
 
 			$datos['e_footer'][] = array('nombre' => 'DatePicker JS','path' => base_url('assets/AdminLTE/plugins/datepicker/bootstrap-datepicker.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'DatePicker Languaje JS','path' => base_url('assets/AdminLTE/plugins/datepicker/locales/bootstrap-datepicker.es.js'), 'ext' =>'js');
 			$datos['e_header'][] = array('nombre' => 'DatePicker CSS','path' => base_url('assets/AdminLTE/plugins/datepicker/datepicker3.css'), 'ext' =>'css');
-		
+
+			$datos['e_footer'][] = array('nombre' => 'SweetAlert JS','path' => base_url('assets/sweetalert2/sweetalert2.all.js'), 'ext' =>'js');
+
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/trabajadores/v_trabajadores_ingreso_form.js'), 'ext' =>'js');
+
 
 			$this->template_lib->render($datos);
 		}
@@ -127,12 +136,20 @@ class Trabajadores extends CI_Controller {
 			$add = $this->Trabajadores_M->registrar_trabajador($this->input->post());
 			if($add){
 				$this->Trabajadores_M->estatus_persona($this->input->post('dato_personal_id'),true);
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se creo el registro de la persona como trabajador satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
 				redirect(__CLASS__);
 			}else{
-				echo '<script language="javascript">
-						alert("No se pudo registrar el trabajador, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo registrar el trabajador, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
+			}
 		}
 	}
 
@@ -175,10 +192,12 @@ class Trabajadores extends CI_Controller {
 
 		$trabajador = $this->Trabajadores_M->consultar_trabajador($id);
 		if( is_null($trabajador) ){
-			echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);
 		}else{
 			$datos['titulo_contenedor'] = 'Trabajador';
 			$datos['titulo_descripcion'] = 'Egresar';
@@ -206,6 +225,8 @@ class Trabajadores extends CI_Controller {
 
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
+
+			$datos['e_footer'][] = array('nombre' => 'SweetAlert JS','path' => base_url('assets/sweetalert2/sweetalert2.all.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/trabajadores/v_trabajadores_egreso_form.js'), 'ext' =>'js');
 
 			$datos['e_footer'][] = array('nombre' => 'DatePicker JS','path' => base_url('assets/AdminLTE/plugins/datepicker/bootstrap-datepicker.js'), 'ext' =>'js');
@@ -234,12 +255,21 @@ class Trabajadores extends CI_Controller {
 			if($up){
 				$this->Trabajadores_M->estatus_persona($id_dato_personal,false);
 				$this->Trabajadores_M->estatus_usuario($datos['id_trabajador'],false);
+
+				$merror['title'] = 'Egresado procesado';
+				$merror['text'] = 'Se egreso al trabajador satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
 				redirect(__CLASS__);
 			}else{
-				echo '<script language="javascript">
-						alert("No se pudo actualizar los datos, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+				$merror['title'] = 'Error';
+				$merror['text'] = 'Ocurrio un inconveniente al momento de realizar el proceso de egreso, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
+			}
 		}
 	}
 
@@ -256,10 +286,12 @@ class Trabajadores extends CI_Controller {
 
 		$trabajador = $this->Trabajadores_M->consultar_trabajador($id);
 		if( is_null($trabajador) ){
-			echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);
 		}else{
 			$datos['titulo_contenedor'] = 'Trabajador';
 			$datos['titulo_descripcion'] = 'Actualizar';
@@ -302,12 +334,21 @@ class Trabajadores extends CI_Controller {
 			$this->editar($id);
 		}else{
 			$up = $this->Trabajadores_M->editar_ao_trabajador($this->input->post('id_trabajador'),$this->input->post('asistencia_obligatoria'));
-			if($up){ redirect(__CLASS__);
+			if($up){ 
+				$merror['title'] = 'Datos Actualizados';
+				$merror['text'] = 'Se actualziaron los datos del trabajador satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}else{
-				echo '<script language="javascript">
-						alert("No se pudo actualizar los datos del trabajador, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+				$merror['title'] = 'Error';
+				$merror['text'] = 'Ocurrio un inconveniente al momento de realizar la modificacion delos datos del trabajador, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
+			}
 		}
 	}
 
@@ -326,6 +367,7 @@ class Trabajadores extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
 
+		$datos['e_footer'][] = array('nombre' => 'SweetAlert JS','path' => base_url('assets/sweetalert2/sweetalert2.all.js'), 'ext' =>'js');
 
 		$this->template_lib->render($datos);
 	}

@@ -128,10 +128,11 @@
         </div>
       </div>
       <div class="form-group">
-        <label for="observacion" class="control-label col-md-2">Observación:</label>
+        <label for="observaciones" class="control-label col-md-2">Observación:</label>
         <div class="col-md-10">
+          <!-- <textarea name="observaciones" id="observaciones" cols="30" rows="1" class="form-control"></textarea> -->
           <?=
-          form_textarea('observacion','',array('class' => 'form-control','id'=>'observacion','disabled'=>'disabled','style' => 'resize: vertical;'));
+          form_textarea('observaciones','',array('rows'=>'1','class' => 'form-control','id'=>'observaciones','disabled'=>'disabled','style' => 'resize: vertical;','cols'=>'30'));
           ?>
         </div>
       </div>

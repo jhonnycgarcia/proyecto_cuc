@@ -81,6 +81,15 @@ scratch. This page gets rid of all links and provides the needed markup only.
           animation: girar 1.5s linear infinite;
         }
 
+          .divider {
+            height: 1px;
+            width:100%;
+            display:block; /* for use on default inline elements like span */
+            margin: 9px 0;
+            overflow: hidden;
+            background-color: #e5e5e5;
+          }
+
         @keyframes girar{
           from { transform: rotate(0deg); }
           to { transform: rotate(360deg); }
@@ -118,6 +127,7 @@ desired effect
 ?>
 <!-- <body class="hold-transition skin-blue sidebar-mini"> -->
 
+<!-- Contenedor de Pre Loading -->
 <div id="contenedor_carga">
   <div id="carga"></div>
 </div>
