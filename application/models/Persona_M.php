@@ -66,7 +66,7 @@ class Persona_M extends CI_Model {
 	 */
 	function limpiar_datos($datos){
 		foreach ($datos as $key => $value) {
-			if(empty($value)) unset($datos[$key]);
+			if( empty($value) AND !in_array($key,array('imagen')) ) unset($datos[$key]);
 			if( in_array($key, array('p_apellido','s_apellido','p_nombre','s_nombre','direccion'))) $datos[$key] = strtoupper($value);
 		}
 		return $datos;
@@ -99,6 +99,8 @@ class Persona_M extends CI_Model {
 
 	function editar_persona($datos){
 		$id = array_pop($datos);
+		unset($datos['cedula']);
+		unset($datos['fecha_nacimiento']);
 		$datos = $this->limpiar_datos($datos);
 		$sql = $this->db->where('id_dato_personal',$id)->update('administrativo.datos_personales',$datos);
 		return $sql;

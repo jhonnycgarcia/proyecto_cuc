@@ -10,11 +10,15 @@
         if(is_null($datos['imagen'])){
       ?>
         <img src="<?= base_url('assets/images/fotos/default.png'); ?>" class="user-image img-thumbnail" alt="User Image"> 
-      <?php
-        }else{
-          echo "tiene foto";
-        }
-      ?>
+      <?php }else{ 
+          $foto = base_url('assets/images/fotos/').$datos['imagen'];
+          $data = @getimagesize($foto);
+          if( $data == false ){ ?>
+            <img src="<?= base_url('assets/images/fotos/default.png'); ?>" class="user-image img-thumbnail" alt="User Image">
+          <?php }else{ ?> 
+            <img src="<?=$foto;?>" class="user-image img-thumbnail" alt="User Image">
+          <?php } ?>
+        <?php } ?>
       </div>
       <br>
 

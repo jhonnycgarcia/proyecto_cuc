@@ -19,7 +19,7 @@ class Login_M extends CI_Model {
 	 *                        [FLASE]	= en caso de no conseguir ningun registro
 	 */
 	function obtener_usuario($datos){
-		$query = $this->db->select("a.id_usuario,a.usuario, a.rol_id, b.rol, CONCAT(d.p_apellido,' ',d.p_nombre)::VARCHAR AS apellidos_nombres"
+		$query = $this->db->select("a.id_usuario,a.usuario, a.rol_id, b.rol, CONCAT(d.p_apellido,' ',d.p_nombre)::VARCHAR AS apellidos_nombres, d.imagen"
 						.",c.cargo_id, e.cargo, c.coordinacion_id, f.coordinacion")
 						->from("seguridad.usuarios AS a")
 							->join("seguridad.roles AS b","a.rol_id = b.id_rol")

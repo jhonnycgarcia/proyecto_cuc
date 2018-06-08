@@ -58,7 +58,6 @@ class Persona extends CI_Controller {
 
 			$datos['e_footer'][] = array('nombre' => 'DataTable JS','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.min.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
-			// $datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/js/persona/v_persona_consultar.js'), 'ext' =>'js');
 			
 			$this->template_lib->render($datos);
@@ -91,8 +90,6 @@ class Persona extends CI_Controller {
 		$datos['telefono_2'] = set_value('telefono_2');
 		$datos['direccion'] = set_value('direccion');
 		$datos['imagen'] = set_value('imagen');
-		$datos['act'] = "up";
-		// $datos['act'] = "add";
 
 		if ( isset($_SESSION['error_upload']) ) {
 			$datos['error_upload'] = $_SESSION['error_upload'];
@@ -113,7 +110,7 @@ class Persona extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'DatePicker Languaje JS','path' => base_url('assets/AdminLTE/plugins/datepicker/locales/bootstrap-datepicker.es.js'), 'ext' =>'js');
 		$datos['e_header'][] = array('nombre' => 'DatePicker CSS','path' => base_url('assets/AdminLTE/plugins/datepicker/datepicker3.css'), 'ext' =>'css');
 
-		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/persona/v_persona_form.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/persona/v_persona_ingreso_form.js'), 'ext' =>'js');
 		
 
 		$this->template_lib->render($datos);
@@ -152,7 +149,9 @@ class Persona extends CI_Controller {
 			$config['source_image'] = './assets/images/fotos/'.$this->upload->data('file_name');
 			$config['width'] = '160';
 			$config['height'] = '160';
+			// $config['maintain_ratio'] = FALSE;
 			$this->load->library('image_lib', $config);
+			$this->image_lib->display_errors('<b>', '</b>');
 			if( !$this->image_lib->resize() ){
 				return array('estatus' => FALSE
 					,'error' => $this->image_lib->display_errors()
@@ -168,7 +167,11 @@ class Persona extends CI_Controller {
 	}
 
 	private function eliminar_imagen_servidor($imagen){
-		$delete = unlink('./assets/images/fotos/'.$upload_img['data']['file_name']);
+		$full_path = './assets/images/fotos/';
+		$full_path .= $imagen;
+		$data = @getimagesize($full_path);
+		if( $data == FALSE ) return FALSE;
+		$delete = unlink($full_path);
 		return $delete;
 	}
 
@@ -181,38 +184,43 @@ class Persona extends CI_Controller {
 
 			/* Validar si ingreso algun tipo de imagen */
 			$upload_img = array();
-			if($_FILES['imagen']['size'] > 0){
+			$cerrar = FALSE;
+			if( array_key_exists('imagen', $_FILES) 
+				&&( $_FILES['imagen']['size'] > 0 || $_FILES['imagen']['name'] !== '' ) ){
 				$upload_img = $this->cargar_imagen_servidor($_FILES['imagen']);
 				if( !$upload_img['estatus'] ){
 					if( count($upload_img['data']) > 0){
 						$delete_img = $this->eliminar_imagen_servidor($upload_img['data']['file_name']);
 					}
 					$this->session->set_flashdata('error_upload',$upload_img['error']);
-					$this->agregar();
+					$cerrar = TRUE;
 				}
 			}
 
-			$datos = $this->input->post();
-			if(count($upload_img)>0) $datos['imagen'] = $upload_img['data']['file_name'];
-
-			$add=$this->Persona_M->agregar_persona($datos);
-			if($add){
-				$merror['title'] = 'Registrado';
-				$merror['text'] = 'Se creo el registro de la persona satisfactoriamente';
-				$merror['type'] = 'success';
-				$merror['confirmButtonText'] = 'Aceptar';
-				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
-				redirect(__CLASS__); 
+			if( $cerrar ){
+				$this->agregar();
 			}else{
-				$delete_img = $this->eliminar_imagen_servidor($upload_img['data']['file_name']);
-				$merror['title'] = 'Error';
-				$merror['text'] = 'Ocurrio un inconveniente al momento de registrar a la persona, favor intente nuevamente';
-				$merror['type'] = 'error';
-				$merror['confirmButtonText'] = 'Aceptar';
-				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
-				redirect(__CLASS__);
+				$datos = $this->input->post();
+				if(count($upload_img)>0) $datos['imagen'] = $upload_img['data']['file_name'];
+
+				$add=$this->Persona_M->agregar_persona($datos);
+				if($add){
+					$merror['title'] = 'Registrado';
+					$merror['text'] = 'Se creo el registro de la persona satisfactoriamente';
+					$merror['type'] = 'success';
+					$merror['confirmButtonText'] = 'Aceptar';
+					$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+					redirect(__CLASS__); 
+				}else{
+					$delete_img = $this->eliminar_imagen_servidor($upload_img['data']['file_name']);
+					$merror['title'] = 'Error';
+					$merror['text'] = 'Ocurrio un inconveniente al momento de registrar a la persona, favor intente nuevamente';
+					$merror['type'] = 'error';
+					$merror['confirmButtonText'] = 'Aceptar';
+					$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+					redirect(__CLASS__);
+				}
 			}
-			
 		}
 	}
 
@@ -254,7 +262,6 @@ class Persona extends CI_Controller {
 			$datos['telefono_2'] = set_value('telefono_2',$item['telefono_2']);
 			$datos['direccion'] = set_value('direccion',$item['direccion']);
 			$datos['imagen'] = set_value('imagen',$item['imagen']);
-			$datos['act'] = "up";
 
 			if ( isset($_SESSION['error_upload']) ) {
 				$datos['error_upload'] = $_SESSION['error_upload'];
@@ -269,9 +276,11 @@ class Persona extends CI_Controller {
 			$datos['e_footer'][] = array('nombre' => 'Input Mask Extension JS','path' => base_url('assets/AdminLTE/plugins/input-mask/jquery.inputmask.extensions.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'DatePicker JS','path' => base_url('assets/AdminLTE/plugins/datepicker/bootstrap-datepicker.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'DatePicker Languaje JS','path' => base_url('assets/AdminLTE/plugins/datepicker/locales/bootstrap-datepicker.es.js'), 'ext' =>'js');
-			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/persona/v_persona_form.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/persona/v_persona_actualizar_form.js'), 'ext' =>'js');
 			
 			$datos['e_header'][] = array('nombre' => 'DatePicker CSS','path' => base_url('assets/AdminLTE/plugins/datepicker/datepicker3.css'), 'ext' =>'css');
+
+			$datos['e_footer'][] = array('nombre' => 'SweetAlert JS','path' => base_url('assets/sweetalert2/sweetalert2.all.js'), 'ext' =>'js');
 
 			$this->template_lib->render($datos);
 		}
@@ -286,22 +295,56 @@ class Persona extends CI_Controller {
 			$this->editar($id);
 		}else
 		{
-			$up = $this->Persona_M->editar_persona($this->input->post());
-			if($up){ 
-				$merror['title'] = 'Registro Actualizado';
-				$merror['text'] = 'Se actualizaron los datos del registro de manera exitosa';
-				$merror['type'] = 'success';
-				$merror['confirmButtonText'] = 'Aceptar';
-				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
-				redirect(__CLASS__); 
-			}else{
-				$merror['title'] = 'Error';
-				$merror['text'] = 'Ocurrio un inconveniente al momento de procesar los cambios, favor intente nuevamente';
-				$merror['type'] = 'error';
-				$merror['confirmButtonText'] = 'Aceptar';
-				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
-				redirect(__CLASS__);
+
+			/* Validar si ingreso algun tipo de imagen */
+			$upload_img = array();
+			$cerrar = FALSE;
+			if( array_key_exists('imagen', $_FILES) 
+				&&( $_FILES['imagen']['size'] > 0 || $_FILES['imagen']['name'] !== '' ) ){
+				$upload_img = $this->cargar_imagen_servidor($_FILES['imagen']);
+				if( !$upload_img['estatus'] ){
+					if( count($upload_img['data']) > 0){
+						$delete_img = $this->eliminar_imagen_servidor($upload_img['data']['file_name']);
+					}
+					$this->session->set_flashdata('error_upload',$upload_img['error']);
+					$cerrar = TRUE;
+				}
 			}
+
+			if( $cerrar ){
+				$this->editar($this->seguridad_lib->execute_encryp($this->input->post('id_dato_personal'),'encrypt',__CLASS__));
+			}else{
+				$datos = $this->input->post();
+				$id_trabajador = array_pop($datos);
+				if(count($upload_img)>0) $datos['imagen'] = $upload_img['data']['file_name'];
+
+				if(array_key_exists('imagen', $_FILES) && $_FILES['imagen']['size']==0){ 
+					$datos['imagen'] = NULL;
+					$item = $this->Persona_M->consultar_persona($id_trabajador);
+					if(!is_null($item['imagen'])){ $delete_img = $this->eliminar_imagen_servidor($item['imagen']); }
+				}
+
+				$datos += array('trabajador_id'=>$id_trabajador);
+
+				$up = $this->Persona_M->editar_persona($datos);
+				if($up){ 
+					$merror['title'] = 'Registro Actualizado';
+					$merror['text'] = 'Se actualizaron los datos del registro de manera exitosa';
+					$merror['type'] = 'success';
+					$merror['confirmButtonText'] = 'Aceptar';
+					$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+					redirect(__CLASS__); 
+				}else{
+					$delete_img = $this->eliminar_imagen_servidor($upload_img['data']['file_name']);
+					$merror['title'] = 'Error';
+					$merror['text'] = 'Ocurrio un inconveniente al momento de procesar los cambios, favor intente nuevamente';
+					$merror['type'] = 'error';
+					$merror['confirmButtonText'] = 'Aceptar';
+					$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+					redirect(__CLASS__);
+				}
+			}
+
 		}
 	}
 
@@ -324,6 +367,8 @@ class Persona extends CI_Controller {
 
 		$item = $this->Persona_M->consultar_persona($id);
 		if( !is_null($item) ){
+			if( !is_null($item['imagen']) ) $delete_img = $this->eliminar_imagen_servidor($item['imagen']);
+			
 			$delete = $this->Persona_M->eliminar_persona($id);
 			if( is_null($delete) ){
 				$merror['title'] = 'Error';

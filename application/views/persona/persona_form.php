@@ -175,24 +175,57 @@
         </div>
       </div>
 
-      <?php if($act == 'add') {?>
-      <div class="form-group">
+      <div class="form-group hidden" id="contenedor_agregar_imagen">
         <label for="imagen" class="control-label col-md-2">Foto:</label>
         <div class="col-md-10">
 
           <div class="input-group col-md-6">
-            <input type="file" class="" name="imagen" id="imagen" class="">
+            <input type="file" class="" name="imagen" id="imagen" data-imagen="add">
             <span class="input-group-btn">
               <button type="button" class="btn btn-default btn-sm" onclick="" id="limpiar_file">Limpiar</button>
             </span>
           </div>  
           <p class="help-block">Solo debe seleccionar archivos con la extension <kbd>.jpg</kbd>,<kbd>.jpeg</kbd> o <kbd>.png</kbd> y deben pesar menos de 1 megabyte .</p>
           <?php echo form_error('imagen')."\n"; ?>
-          <?php echo $error_upload; ?>
+          <?= (empty($error_upload))
+              ?$error_upload
+              :'<div class="alert alert-warning" role="alert">'.$error_upload.'</div>'; ?>
 
         </div>
       </div>
-      <?php }?>
+
+      <div class="form-group hidden" id="contenedor_actualizar_imagen">
+        <label for="imagen" class="control-label col-md-2">Foto:</label>
+        <div class="col-md-10">
+
+          <div class="input-group col-md-6">
+            <input type="file" class="" name="imagen" id="imagen" data-imagen="up">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default btn-sm" onclick="" id="limpiar_actualizar">Limpiar</button>
+              <button type="button" class="btn btn-default btn-sm" onclick="" id="cancelar_actualizacion">Cancelar</button>
+            </span>
+          </div>  
+          <p class="help-block">Solo debe seleccionar archivos con la extension <kbd>.jpg</kbd>,<kbd>.jpeg</kbd> o <kbd>.png</kbd> y deben pesar menos de 1 megabyte .</p>
+          <?php echo form_error('imagen')."\n"; ?>
+          <?= (empty($error_upload))
+              ?$error_upload
+              :'<div class="alert alert-warning" role="alert">'.$error_upload.'</div>'; ?>
+
+        </div>
+      </div>
+
+      <div class="form-group hidden" id="contenedor_actual_imagen">
+        <label for="imagen" class="control-label col-md-2">Foto:</label>
+        <div class="col-md-10">
+
+          <div class="input-group col-md-6">
+            <input type="text" class="form-control" disabled="disabled" name="imagen" id="imagen" value="<?=$imagen;?>" data-imagen="read">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default btn-md" onclick="" id="actualizar_foto">Actualizar</button>
+            </span>
+          </div>  
+        </div>
+      </div>
 
       <div>
         <?= form_hidden('id_dato_personal',$id_dato_personal); ?>
@@ -214,3 +247,7 @@
   <!-- </div> -->
 </div>
 <!-- Your Page Content Here -->
+<script>
+  var _error_form_flash = '<?= $error_upload; ?>';
+</script>
+
