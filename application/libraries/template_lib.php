@@ -129,4 +129,18 @@ Class Template_lib {
 		if(is_null($consultar)) return NULL;
 		return $consultar;
 	}
+
+	/**
+	 * Funcion para obtener directamente desde la DBA la imagen que tiene asignada el usuario como PERSONA
+	 * @return [string or NULL] 
+	 * 
+	 * Retorna NULL en caso de no tener un valor asignado en 
+	 * la base de datos, de lo contrario retorna el nombre
+	 * del archivo
+	 *                    		
+	 */
+	function obtener_imagen_usuario(){
+		$consulta = $this->ci->Template_M->obtener_imagen_usuario($_SESSION['id_trabajador']);
+		return $consulta;
+	}
 }

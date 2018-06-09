@@ -58,4 +58,15 @@ class Template_M extends CI_Model {
 		if( count($query)>0 ) return $query;
 		return NULL;
 	}
+
+	function obtener_imagen_usuario($id_trabajador){
+		$query = $this->db->select("b.imagen")
+						->from("administrativo.trabajadores AS a")
+							->join("administrativo.datos_personales AS b","a.dato_personal_id = b.id_dato_personal")
+						->where("a.id_trabajador",$id_trabajador)
+						->get()->result_array();
+		if( count($query)>0 ) return $query[0]['imagen'];
+		return NULL;
+	}
+
 }
