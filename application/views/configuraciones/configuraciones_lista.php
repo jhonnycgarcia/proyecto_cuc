@@ -9,6 +9,9 @@
           <th class="col-md-1 col-sm-1 col-xs-1 text-center">id</th>
           <th class="text-center">Color Tema</th>
           <th class="text-center">Camara Obligatoria</th>
+          <th class="text-center">Hora Inicio</th>
+          <th class="text-center">Hora Fin</th>
+          <th class="text-center">Duración</th>
           <th class="text-center">Estatus</th>
           <th class="col-md-1 col-sm-1 col-xs-1">Opciones</th>
         </tr>
@@ -16,6 +19,7 @@
       <tbody>
   <?php
     $lista = $this->Configuraciones_M->consultar_lista();
+
     $i = 0;
     foreach ($lista as $key => $value) {
     $i++;
@@ -29,6 +33,9 @@
               ?'<span class="label label-success">SI</span>'
               :'<span class="label label-default">NO</span>'; ?>
           </td>
+          <td class="text-center"><?= $value['hora_inicio']; ?></td>
+          <td class="text-center"><?= $value['hora_fin']; ?></td>
+          <td class="text-center"><?= $value['duracion_jornada']; ?></td>
           <td class="text-center">
             <?= ( $value['estatus'] == 't' )
               ?'<span class="label label-success">Activo</span>'

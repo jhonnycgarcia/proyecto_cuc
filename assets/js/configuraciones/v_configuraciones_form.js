@@ -19,4 +19,15 @@ $(document).ready(function() {
 			}
 		}
 	});
+
+	$("#hora_inicio").wickedpicker({
+				twentyFour: false,
+				clearable: false,
+				title: ''
+			});
+	$("#hora_fin").wickedpicker({
+				twentyFour: false,
+				clearable: false,
+				title: ''
+			});
 });

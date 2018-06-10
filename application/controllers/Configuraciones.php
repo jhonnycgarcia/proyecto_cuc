@@ -53,7 +53,7 @@ class Configuraciones extends CI_Controller {
 					</script>';
 		}else{
 			$datos['titulo_contenedor'] = 'Configuraciones';
-			$datos['titulo_descripcion'] = 'Lista';
+			$datos['titulo_descripcion'] = 'Detalles';
 			$datos['contenido'] = 'configuraciones/configuraciones_detalles';
 
 			$datos['configuracion'] = $configuracion;
@@ -80,11 +80,16 @@ class Configuraciones extends CI_Controller {
 		$datos['tiempo_max_alerta'] = set_value('tiempo_max_alerta');
 		$datos['tiempo_max_espera'] = set_value('tiempo_max_espera');
 		$datos['camara'] = set_value('camara');
+		$datos['hora_inicio'] = set_value('hora_inicio');
+		$datos['hora_fin'] = set_value('hora_fin');
 		$datos['id_configuracion'] = set_value('id_configuracion');
 
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
-		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/configuraciones/v_configuraciones_form.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/configuraciones/v_configuraciones_agregar_form.js'), 'ext' =>'js');
+
+		$datos['e_footer'][] = array('nombre' => 'WickedPicker Timer JS','path' => base_url('assets/wickedpicker/src/wickedpicker.js'), 'ext' =>'js');
+		$datos['e_header'][] = array('nombre' => 'WickedPicker Timer JS','path' => base_url('assets/wickedpicker/stylesheets/wickedpicker.css'), 'ext' =>'css');
 
 		$this->template_lib->render($datos);
 
@@ -141,11 +146,16 @@ class Configuraciones extends CI_Controller {
 			$datos['tiempo_max_alerta'] = set_value('tiempo_max_alerta',$configuracion['tiempo_max_alerta']);
 			$datos['tiempo_max_espera'] = set_value('tiempo_max_espera',$configuracion['tiempo_max_espera']);
 			$datos['camara'] = set_value('camara',$configuracion['camara']);
+			$datos['hora_inicio'] = set_value('hora_inicio',$configuracion['hora_inicio']);
+			$datos['hora_fin'] = set_value('hora_fin',$configuracion['hora_fin']);
 			$datos['id_configuracion'] = set_value('id_configuracion',$configuracion['id_configuracion']);
 
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
-			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/configuraciones/v_configuraciones_form.js'), 'ext' =>'js');
+			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/configuraciones/v_configuraciones_editar_form.js'), 'ext' =>'js');
+
+			$datos['e_footer'][] = array('nombre' => 'WickedPicker Timer JS','path' => base_url('assets/wickedpicker/src/wickedpicker.js'), 'ext' =>'js');
+		$datos['e_header'][] = array('nombre' => 'WickedPicker Timer JS','path' => base_url('assets/wickedpicker/stylesheets/wickedpicker.css'), 'ext' =>'css');
 
 			$this->template_lib->render($datos);
 		}

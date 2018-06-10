@@ -32,3 +32,5 @@ user_guide_src/cilexer/pycilexer.egg-info/*
 assets/images/fotos/*
 !assets/images/fotos/default.png
 
+## DB files
+db/*

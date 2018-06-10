@@ -5,6 +5,7 @@
   $form_attributes = array(
                 'id' => 'form_configuraciones'
                 ,'class' => 'form-horizontal'
+                ,'autocomplete' => 'off'
                   );
   echo form_open($form_action,$form_attributes);
 ?>
@@ -68,6 +69,26 @@
         <div class="col-md-10">
           <?php
             echo form_dropdown('camara',array('t' =>'Obligatorio','f' => 'No requerido'),$camara,array('class' => 'form-control'));
+          ?>
+        </div>  
+      </div>
+      <div class="form-group">
+        <label for="hora_inicio" class="control-label col-md-2">Hora Inicio:</label>
+        <div class="col-md-4">
+          <?php
+            echo form_input('hora_inicio'
+              ,$hora_inicio
+              ,array('class' => 'form-control','id'=>'hora_inicio','readonly'=>'readonly'));
+            echo form_error('hora_inicio');
+          ?>
+        </div> 
+        <label for="hora_fin" class="control-label col-md-2">Hora Fin:</label>
+        <div class="col-md-4">
+          <?php
+            echo form_input('hora_fin'
+              ,$hora_fin
+              ,array('class' => 'form-control','id'=>'hora_fin','readonly'=>'readonly'));
+            echo form_error('hora_fin');
           ?>
         </div>  
       </div>

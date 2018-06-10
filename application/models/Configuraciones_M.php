@@ -14,9 +14,16 @@ class Configuraciones_M extends CI_Model {
 	 * @return [type]         [description]
 	 */
 	function consultar_lista($opcion=null){
-		if(is_null($opcion)){$query=$this->db->order_by('id_configuracion','ASC')->get('seguridad.configuraciones')->result_array();
-		}elseif($opcion){$query=$this->db->order_by('id_configuracion','ASC')->get_where('seguridad.configuraciones',array('estatus'=>'t'))->result_array();
-		}else{$query=$this->db->order_by('id_configuracion','ASC')->get_where('seguridad.configuraciones',array('estatus'=>'f'))->result_array();}
+
+		$query = $this->db->select("a.id_configuracion, a.tema_template"
+							.", a.tiempo_max_inactividad, a.tiempo_max_alerta"
+							.", a.tiempo_max_espera, a.estatus, a.camara"
+							.", a.hora_inicio, a.hora_fin"
+							.", (a.hora_fin - a.hora_inicio)::INTERVAL AS duracion_jornada");
+
+		if(is_null($opcion)){$query=$this->db->order_by('a.id_configuracion','ASC')->get('seguridad.configuraciones AS a')->result_array();
+		}elseif($opcion){$query=$this->db->order_by('a.id_configuracion','ASC')->get_where('seguridad.configuraciones AS a',array('a.estatus'=>'t'))->result_array();
+		}else{$query=$this->db->order_by('a.id_configuracion','ASC')->get_where('seguridad.configuraciones AS a',array('a.estatus'=>'f'))->result_array();}
 		return $query;
 	}
 
@@ -27,7 +34,14 @@ class Configuraciones_M extends CI_Model {
 	 */
 	function consultar_configuracion($id=null)
 	{
-		$query = $this->db->get_where("seguridad.configuraciones",array('id_configuracion'=>$id))->result_array();
+		$query = $this->db->select("a.id_configuracion, a.tema_template"
+							.", a.tiempo_max_inactividad, a.tiempo_max_alerta"
+							.", a.tiempo_max_espera, a.estatus, a.camara"
+							.", a.hora_inicio, a.hora_fin"
+							.", (a.hora_fin - a.hora_inicio)::INTERVAL AS duracion_jornada")
+					->get_where("seguridad.configuraciones AS a"
+						,array('a.id_configuracion'=>$id))
+					->result_array();
 		if(count($query)>0) return $query[0];
 		return NULL;
 	}
