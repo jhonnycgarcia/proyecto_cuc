@@ -80,7 +80,7 @@ foreach ($datos as $key => $value) {
 			,''
 			,array(
 				'showHeadings' => 1
-				,'shadeHeadingCol'=> array($r,$g,$b)
+				,'shadeHeadingCol'=> array($r,$g,$b),
 				'xOrientation' => 'centre',
 				'fontSize' => 7,
 				'gridlines'=> EZ_GRIDLINE_DEFAULT,

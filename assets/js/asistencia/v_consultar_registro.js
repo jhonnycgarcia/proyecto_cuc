@@ -110,36 +110,20 @@ function consultar_registro(_id_registro){
 			+"<b>Apellidos y Nombres:</b> <span>"+data.apellidos_nombres+"</span><br>"
 			+"<b>Fecha:</b> <span>"+data.fecha+"</span><br>"
 			+"<b>Hora:</b> <span>"+data.hora+"</span><br>"
-			+"<b>Tipo Registro:</b> <span>"+data.tipo_registro+"</span><br>"
-			+"<b>Imagen:</b> <span>S/R</span><br>";
+			+"<b>Tipo Registro:</b> <span>"+data.tipo_registro+"</span><br>";
 
 		if( data !== null){
-			if( data.imagen == null ){ 
-				swal({
-					allowOutsideClick : false,
-					allowEscapeKey  :false,
-					allowEnterKey : false,
-					title: '<b>Detalles</b>',
-					html: _html,
-					showCloseButton: true,
-					showCancelButton: false,
-					focusConfirm: false,
-					confirmButtonText:
-					'Aceptar',
-					confirmButtonAriaLabel: 'Aceptar',
-				});
-			}else{
-				swal({
-					title: '<b>Detalles</b>',
-					html: _html,
-					imageUrl: data.imagen,
-					imageWidth: 400,
-					imageHeight: 200,
-					imageAlt: 'Custom image',
-					animation: false
-				});
-			}
-
+			var _foto =  _base_url+'/assets/images/fotos/default.png';
+			if( data.imagen !== null ){ _foto = data.imagen; }
+			swal({
+				title: '<b>Detalles</b>',
+				html: _html,
+				imageUrl: _foto,
+				imageWidth: 400,
+				imageHeight: 200,
+				imageAlt: 'Custom image',
+				animation: false
+			});
 		}else{
 			swal({
 				type: 'error',
@@ -263,11 +247,10 @@ $(document).ready(function() {
 		_form.form();
 	});
 
-	$("#limpiar").appendTo("#list_filter").removeClass('hidden').attr('disabled', 'disabled');
+
 	$("#limpiar").on('click', function(event) {
-		event.preventDefault();
 		$("#fecha").val('');
-		$("#fecha").datepicker('clearDates');
+		_fecha_consulta.datepicker('update');
 		gestion_elemento("fecha",true);
 		$("#fecha").focus();
 		gestion_elemento("limpiar",false);
@@ -285,10 +268,43 @@ $(document).ready(function() {
 		}
 	});
 
-	$("#fecha").datepicker({autoclose: true
+	var _fecha_consulta = $("#fecha").datepicker({autoclose: true
 				,language:'es'
 				,format: 'dd/mm/yyyy'
-				,daysOfWeekDisabled:'[0,6]'
+				// ,daysOfWeekDisabled:'[0,6]'
 	 			,todayHighlight : true});
-	
+
+	$("#list").DataTable({
+		    	"oLanguage": { 
+					"oPaginate": { 
+								"sPrevious": "Anterior", 
+								"sNext": "Siguiente", 
+								"sLast": "Ultima", 
+								"sFirst": "Primera" 
+					}, 
+					"sLengthMenu": 'Mostrar <select class="form-control input-sm" >'+ 
+									'<option value="10">10</option>'+ 
+									'<option value="20">20</option>'+ 
+									'<option value="30">30</option>'+ 
+									'<option value="40">40</option>'+ 
+									'<option value="50">50</option>'+ 
+									'<option value="-1">Todos</option>'+ 
+									'</select> registros',
+
+					"sInfo": "Mostrando del _START_ a _END_ (Total: _TOTAL_ resultados)", 
+
+					"sInfoFiltered": " - filtrados de _MAX_ registros", 
+
+					"sInfoEmpty": "No hay resultados de búsqueda", 
+
+					"sZeroRecords": "No hay registros a mostrar", 
+
+					"sProcessing": "Espere, por favor...", 
+
+					"sSearch": "Buscar: ", 
+
+				} 
+	});
+	$("#limpiar").appendTo("#list_filter").removeClass('hidden').attr('disabled', 'disabled');
+
 });

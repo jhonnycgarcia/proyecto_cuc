@@ -55,6 +55,9 @@
 <script src="<?= base_url('assets/AdminLTE/plugins/fastclick/fastclick.js'); ?>"></script>
 <!-- IdLetimer Js -->
 <script src="<?= base_url('assets/jquery-idletimer/dist/idle-timer.js'); ?>"></script>
+<!-- SweetAlert2 JS -->
+<script src="<?= base_url('assets/sweetalert2/sweetalert2.all.js'); ?>"></script>
+
 <!-- IdLetimer Config Js -->
 <!-- <script src="<?= base_url('assets/js/template/v_login.js'); ?>"></script> -->
 <!-- Config Template -->

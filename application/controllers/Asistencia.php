@@ -68,7 +68,7 @@ class Asistencia extends CI_Controller {
 			if( !empty( $_POST['observaciones'] ) ) $datos['observaciones'] = $this->input->post('observaciones');
 
 			if( $configuracion['camara'] == 't'){$datos['imagen'] = $this->input->post('img');}
-			
+
 			$add = $this->Asistencia_M->registrar_asistencia($datos);
 			if( $add ){
 				$mensaje_modal =	array(
@@ -195,14 +195,11 @@ class Asistencia extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'DatePicker Languaje JS','path' => base_url('assets/AdminLTE/plugins/datepicker/locales/bootstrap-datepicker.es.js'), 'ext' =>'js');
 		$datos['e_header'][] = array('nombre' => 'DatePicker CSS','path' => base_url('assets/AdminLTE/plugins/datepicker/datepicker3.css'), 'ext' =>'css');
 
-
 		$datos['e_footer'][] = array('nombre' => 'WickedPicker Timer JS','path' => base_url('assets/wickedpicker/src/wickedpicker.js'), 'ext' =>'js');
 		$datos['e_header'][] = array('nombre' => 'WickedPicker Timer JS','path' => base_url('assets/wickedpicker/stylesheets/wickedpicker.css'), 'ext' =>'css');
 
-
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
-
 
 		$datos['e_footer'][] = array('nombre' => 'Config Form JS','path' => base_url('assets/js/asistencia/v_asistencia_manual_form.js'), 'ext' =>'js');
 
@@ -239,7 +236,7 @@ class Asistencia extends CI_Controller {
 			$datos['tipo_registro'] = $this->input->post('tipo_registro');
 			$datos['manual'] = true;
 
-			if( $configuracion['camara'] == 't'){$datos['imagen'] = $this->input->post('img');}
+			if( $configuracion['camara'] == 't'){$datos['imagen'] = $this->input->post('imagen');}
 
 			$check_day = $this->Asistencia_M->validar_registro_manual_fecha($datos['trabajador_id'],$datos['fecha'],$datos['tipo_registro']);
 			if(!$check_day){
@@ -280,7 +277,6 @@ class Asistencia extends CI_Controller {
 
 		$datos['e_footer'][] = array('nombre' => 'DataTable JS','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
-		$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
 
 		$datos['e_footer'][] = array('nombre' => 'DatePicker JS','path' => base_url('assets/AdminLTE/plugins/datepicker/bootstrap-datepicker.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DatePicker Languaje JS','path' => base_url('assets/AdminLTE/plugins/datepicker/locales/bootstrap-datepicker.es.js'), 'ext' =>'js');
@@ -289,8 +285,6 @@ class Asistencia extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Additional Method','path' => base_url('assets/jqueryvalidate/dist/additional-methods.js'), 'ext' =>'js');
-
-		$datos['e_footer'][] = array('nombre' => 'SweetAlert JS','path' => base_url('assets/sweetalert2/sweetalert2.all.js'), 'ext' =>'js');
 		
 		$datos['e_footer'][] = array('nombre' => 'Config Form JS','path' => base_url('assets/js/asistencia/v_consultar_registro.js'), 'ext' =>'js');
 

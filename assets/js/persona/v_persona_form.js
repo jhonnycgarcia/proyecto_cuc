@@ -9,18 +9,18 @@ $(document).ready(function() {
 			p_apellido : {
 				required : true,
 				minlength : 3,
-				lettersonly : true
+				// lettersonly : true
 			},
 			s_apellido : {
-				lettersonly : true
+				// lettersonly : true
 			},
 			p_nombre : {
 				required : true,
 				minlength : 3,
-				lettersonly : true
+				// lettersonly : true
 			},
 			s_nombre : {
-				lettersonly : true
+				// lettersonly : true
 			},
 			cedula : {
 				required : true,

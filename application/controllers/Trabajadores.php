@@ -30,7 +30,6 @@ class Trabajadores extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
 
-		$datos['e_footer'][] = array('nombre' => 'SweetAlert JS','path' => base_url('assets/sweetalert2/sweetalert2.all.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/trabajadores/v_trabajadores_lista_activos.js'), 'ext' =>'js');
 
 		$this->template_lib->render($datos);
@@ -96,8 +95,6 @@ class Trabajadores extends CI_Controller {
 			$datos['e_footer'][] = array('nombre' => 'DatePicker JS','path' => base_url('assets/AdminLTE/plugins/datepicker/bootstrap-datepicker.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'DatePicker Languaje JS','path' => base_url('assets/AdminLTE/plugins/datepicker/locales/bootstrap-datepicker.es.js'), 'ext' =>'js');
 			$datos['e_header'][] = array('nombre' => 'DatePicker CSS','path' => base_url('assets/AdminLTE/plugins/datepicker/datepicker3.css'), 'ext' =>'css');
-
-			$datos['e_footer'][] = array('nombre' => 'SweetAlert JS','path' => base_url('assets/sweetalert2/sweetalert2.all.js'), 'ext' =>'js');
 
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/trabajadores/v_trabajadores_ingreso_form.js'), 'ext' =>'js');
 
@@ -226,7 +223,6 @@ class Trabajadores extends CI_Controller {
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
 
-			$datos['e_footer'][] = array('nombre' => 'SweetAlert JS','path' => base_url('assets/sweetalert2/sweetalert2.all.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/trabajadores/v_trabajadores_egreso_form.js'), 'ext' =>'js');
 
 			$datos['e_footer'][] = array('nombre' => 'DatePicker JS','path' => base_url('assets/AdminLTE/plugins/datepicker/bootstrap-datepicker.js'), 'ext' =>'js');
@@ -366,8 +362,6 @@ class Trabajadores extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'DataTable JS','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
-
-		$datos['e_footer'][] = array('nombre' => 'SweetAlert JS','path' => base_url('assets/sweetalert2/sweetalert2.all.js'), 'ext' =>'js');
 
 		$this->template_lib->render($datos);
 	}

@@ -26,7 +26,6 @@ class Persona extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'DataTable BootStrap CSS','path' => base_url('assets/AdminLTE/plugins/datatables/dataTables.bootstrap.min.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'DataTable Language ES','path' => base_url('assets/AdminLTE/plugins/datatables/jquery.dataTables.es.js'), 'ext' =>'js');
 
-		$datos['e_footer'][] = array('nombre' => 'SweetAlert JS','path' => base_url('assets/sweetalert2/sweetalert2.all.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/persona/v_persona_lista.js'), 'ext' =>'js');
 
 		$this->template_lib->render($datos);
@@ -279,8 +278,6 @@ class Persona extends CI_Controller {
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/persona/v_persona_actualizar_form.js'), 'ext' =>'js');
 			
 			$datos['e_header'][] = array('nombre' => 'DatePicker CSS','path' => base_url('assets/AdminLTE/plugins/datepicker/datepicker3.css'), 'ext' =>'css');
-
-			$datos['e_footer'][] = array('nombre' => 'SweetAlert JS','path' => base_url('assets/sweetalert2/sweetalert2.all.js'), 'ext' =>'js');
 
 			$this->template_lib->render($datos);
 		}

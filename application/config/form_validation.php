@@ -424,7 +424,7 @@
 								array(
 									'field' => 'img',
 									'label' => "<b>Imagen</b>",
-									'rules' => 'trim|required|strip_tags|xss_clean'
+									'rules' => 'trim|required'
 									),
 								array(
 									'field' => 'cedula',
@@ -490,7 +490,7 @@
 								array(
 									'field' => 'imagen',
 									'label' => "Imagen",
-									'rules' => 'trim|required|strip_tags|xss_clean'
+									'rules' => 'trim|required'
 									),
 								array(
 									'field' => 'hora',

@@ -1,8 +1,8 @@
 $(document).ready(function() {
-	var _form = $("#form_trabajadores");
+	
 	var _ansmerror = false;
 
-	_form.validate({
+	var _form = $("#form_trabajadores").validate({
 		rules : {
 			fecha_egreso : {
 				required : true,
@@ -11,6 +11,8 @@ $(document).ready(function() {
 			}
 		}
 	});
+	_form.form();
+
 
 	$("#form_trabajadores").on('submit',function(event) {
 		if( !_form.valid() && !_ansmerror){ 

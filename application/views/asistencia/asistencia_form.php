@@ -411,12 +411,14 @@
 				.removeAttr('data-info');
 
 		}else{
-			
-			limpiar_campos(); // limpiar campos del formulario
-			unlock_cedula(); // desbloquear cedula 
-			btn_lock('consultar',true); // desbloquear boton 
-			$('#mymodal').modal('toggle');
-			$("#mymodal").removeAttr('class').addClass(_defaul_class);
+			if ( $("#mymodal").hasClass('modal-warning') ) {
+				location.reload();
+			}else{
+				limpiar_campos(); // limpiar campos del formulario
+				btn_lock('consultar',true); // desbloquear boton 
+				$('#mymodal').modal('toggle');
+				$("#mymodal").removeAttr('class').addClass(_defaul_class);
+			}
 		}
 
 		// estado de la modal

@@ -89,7 +89,7 @@ class Reportes extends CI_Controller {
 
 		$datos['titulo_contenedor'] = 'Reportes';
 		$datos['titulo_descripcion'] = 'Consultar inasistencia';
-		$datos['contenido'] = 'reportes/consulta_asistencia_form';
+		$datos['contenido'] = 'reportes/consulta_inasistencia_form';
 
 		$datos['form_action'] = 'Reportes/registros_inasistencia';
 
@@ -100,7 +100,7 @@ class Reportes extends CI_Controller {
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
 
-		$datos['e_footer'][] = array('nombre' => 'Config Form JS','path' => base_url('assets/js/reportes/v_consultar_asistencia_form.js'), 'ext' =>'js');
+		$datos['e_footer'][] = array('nombre' => 'Config Form JS','path' => base_url('assets/js/reportes/v_consultar_inasistencia_form.js'), 'ext' =>'js');
 
 		$this->template_lib->render($datos);
 	}

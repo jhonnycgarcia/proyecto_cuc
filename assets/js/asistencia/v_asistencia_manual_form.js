@@ -140,7 +140,7 @@
 			$("#fecha").datepicker({autoclose: true
 				,language:'es'
 				,format: 'dd/mm/yyyy'
-				,daysOfWeekDisabled:'[0,6]'
+				// ,daysOfWeekDisabled:'[0,6]'
 	 			,todayHighlight : true});
 
 			$("#hora").wickedpicker({
@@ -203,9 +203,7 @@
 				.removeAttr('data-info');
 
 		}else{
-			
 			limpiar_campos(); // limpiar campos del formulario
-			desbloquear_campo('cedula');
 			desbloquear_campo('consultar');
 			$('#mymodal').modal('toggle');
 			$("#mymodal").removeAttr('class').addClass(_defaul_class);
@@ -345,6 +343,7 @@
 			show_modal(_mensaje.clase, _mensaje.titulo, _mensaje.mensaje);
 			$('#mymodal').one('hidden.bs.modal', function (e) {
 				if( _configuracion.camara == 't'){ 
+					bloquear_campo('cedula');
 					sayCheese.start(); 
 				}else{
 					desbloquear_campo('cedula');

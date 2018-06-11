@@ -14,7 +14,7 @@
     <div class="form-group ">
       <label for="fechas" class="control-label col-md-2">Fechas:</label>
       <div class="col-md-10">
-        <input type="text" name="fecha" id="fecha" class="form-control" value="">
+        <input type="text" name="fecha" id="fecha" class="form-control" value="" readonly="readonly">
       </div>
     </div>
           <!-- Alerta -->
