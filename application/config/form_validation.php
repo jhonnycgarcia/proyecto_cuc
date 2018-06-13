@@ -353,6 +353,11 @@
 									'field' => 'tiempo_max_espera',
 									'label' => '<b>Tiempo maximo de espera</b>',
 									'rules' => 'trim|required|strip_tags|xss_clean|min_length[4]|is_natural_no_zero'
+									),
+								array(
+									'field' => 'dias_laborales[]',
+									'label' => '<b>Dias Laborales</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|is_natural_no_zero'
 									)
 							),
 			'Configuraciones/validar_editar' => array(
@@ -370,6 +375,11 @@
 									'field' => 'tiempo_max_espera',
 									'label' => '<b>Tiempo maximo de espera</b>',
 									'rules' => 'trim|required|strip_tags|xss_clean|min_length[4]|is_natural_no_zero'
+									),
+								array(
+									'field' => 'dias_laborales[]',
+									'label' => '<b>Dias Laborales</b>',
+									'rules' => 'trim|required|strip_tags|xss_clean|is_natural_no_zero'
 									)
 							),
 // -----------------------------------------------------------------------------------------------------------

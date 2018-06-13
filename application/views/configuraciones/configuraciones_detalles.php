@@ -57,6 +57,30 @@
       <div class="col-md-offset-1 col-md-1"><b>Duración:</b></div>
       <div class="col-md-1"><?=$configuracion['duracion_jornada'];?></div>
     </div>
+    <br>
+    <div class="row">
+      <div class="col-md-offset-1 col-md-2"><b>Dias Laborales:</b></div>
+      <ul class="list-inline">
+      <?php
+        $f_dias_laborales = array(
+          '0' => 'Domingo'
+          ,'1' => 'Lunes'
+          ,'2' => 'Martes'
+          ,'3' => 'Miercoles'
+          ,'4' => 'Jueves'
+          ,'5' => 'Viernes'
+          ,'6' => 'Sabado'
+        );
+        foreach ($configuracion['dias_laborales'] as $key_d => $value_d) {
+          foreach ($f_dias_laborales as $key_fd => $value_fd) {
+            if( $value_d == $key_fd){ ?>
+        <li><span class="label label-success"><?=$value_fd;?></span></li>
+      <?php }
+          }
+        }
+      ?>
+      </ul>
+    </div>
     <p class="divider"></p>
 
 

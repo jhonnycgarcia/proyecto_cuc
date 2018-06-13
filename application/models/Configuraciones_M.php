@@ -38,11 +38,15 @@ class Configuraciones_M extends CI_Model {
 							.", a.tiempo_max_inactividad, a.tiempo_max_alerta"
 							.", a.tiempo_max_espera, a.estatus, a.camara"
 							.", a.hora_inicio, a.hora_fin"
-							.", (a.hora_fin - a.hora_inicio)::INTERVAL AS duracion_jornada")
+							.", (a.hora_fin - a.hora_inicio)::INTERVAL AS duracion_jornada"
+							.", dias_laborales")
 					->get_where("seguridad.configuraciones AS a"
 						,array('a.id_configuracion'=>$id))
 					->result_array();
-		if(count($query)>0) return $query[0];
+		if(count($query)>0){
+			$query[0]['dias_laborales'] = explode(',',$query[0]['dias_laborales']);
+			return $query[0];
+		} 
 		return NULL;
 	}
 
@@ -53,6 +57,7 @@ class Configuraciones_M extends CI_Model {
 	 */
 	function agregar_configuracion($datos){
 		unset($datos['id_configuracion']);
+		$datos['dias_laborales'] = implode(',', $datos['dias_laborales']);
 		$query = $this->db->insert("seguridad.configuraciones",$datos);
 		return $query;
 	}
@@ -64,6 +69,7 @@ class Configuraciones_M extends CI_Model {
 	 */
 	function editar_configuracion($datos){
 		$id_configuracion = array_pop($datos);
+		$datos['dias_laborales'] = implode(',', $datos['dias_laborales']);
 		$query = $this->db->where('id_configuracion',$id_configuracion)
 						->update("seguridad.configuraciones",$datos);
 		return $query;

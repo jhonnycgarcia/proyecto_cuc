@@ -47,6 +47,10 @@ $(document).ready(function() {
 			hora_fin : {
 				required : true
 				,TimeBiggerTo : "#hora_inicio"
+			},
+			dias_laborales : {
+				required : true
+				,minlength : 1
 			}
 		}
 	});

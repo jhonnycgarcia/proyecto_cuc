@@ -69,6 +69,7 @@
         <div class="col-md-10">
           <?php
             echo form_dropdown('camara',array('t' =>'Obligatorio','f' => 'No requerido'),$camara,array('class' => 'form-control'));
+            echo form_error('camara');
           ?>
         </div>  
       </div>
@@ -91,6 +92,26 @@
             echo form_error('hora_fin');
           ?>
         </div>  
+      </div>
+      <div class="form-group">
+        <label for="dias_laborales" class="control-label col-md-2">Dias Laborales:</label>
+        <div class="col-md-10">
+          <?php
+            echo form_multiselect('dias_laborales[]'
+              ,array(
+                '0' =>'Domingo'
+                ,'1' =>'Lunes'
+                ,'2' =>'Martes'
+                ,'3' =>'Miercoles'
+                ,'4' =>'Jueves'
+                ,'5' =>'Viernes'
+                ,'6' => 'Sabado')
+              ,$dias_laborales
+              ,array('class' => 'form-control')
+            );
+            echo form_error('dias_laborales[]');
+          ?>
+        </div>
       </div>
       <div>
         <?= form_hidden('id_configuracion',$id_configuracion);?>

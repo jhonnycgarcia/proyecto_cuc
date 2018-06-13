@@ -82,6 +82,7 @@ class Configuraciones extends CI_Controller {
 		$datos['camara'] = set_value('camara');
 		$datos['hora_inicio'] = set_value('hora_inicio');
 		$datos['hora_fin'] = set_value('hora_fin');
+		$datos['dias_laborales'] = set_value('dias_laborales');
 		$datos['id_configuracion'] = set_value('id_configuracion');
 
 		$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
@@ -148,8 +149,9 @@ class Configuraciones extends CI_Controller {
 			$datos['camara'] = set_value('camara',$configuracion['camara']);
 			$datos['hora_inicio'] = set_value('hora_inicio',$configuracion['hora_inicio']);
 			$datos['hora_fin'] = set_value('hora_fin',$configuracion['hora_fin']);
+			$datos['dias_laborales'] = set_value('dias_laborales',$configuracion['dias_laborales']);
 			$datos['id_configuracion'] = set_value('id_configuracion',$configuracion['id_configuracion']);
-
+			
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate','path' => base_url('assets/jqueryvalidate/dist/jquery.validate.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Language ES','path' => base_url('assets/jqueryvalidate/dist/localization/messages_es.js'), 'ext' =>'js');
 			$datos['e_footer'][] = array('nombre' => 'jQuery Validate Function','path' => base_url('assets/js/configuraciones/v_configuraciones_editar_form.js'), 'ext' =>'js');
