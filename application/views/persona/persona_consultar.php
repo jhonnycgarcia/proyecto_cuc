@@ -1,6 +1,22 @@
 <div class="box box-default"> 
   <div class="box-header with-border"> <!-- Box-Header -->
-    <h4>Datos Personales</h4>
+    <div class="col-md-12">
+      <h4>Datos Personales 
+
+      <?php 
+        $id_usuario = $this->session->userdata('id_usuario');
+        $metodo = 'Reportes/consultar_persona_informe';
+        if( $this->seguridad_lib->validar_acceso_metodo($id_usuario,$metodo,false) ){
+      ?>
+        <span class="label">
+          <button type="button" class="btn btn-default btn-sm" id="btn_informe" data-worker="<?=$this->seguridad_lib->execute_encryp($datos['id_dato_personal'],'encrypt','Persona');?>">
+            <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Informe
+          </button>
+        </span>
+      <?php } ?>
+      
+      </h4>
+    </div>
   </div> <!-- /Box-Header -->
   <div class="box-body"> <!-- Box-Body -->
 

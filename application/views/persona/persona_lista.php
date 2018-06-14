@@ -1,6 +1,13 @@
 <div class="box box-default"> 
   <div class="box-body"> <!-- Box-Body -->
-  <?php echo anchor('Persona/agregar/','<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>',array('class'=>'btn btn-primary btn-sm col-md-offset-1','id'=>'btn_add'));?>
+  <?php 
+    $id_usuario = $this->session->userdata('id_usuario');
+    $metodo = 'Persona/agregar';
+
+    if( $this->seguridad_lib->validar_acceso_metodo($id_usuario,$metodo,false) ){
+      echo anchor('Persona/agregar/','<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>',array('class'=>'btn btn-primary btn-sm col-md-offset-1','id'=>'btn_add'));
+    }
+  ?>
   
   <div class="table-responsive">
     <table class="table table-striped table-hover table-bordered" id="list">
@@ -47,16 +54,28 @@
 
               <ul class="dropdown-menu" rle="menu" aria-labelledby="dropdown_menu<?= $i; ?>">
                 <li role="presentation"><?= anchor( site_url('Persona/consultar/'.$id),"Consultar",array("role" =>"item")  )?></li>
+
+                <?php 
+                  $metodo = 'Persona/editar';
+                  if( $this->seguridad_lib->validar_acceso_metodo($id_usuario,$metodo,false) ){ ?>
                 <li role="presentation"><?= anchor( site_url('Persona/editar/'.$id),"Editar",array("role" =>"item")  )?></li>
+                <?php } ?>
+
                 <?php
-                  if( $value['estatus']  !== 't'){
+                  $metodo = 'Trabajadores/ingresar';
+                  if( $value['estatus']  !== 't' && $this->seguridad_lib->validar_acceso_metodo($id_usuario,$metodo,false) ){
                 ?>
                 <li role="presentation"><?= anchor( site_url('Trabajadores/ingresar/'.$id),"Ingresar",array("role" =>"item","data"=>'ingresar')  )?></li>
-                <!-- <li role="presentation"><?= anchor( site_url('Trabajadores/ingresar/'.$id),"Ingresar",array("role" =>"item", "onclick" => "javasciprt: return confirm('¿Desea ingresarlo como trabajador?');")  )?></li> -->
                 <?php
                   }
                 ?>
+
+                <?php 
+                  $metodo = 'Persona/eliminar';
+                  if( $this->seguridad_lib->validar_acceso_metodo($id_usuario,$metodo,false) ){ ?>
                 <li role="presentation"><?= anchor( site_url('Persona/eliminar/'.$id),"Eliminar",array("data"=>"eliminar","role" =>"item")  )?></li>
+                <?php } ?>
+
               </ul>
             </div>
           </td>

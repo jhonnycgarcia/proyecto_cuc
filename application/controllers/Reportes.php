@@ -204,4 +204,27 @@ class Reportes extends CI_Controller {
 		}
 	}
 
+	public function consultar_persona_informe($id = NULL)
+	{
+		$this->seguridad_lib->acceso_metodo(__METHOD__);
+		
+		$id  = $this->seguridad_lib->execute_encryp($id,'decrypt',"Persona");
+		$this->load->model('Persona_M');
+		$persona = $this->Persona_M->consultar_persona($id);
+		if(is_null($persona)){
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se encontro el registro deseado, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect("Persona");
+		}else{
+			$this->load->model('Trabajadores_M');
+			$persona += array(
+				'historial'=> $this->Trabajadores_M->obtener_historial_trabajador($persona['id_dato_personal'])
+			);
+			$this->load->view("reportes/reporte_persona_informe",array("datos"=>$persona));
+		}
+	}
+
 }

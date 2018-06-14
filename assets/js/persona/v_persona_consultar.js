@@ -29,4 +29,9 @@ $(document).ready(function() {
 				}
 		,"lengthMenu": [3,5]
 	});
+
+	$("#btn_informe").on('click', function(event) {
+		var _id = $(this).attr('data-worker');
+		window.open(_base_url+'Reportes/consultar_persona_informe/'+_id,'Informe Personal');
+	});
 });

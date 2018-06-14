@@ -95,7 +95,8 @@ class Trabajadores_M extends CI_Model {
 	 */
 	function obtener_historial_trabajador($id_persona)
 	{
-		$query = $this->db->select("a.id_trabajador ,a.dato_personal_id, b.cedula"
+		$query = $this->db->select("ROW_NUMBER() OVER (ORDER BY a.fecha_egreso DESC) AS nro"
+							.",  a.id_trabajador ,a.dato_personal_id, b.cedula"
 							.", CONCAT(b.p_apellido,' ',b.p_nombre) AS apellido_nombre"
 							.", a.condicion_laboral_id, c.condicion_laboral"
 							.", a.coordinacion_id, d.coordinacion"
