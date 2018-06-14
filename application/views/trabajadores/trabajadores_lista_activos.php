@@ -1,6 +1,15 @@
 <div class="box box-default"> 
   <div class="box-body"> <!-- Box-Body -->
-  
+    <?php
+      $id_usuario = $this->session->userdata('id_usuario');
+      $metodo = 'Reportes/reporte_general_trabajadores';
+    if( $this->seguridad_lib->validar_acceso_metodo($id_usuario,$metodo,false) ){ 
+    ?>
+    <button type="button" id="btn_informe" class="btn btn-default btn-sm">
+            <span class="glyphicon glyphicon-list" aria-hidden="true"></span> Listado General
+    </button>
+    <?php } ?>
+
   <div class="table-responsive">
     <table class="table table-striped table-hover table-bordered" id="list">
       <thead>
@@ -44,9 +53,20 @@
 
               <ul class="dropdown-menu" rle="menu" aria-labelledby="dropdown_menu<?= $i; ?>">
                 <li role="presentation"><?= anchor( site_url('Trabajadores/detalles/'.$id),"Detalles",array("role" =>"item")  )?></li>
+
+                <?php 
+                  
+                  $metodo = 'Trabajadores/editar';
+                  if( $this->seguridad_lib->validar_acceso_metodo($id_usuario,$metodo,false) ){ ?>
                 <li role="presentation"><?= anchor( site_url('Trabajadores/editar/'.$id),"Editar",array("role" =>"item")  )?></li>
+                <?php } ?>
+    
+                <?php 
+                  $metodo = 'Trabajadores/egresar';
+                  if( $this->seguridad_lib->validar_acceso_metodo($id_usuario,$metodo,false) ){ ?>
                 <li role="presentation"><?= anchor( site_url('Trabajadores/egresar/'.$id),"Egresar",array("role" =>"item","data"=>"egresar")  )?></li>
-                <!-- <li role="presentation"><?= anchor( site_url('Trabajadores/egresar/'.$id),"Egresar",array("role" =>"item","onclick" => "javasciprt: return confirm('¿Esta seguro que desea egresar al trabajador seleccionado?');")  )?></li> -->
+                <?php } ?>
+
               </ul>
             </div>
           </td>

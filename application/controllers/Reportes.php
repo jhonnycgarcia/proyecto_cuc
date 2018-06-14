@@ -204,10 +204,15 @@ class Reportes extends CI_Controller {
 		}
 	}
 
+	/**
+	 * Funcion para generar informe detallado de una persona
+	 * @param  INTEGER $id [description]
+	 * @return [type]     [description]
+	 */
 	public function consultar_persona_informe($id = NULL)
 	{
 		$this->seguridad_lib->acceso_metodo(__METHOD__);
-		
+
 		$id  = $this->seguridad_lib->execute_encryp($id,'decrypt',"Persona");
 		$this->load->model('Persona_M');
 		$persona = $this->Persona_M->consultar_persona($id);
@@ -225,6 +230,50 @@ class Reportes extends CI_Controller {
 			);
 			$this->load->view("reportes/reporte_persona_informe",array("datos"=>$persona));
 		}
+	}
+
+	/**
+	 * Funcion para generar un reporte general de todos los trabajadores organizado desde direcciones, coordinaciones y trabajadores
+	 * @return [type] [description]
+	 */
+	public function reporte_general_trabajadores()
+	{
+		$this->seguridad_lib->acceso_metodo(__METHOD__);
+
+		$this->load->model(array('Direccion_M','Coordinacion_M','Trabajadores_M'));
+		$direcciones = $this->Direccion_M->obtener_todos(TRUE);
+		if( count($direcciones) > 0){
+			foreach ($direcciones as $key_dir => $value_dir) {
+				$direcciones[$key_dir] += array('coordinaciones'=>NULL
+										, 'nro_coordinaciones'=>0
+										, 'nro_trabajadores_total'=>0);
+
+				$coordinaciones = $this->Coordinacion_M->obtener_coordinaciones_por_direcciones($value_dir['id_direccion'],TRUE);
+				if(count($coordinaciones)>0){
+					$direcciones[$key_dir]['nro_coordinaciones'] = $direcciones[$key_dir]['nro_coordinaciones'] + count($coordinaciones);
+					foreach ($coordinaciones as $key_cor => $value_cor) {
+						$coordinaciones[$key_cor] += array('trabajadores' => NULL, 'nro_trabajadores' => 0);
+						$trabajadores = $this->Trabajadores_M->obtener_trabajadores_por_coordinacion($value_cor['id_coordinacion']);
+						$coordinaciones[$key_cor]['trabajadores'] =  $trabajadores;
+						$coordinaciones[$key_cor]['nro_trabajadores'] = $coordinaciones[$key_cor]['nro_trabajadores']+count($trabajadores);
+						$direcciones[$key_dir]['nro_trabajadores_total'] = $direcciones[$key_dir]['nro_trabajadores_total']+count($trabajadores);
+					}
+				}
+
+				$direcciones[$key_dir]['coordinaciones'] = $coordinaciones;
+				// var_export($direcciones[$key_dir]);echo "<br><br>";
+			}
+			// exit();
+			$this->load->view('reportes/reporte_trabajadores_general',array('datos'=>$direcciones));
+		}else{
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se encontraron registros de trabajadores';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect("Trabajadores");
+		}
+
 	}
 
 }

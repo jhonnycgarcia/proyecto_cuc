@@ -18,6 +18,7 @@ class Seguridad_M extends CI_Model {
 	}
 
 	function verificar_acceso($id_rol_usuario,$id_menu){
+		if( is_null($id_rol_usuario) || is_null($id_menu) ) return FALSE;
 		$query = $this->db->get_where('seguridad.roles_menus AS a', 
 			array('a.rol_id' => $id_rol_usuario, 'a.menu_id' => $id_menu ) 
 			)->result_array();
@@ -30,8 +31,10 @@ class Seguridad_M extends CI_Model {
 							->from('seguridad.menus AS a')
 							->where('a.estatus','t')
 								->like('a.link',$metodo,'both')
+							->limit(1)
 							->get()->result_array();
-		return $query[0]['id_menu'];
+		if(count($query)>0) return $query[0]['id_menu'];
+		return NULL;
 	}
 
 	function obtener_rol_usuario($id_usuario){

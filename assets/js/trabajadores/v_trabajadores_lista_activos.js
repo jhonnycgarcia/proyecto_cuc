@@ -24,4 +24,9 @@ $(document).ready(function() {
 		});
 	});
 
+	$("#btn_informe").appendTo("#list_filter");
+	$("#btn_informe").on('click',  function(event) {
+		window.open(_base_url+'Reportes/reporte_general_trabajadores','_blank');
+	});
+
 });

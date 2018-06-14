@@ -47,6 +47,42 @@ class Trabajadores_M extends CI_Model {
 	}
 
 	/**
+	 * Funcion para obtener el listado de trabajadores segun coordinacion
+	 * @param  integer $id_coordinacion [description]
+	 * @return [type]                  [description]
+	 */
+	function obtener_trabajadores_por_coordinacion($id_coordinacion = NULL){
+		if(is_null($id_coordinacion)) return NULL;
+		$condicion = array();
+		$condicion['d.id_coordinacion'] = $id_coordinacion;
+		$condicion['a.estatus'] = TRUE;
+		$condicion['b.estatus'] = TRUE;
+		$condicion['d.estatus'] = TRUE;
+		$condicion['f.estatus'] = TRUE;
+
+		$query = $this->db->select("ROW_NUMBER() OVER (ORDER BY b.p_apellido ASC) AS nro"
+							.", a.id_trabajador ,a.dato_personal_id, b.cedula"
+							.", CONCAT(b.p_apellido,' ',b.p_nombre) AS apellido_nombre"
+							.", a.condicion_laboral_id, c.condicion_laboral"
+							.", a.coordinacion_id, d.coordinacion"
+							.", d.direccion_id, f.direccion"
+							.", a.cargo_id, e.cargo"
+							.", to_char(a.fecha_ingreso,'DD/MM/YYYY') AS fecha_ingreso"
+							.", to_char(a.fecha_egreso,'DD/MM/YYYY') AS fecha_egreso"
+							.", a.estatus, a.asistencia_obligatoria")
+						->from("administrativo.trabajadores AS a")
+							->join("administrativo.datos_personales AS b","a.dato_personal_id = b.id_dato_personal")
+							->join("administrativo.condiciones_laborales AS c","a.condicion_laboral_id = c.id_condicion_laboral")
+							->join("administrativo.coordinaciones AS d","a.coordinacion_id = d.id_coordinacion")
+							->join("administrativo.cargos AS e","a.cargo_id = e.id_cargo")
+							->join("administrativo.direcciones AS f","d.direccion_id = f.id_direccion")
+						->where($condicion)
+						->get()->result_array();
+		if(count($query)>0) return $query;
+		return NULL;
+	}
+
+	/**
 	 * Funcion para obtener los datos de un registro de PERSONAS en especifico.
 	 * @param  [INTEGER] 			$id_dato_personal 		[ID del registro a consultar]
 	 * 

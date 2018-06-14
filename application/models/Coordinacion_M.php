@@ -28,6 +28,23 @@ class Coordinacion_M extends CI_Model {
 		return $query;
 	}
 
+	/**
+	 * Funcion para obtener listado de coordinaciones segun direccion
+	 * @param  INTEGER $id_direccion [description]
+	 * @param  BOOLEAN $estatus      [description]
+	 * @return ARRAY / NULL              [description]
+	 */
+	function obtener_coordinaciones_por_direcciones($id_direccion = NULL, $estatus = NULL){
+		$condicion = array();
+		if(is_null($id_direccion)) return NULL;
+		$condicion['direccion_id'] = $id_direccion;
+		$condicion['estatus'] = (!is_null($estatus) && is_bool($estatus) )?$estatus:NULL;
+		$query = $this->db->get_where('administrativo.coordinaciones',$condicion)
+					->result_array();
+		if(count($query)>0) return $query;
+		return NULL;
+	}
+
 	function agregar_coordinacion($datos){
 		unset($datos['id_coordinacion']);
 		$query = $this->db->insert('administrativo.coordinaciones',$datos);

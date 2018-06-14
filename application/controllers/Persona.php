@@ -326,7 +326,7 @@ class Persona extends CI_Controller {
 				$up = $this->Persona_M->editar_persona($datos);
 				if($up){ 
 					$merror['title'] = 'Registro Actualizado';
-					$merror['text'] = 'Se actualizaron los datos del registro de manera exitosa';
+					$merror['text'] = 'Se actualizaron los datos la persona de manera exitosa';
 					$merror['type'] = 'success';
 					$merror['confirmButtonText'] = 'Aceptar';
 					$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
