@@ -3,7 +3,23 @@
 
   <!-- Content Header (Page header) -->
   <section class="content-header">
-    <h1>
+
+    <?php
+      if( isset($titulo_contenedor) && !empty($titulo_contenedor) && !isset($titulo_descripcion) )
+      { ?>
+    <h1><?=$titulo_contenedor;?></h1>
+    <?php }elseif(
+      (isset($titulo_contenedor) && !empty($titulo_contenedor) )
+      AND ( isset($titulo_descripcion) && !empty($titulo_descripcion) )
+    )
+    { ?>
+    <h1><?=$titulo_contenedor;?><small><?=$titulo_descripcion;?></small></h1>
+    <?php }elseif ( !isset($titulo_contenedor) && isset($titulo_descripcion) && !empty($titulo_descripcion) ) 
+    { ?>
+    <h1><small><?=$titulo_descripcion;?></small></h1>
+    <?php } ?>
+
+<!--     <h1>
       <?php 
         // Imprimir titulo 
         echo ( isset($titulo_contenedor) && !is_null($titulo_contenedor) && !empty($titulo_contenedor) )
@@ -17,7 +33,7 @@
           :'';
       ?>
       </small>
-    </h1>
+    </h1> -->
 
 <!--     <ol class="breadcrumb">
       <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
@@ -42,4 +58,5 @@
   <!-- /.content -->
 
 </div>
-<!-- /.content-wrapper <!-- Content-Wrapper (Content Site) -->
+<!-- /.content-wrapper -->
+<!-- Content-Wrapper (Content Site) -->

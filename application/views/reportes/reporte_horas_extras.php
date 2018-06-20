@@ -168,10 +168,11 @@ foreach ($datos as $key => $value) {
 				,"observaciones" => "<b>JUSTIFICACION</b>"
 				,"hora_entrada" => "<b>ENTRADA</b>"
 				,"hora_salida" => "<b>SALIDA</b>"
+				,"horas_trabajadas" => "<b>TRABAJADAS</b>"
 				,"no_laborable" => "<b>NO LABORAL</b>"
-				,"horas_extras_diurnas" => "<b>DIURNAS</b>"
-				,"horas_extras_nocturnas" => "<b>NOCTURNAS</b>"
-				// ,"horas_extras" => "<b>EXTRAS</b>"
+				// ,"horas_extras_diurnas" => "<b>DIURNAS</b>"
+				// ,"horas_extras_nocturnas" => "<b>NOCTURNAS</b>"
+				,"horas_extras" => "<b>EXTRAS</b>"
 			)
 			,""
 			, array(
@@ -200,7 +201,7 @@ foreach ($datos as $key => $value) {
 								'justification' => 'center'
 								,'width' => 60
 							)
-					,"horas_extras_diurnas" => array(
+					,"horas_trabajadas" => array(
 								'justification' => 'center'
 								,'width' => 60
 							)
@@ -217,45 +218,45 @@ foreach ($datos as $key => $value) {
 		);
 	}
 
-	$row = array(
-			array("a" => "<b>SUB-TOTAL</b>","b" => $value['total_horas_extras_diurnas'],"c"=>$value['total_horas_extras_nocturnas'])
-			// ,array("a" => "<b>TOTAL HORAS NOCTURNAS</b>","b" => $value['total_horas_extras_nocturnas'])
-			// ,array("a" => "<b>TOTAL HORAS EXTRAS</b>","b" => $value['total_horas_extras'])
-	);
-	$pdf->ezTable(
-		$row
-		, array(
-			"a" => ""
-			,"b" => ""
-			,"c" => ""
-		)
-		,""
-		, array(
-			'showHeadings' => 0
-			,'xPos' => 461
-			,'titleFontSize' => 10
-			,'fontSize' => 7
-			,'width' => 550
-			,'gridlines'=> 27
-			,'maxWidth' => 550
-			,'cols' => array(
-				"a" => array(
-							'justification' => 'center'
-							,'width' => 120
-							,'bgcolor'=> array($r,$g,$b)
-							// ,'bgcolor'=> array(0.52,1.34,2.46)
-						)
-				,"b" => array(
-							'justification' => 'center'
-							,'width' => 60
-						)
-				,"c" => array(
-							'justification' => 'center'
-							,'width' => 60
-						)
-			)
-		)
-	);
+	// $row = array(
+	// 		array("a" => "<b>SUB-TOTAL</b>","b" => $value['total_horas_extras_diurnas'],"c"=>$value['total_horas_extras_nocturnas'])
+	// 		// ,array("a" => "<b>TOTAL HORAS NOCTURNAS</b>","b" => $value['total_horas_extras_nocturnas'])
+	// 		// ,array("a" => "<b>TOTAL HORAS EXTRAS</b>","b" => $value['total_horas_extras'])
+	// );
+	// $pdf->ezTable(
+	// 	$row
+	// 	, array(
+	// 		"a" => ""
+	// 		,"b" => ""
+	// 		,"c" => ""
+	// 	)
+	// 	,""
+	// 	, array(
+	// 		'showHeadings' => 0
+	// 		,'xPos' => 461
+	// 		,'titleFontSize' => 10
+	// 		,'fontSize' => 7
+	// 		,'width' => 550
+	// 		,'gridlines'=> 27
+	// 		,'maxWidth' => 550
+	// 		,'cols' => array(
+	// 			"a" => array(
+	// 						'justification' => 'center'
+	// 						,'width' => 120
+	// 						,'bgcolor'=> array($r,$g,$b)
+	// 						// ,'bgcolor'=> array(0.52,1.34,2.46)
+	// 					)
+	// 			,"b" => array(
+	// 						'justification' => 'center'
+	// 						,'width' => 60
+	// 					)
+	// 			,"c" => array(
+	// 						'justification' => 'center'
+	// 						,'width' => 60
+	// 					)
+	// 		)
+	// 	)
+	// );
 
 	$row = array(
 			array("a" => "<b>TOTAL HORAS EXTRAS</b>","b" => $value['total_horas_extras'])
@@ -269,7 +270,7 @@ foreach ($datos as $key => $value) {
 		,""
 		, array(
 			'showHeadings' => 0
-			,'xPos' => 461
+			,'xPos' => 431
 			,'titleFontSize' => 10
 			,'fontSize' => 7
 			,'width' => 550
@@ -278,13 +279,13 @@ foreach ($datos as $key => $value) {
 			,'cols' => array(
 				"a" => array(
 							'justification' => 'center'
-							,'width' => 120
+							,'width' => 240
 							,'bgcolor'=> array($r,$g,$b)
 							// ,'bgcolor'=> array(0.52,1.34,2.46)
 						)
 				,"b" => array(
 							'justification' => 'center'
-							,'width' => 120
+							,'width' => 60
 						)
 			)
 		)

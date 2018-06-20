@@ -76,7 +76,7 @@ class Reportes_M extends CI_Model {
 	 * @return [type]                [description]
 	 */
 	
-	function registros_asistencia_por_fecha($fecha,$excluidos)
+	function registros_asistencia_por_fecha($fecha,$excluidos = array())
 	{	
 		$query = $this->db->select("ROW_NUMBER() OVER (ORDER BY out_cedula) AS nro"
 						.", b.out_id_trabajador AS id_trabajador, b.out_cedula AS cedula"
@@ -97,7 +97,9 @@ class Reportes_M extends CI_Model {
 			foreach ($query as $key => $value) {
 				$f_hora = "".date('h:i:s A',strtotime($value['hora_entrada']))."";
 				$query[$key]['hora_entrada'] = $f_hora;
-				$f_hora = "".date('h:i:s A',strtotime($value['hora_salida']))."";
+				$f_hora = ($value['hora_salida'] != '00:00:00')
+					?"".date('h:i:s A',strtotime($value['hora_salida'])).""
+					:$value['hora_salida'];
 				$query[$key]['hora_salida'] = $f_hora;
 			}
 		}
@@ -157,7 +159,7 @@ class Reportes_M extends CI_Model {
 		return $query[0]['nro_registros'];
 	}
 
-	function registros_inasistencia_por_fecha($fecha,$excluidos)
+	function registros_inasistencia_por_fecha($fecha,$excluidos = array())
 	{
 		$query = $this->db->select("ROW_NUMBER() OVER (ORDER BY a.out_direccion"
 								.", a.out_coordinacion"
@@ -282,6 +284,7 @@ class Reportes_M extends CI_Model {
 							.", a.out_observaciones AS observaciones"
 							.", a.out_hora_entrada AS hora_entrada"
 							.", a.out_hora_salida AS hora_salida"
+							.", a.out_horas_trabajadas AS horas_trabajadas"
 							.", a.out_horas_diurnas AS horas_extras_diurnas"
 							.", a.out_horas_nocturnas AS horas_extras_nocturnas"
 							.", a.out_horas_extras AS horas_extras"
@@ -325,6 +328,24 @@ class Reportes_M extends CI_Model {
 			$trabajadores[$key]['registros'] = $registros;
 		}
 		return $trabajadores;
+	}
+
+	function obtener_nro_registros_tipo_registro_por_fecha($fecha = NULL,$tipo_registro = NULL ,$excluidos = array())
+	{
+		if(is_null($fecha) || is_null($tipo_registro) ) return NULL;
+		$condicion = array();
+		$condicion['a.estatus'] = TRUE;
+		$condicion['b.estatus'] = TRUE;
+		$condicion['c.estatus'] = TRUE;
+		$query = $this->db->select('COUNT(a.fecha) AS nro')
+						->from("asistencia.registros_asistencia AS a")
+							->join("administrativo.trabajadores AS b","a.trabajador_id = b.id_trabajador")
+							->join("administrativo.datos_personales AS c","b.dato_personal_id = c.id_dato_personal")
+						->where($condicion);
+		if(count($excluidos)>0) $query = $this->db->where_not_in("b.cargo_id",$excluidos);
+		$query = $this->db->get()->result_array();
+		if (count($query)>0) return $query[0]['nro'];
+		return NULL;
 	}
 
 }

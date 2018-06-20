@@ -18,11 +18,17 @@
               'tema_template',
               array(
                   "skin-blue"=>'Azul',
+                  "skin-blue-light"=>'Azul Palido',
                   "skin-black"=>'Negro',
+                  "skin-black-light"=>'Negro Palido',
                   "skin-purple"=>'Purpura',
+                  "skin-purple-light"=>'Purpura Palido',
                   "skin-yellow"=>'Amarillo',
+                  "skin-yellow-light"=>'Amarillo Palido',
                   "skin-red"=>'Rojo',
-                  "skin-green"=>'Verde'
+                  "skin-red-light"=>'Rojo Palido',
+                  "skin-green"=>'Verde',
+                  "skin-green-light"=>'Verde Palido'
                 ),
               $tema_template,
               array('class' => 'form-control')
