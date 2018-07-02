@@ -43,7 +43,7 @@ class Condicion_Laboral_M extends CI_Model {
 
 	function eliminar_condicion_laboral($id){
 		$dependencia=$this->consultar_dependencias($id);
-		if($dependencia) return $this->ans;
+		if($dependencia) return NULL;
 		$query=$this->db->where('id_condicion_laboral',$id)->delete('administrativo.condiciones_laborales');
 		if($query!=false) return TRUE;
 		return $query;
