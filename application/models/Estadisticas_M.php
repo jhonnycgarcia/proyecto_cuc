@@ -13,8 +13,8 @@ class Estadisticas_M extends CI_Model {
 	 *
 	 * Esta funcion permite filtrar si se desea obtener el listado general o solo el listado de 
 	 * aquellos que deben registrar asistencia
-	 * 
-	 * @param  integer $direccion_id [description]
+	 *
+ 	 * @param  integer $direccion_id [description]
 	 * @return array               [description]
 	 */
 	function nro_total_trabajadores_por_direccion($direccion_id = NULL, $ao = NULL){
@@ -152,7 +152,38 @@ class Estadisticas_M extends CI_Model {
 		return "00:00:00";
 	}
 
-	function nro_horas_jornada_trabajadas_por_mes_ano_direcion($mes = NULL,$ano = NULL, $direccion_id = NULL,$excluidos = array())
+	/**
+	 * Funcion para obtener el numero de horas trabajas por mes y año de una direccion expresado en valor UNIX
+	 * @param  integer $mes          [description]
+	 * @param  integer $ano          [description]
+	 * @param  integer $direccion_id [description]
+	 * @param  array  $excluidos    [description]
+	 * @return integer               [description]
+	 */
+	function int_horas_trabajadas_por_mes_ano_direcion($mes = NULL,$ano = NULL, $direccion_id = NULL,$excluidos = array())
+	{
+		if(is_null($mes) ||is_null($ano) ||is_null($direccion_id)) return NULL;
+
+		$query = $this->db->select("EXTRACT(EPOCH FROM SUM(a.out_horas_trabajadas) ) AS int_horas")
+						->from("asistencia.consulta_registros_asistencia_mes_ano('{$mes}','{$ano}') AS a")
+						->where('a.out_direccion_id',$direccion_id)
+						->group_by("a.out_direccion_id");
+		if( count($excluidos) > 0 ) $query = $this->db->where_not_in("a.out_cargo_id",$excluidos);
+		$query = $this->db->get()->result_array();
+		if(count($query)>0) return $query[0]['int_horas'];
+		return "0";
+	}
+
+	/**
+	 * Funcion para obtener el numero de horas trabajadas pertenecientes a la jornada laboral
+	 * por mes y año de una coordinacion
+	 * @param  integer $mes          [description]
+	 * @param  integer $ano          [description]
+	 * @param  integer $direccion_id [description]
+	 * @param  array  $excluidos    [description]
+	 * @return time               [description]
+	 */
+	function nro_horasd_jornada_trabajadas_por_mes_ano_direcion($mes = NULL,$ano = NULL, $direccion_id = NULL,$excluidos = array())
 	{
 		if(is_null($mes) ||is_null($ano) ||is_null($direccion_id)) return NULL;
 
@@ -166,7 +197,85 @@ class Estadisticas_M extends CI_Model {
 		return "00:00:00";
 	}
 
-	function nro_horas_jornada_faltantes_por_mes_ano_direcion($mes = NULL,$ano = NULL, $direccion_id = NULL,$excluidos = array())
+	/**
+	 * Funcion para obtener el numero de horas trabajas perteneceientes a la jornada labora 
+	 * por mes y año de una direccion expresado en valor UNIX
+	 * @param  integer $mes          [description]
+	 * @param  integer $ano          [description]
+	 * @param  integer $direccion_id [description]
+	 * @param  array  $excluidos    [description]
+	 * @return integer               [description]
+	 */
+	function int_horasd_jornada_trabajadas_por_mes_ano_direcion($mes = NULL,$ano = NULL, $direccion_id = NULL,$excluidos = array())
+	{
+		if(is_null($mes) ||is_null($ano) ||is_null($direccion_id)) return NULL;
+
+		$query = $this->db->select("EXTRACT(EPOCH FROM SUM(a.out_horas_jornada_trabajada) ) AS int_horas")
+						->from("asistencia.consulta_registros_asistencia_mes_ano('{$mes}','{$ano}') AS a")
+						->where('a.out_direccion_id',$direccion_id)
+						->group_by("a.out_direccion_id");
+		if( count($excluidos) > 0 ) $query = $this->db->where_not_in("a.out_cargo_id",$excluidos);
+		$query = $this->db->get()->result_array();
+		if(count($query)>0) return $query[0]['int_horas'];
+		return "0";
+	}
+
+
+	/**
+	 * Funcion para obtener el numero de horas trabajas fuera del horario de la jornada laboral
+	 * por mes y año de una coordinacion
+	 * @param  integer $mes          [description]
+	 * @param  integer $ano          [description]
+	 * @param  integer $direccion_id [description]
+	 * @param  array  $excluidos    [description]
+	 * @return time               [description]
+	 */
+	function nro_horasf_jornada_trabajadas_por_mes_ano_direcion($mes = NULL,$ano = NULL, $direccion_id = NULL,$excluidos = array())
+	{
+		if(is_null($mes) ||is_null($ano) ||is_null($direccion_id)) return NULL;
+
+		$query = $this->db->select("SUM(a.out_horas_fuera_jornada) AS nro_horas")
+						->from("asistencia.consulta_registros_asistencia_mes_ano('{$mes}','{$ano}') AS a")
+						->where('a.out_direccion_id',$direccion_id)
+						->group_by("a.out_direccion_id");
+		if( count($excluidos) > 0 ) $query = $this->db->where_not_in("a.out_cargo_id",$excluidos);
+		$query = $this->db->get()->result_array();
+		if(count($query)>0) return $query[0]['nro_horas'];
+		return "00:00:00";
+	}
+
+	/**
+	 * Funcion para obtener el numero de horas trabajas fuera del horario de la jornada laboral
+	 * por mes y año de una direccion expresado en valor UNIX
+	 * @param  integer $mes          [description]
+	 * @param  integer $ano          [description]
+	 * @param  integer $direccion_id [description]
+	 * @param  array  $excluidos    [description]
+	 * @return integer               [description]
+	 */
+	function int_horasf_jornada_trabajadas_por_mes_ano_direcion($mes = NULL,$ano = NULL, $direccion_id = NULL,$excluidos = array())
+	{
+		if(is_null($mes) ||is_null($ano) ||is_null($direccion_id)) return NULL;
+
+		$query = $this->db->select("EXTRACT(EPOCH FROM SUM(a.out_horas_fuera_jornada) ) AS int_horas")
+						->from("asistencia.consulta_registros_asistencia_mes_ano('{$mes}','{$ano}') AS a")
+						->where('a.out_direccion_id',$direccion_id)
+						->group_by("a.out_direccion_id");
+		if( count($excluidos) > 0 ) $query = $this->db->where_not_in("a.out_cargo_id",$excluidos);
+		$query = $this->db->get()->result_array();
+		if(count($query)>0) return $query[0]['int_horas'];
+		return "0";
+	}
+
+	/**
+	 * Funcion para obtener el numero de horas faltantes por mes y año de una direccion
+	 * @param  integer $mes          [description]
+	 * @param  integer $ano          [description]
+	 * @param  integer $direccion_id [description]
+	 * @param  array  $excluidos    [description]
+	 * @return time               [description]
+	 */
+	function nro_horas_faltantes_por_mes_ano_direccion($mes = NULL,$ano = NULL, $direccion_id = NULL,$excluidos = array())
 	{
 		if(is_null($mes) ||is_null($ano) ||is_null($direccion_id)) return NULL;
 
@@ -180,6 +289,85 @@ class Estadisticas_M extends CI_Model {
 		return "00:00:00";
 	}
 
+	/**
+	 * Funcion para obtener el numero dehoras faltantes  
+	 * por mes y año de una direccion expresado en valor UNIX
+	 * @param  integer $mes          [description]
+	 * @param  integer $ano          [description]
+	 * @param  integer $direccion_id [description]
+	 * @param  array  $excluidos    [description]
+	 * @return integer               [description]
+	 */
+	function int_horas_faltantes_por_mes_ano_direccion($mes = NULL,$ano = NULL, $direccion_id = NULL,$excluidos = array())
+	{
+		if(is_null($mes) ||is_null($ano) ||is_null($direccion_id)) return NULL;
+
+		$query = $this->db->select("EXTRACT(EPOCH FROM SUM(a.out_horas_faltantes)) AS int_horas")
+						->from("asistencia.consulta_registros_asistencia_mes_ano('{$mes}','{$ano}') AS a")
+						->where('a.out_direccion_id',$direccion_id)
+						->group_by("a.out_direccion_id");
+		if( count($excluidos) > 0 ) $query = $this->db->where_not_in("a.out_cargo_id",$excluidos);
+		$query = $this->db->get()->result_array();
+		if(count($query)>0) return $query[0]['int_horas'];
+		return "0";
+	}
+
+	/**
+	 * Funcion para obtener el numero de horas faltantes del horario de la joranda labora 
+	 * por mes y año de una direccion
+	 * @param  integer $mes          [description]
+	 * @param  integer $ano          [description]
+	 * @param  integer $direccion_id [description]
+	 * @param  array  $excluidos    [description]
+	 * @return time               [description]
+	 */
+	function nro_horas_jornada_faltantes_por_mes_ano_direccion($mes = NULL,$ano = NULL, $direccion_id = NULL,$excluidos = array())
+	{
+		if(is_null($mes) ||is_null($ano) ||is_null($direccion_id)) return NULL;
+
+		$query = $this->db->select("SUM(a.out_horas_faltantes) AS nro_horas")
+						->from("asistencia.consulta_registros_asistencia_mes_ano('{$mes}','{$ano}') AS a")
+						->where('a.out_direccion_id',$direccion_id)
+						->group_by("a.out_direccion_id");
+		if( count($excluidos) > 0 ) $query = $this->db->where_not_in("a.out_cargo_id",$excluidos);
+		$query = $this->db->get()->result_array();
+		if(count($query)>0) return $query[0]['nro_horas'];
+		return "00:00:00";
+	}
+
+	/**
+	 * Funcion para obtener el numero de horas faltantes del horario de la joranda labora 
+	 * por mes y año de una direccion expresado en valor UNIX
+	 * @param  integer $mes          [description]
+	 * @param  integer $ano          [description]
+	 * @param  integer $direccion_id [description]
+	 * @param  array  $excluidos    [description]
+	 * @return integer               [description]
+	 */
+	function int_horas_jornada_faltantes_por_mes_ano_direccion($mes = NULL,$ano = NULL, $direccion_id = NULL,$excluidos = array())
+	{
+		if(is_null($mes) ||is_null($ano) ||is_null($direccion_id)) return NULL;
+
+		$query = $this->db->select("EXTRACT(EPOCH FROM SUM(a.out_horas_faltantes)) AS int_horas")
+						->from("asistencia.consulta_registros_asistencia_mes_ano('{$mes}','{$ano}') AS a")
+						->where('a.out_direccion_id',$direccion_id)
+						->group_by("a.out_direccion_id");
+		if( count($excluidos) > 0 ) $query = $this->db->where_not_in("a.out_cargo_id",$excluidos);
+		$query = $this->db->get()->result_array();
+		if(count($query)>0) return $query[0]['int_horas'];
+		return "0";
+	}
+
+
+	/**
+	 * Funcion para obtener el numero de horas extras realizadas
+	 * por mes y año de una coordinacion
+	 * @param  integer $mes          [description]
+	 * @param  integer $ano          [description]
+	 * @param  integer $direccion_id [description]
+	 * @param  array  $excluidos    [description]
+	 * @return time               [description]
+	 */
 	function nro_horas_horas_extras_por_mes_ano_direcion($mes = NULL,$ano = NULL, $direccion_id = NULL,$excluidos = array())
 	{
 		if(is_null($mes) ||is_null($ano) ||is_null($direccion_id)) return NULL;
@@ -192,6 +380,29 @@ class Estadisticas_M extends CI_Model {
 		$query = $this->db->get()->result_array();
 		if(count($query)>0) return $query[0]['nro_horas'];
 		return "00:00:00";
+	}
+
+	/**
+	 * Funcion para obtener el numero de horas extras realizadas
+	 * por mes y año de una direccion expresado en valor UNIX
+	 * @param  integer $mes          [description]
+	 * @param  integer $ano          [description]
+	 * @param  integer $direccion_id [description]
+	 * @param  array  $excluidos    [description]
+	 * @return integer               [description]
+	 */
+	function int_horas_horas_extras_por_mes_ano_direcion($mes = NULL,$ano = NULL, $direccion_id = NULL,$excluidos = array())
+	{
+		if(is_null($mes) ||is_null($ano) ||is_null($direccion_id)) return NULL;
+
+		$query = $this->db->select("EXTRACT(EPOCH FROM SUM(a.out_horas_extras)) AS int_horas")
+						->from("asistencia.consulta_registros_asistencia_mes_ano('{$mes}','{$ano}') AS a")
+						->where('a.out_direccion_id',$direccion_id)
+						->group_by("a.out_direccion_id");
+		if( count($excluidos) > 0 ) $query = $this->db->where_not_in("a.out_cargo_id",$excluidos);
+		$query = $this->db->get()->result_array();
+		if(count($query)>0) return $query[0]['int_horas'];
+		return "0";
 	}
 
 
@@ -306,6 +517,35 @@ class Estadisticas_M extends CI_Model {
 		$query = $this->db->get()->result_array();
 		if(count($query)>0) return $query[0]['nro_registros'];
 		return 0;
+	}
+
+
+	function nro_horas_requeridas_por_mes_ano_direccion($mes = NULL,$ano = NULL, $direccion_id = NULL ,$excluidos = array())
+	{
+		if(is_null($mes) ||is_null($ano) ||is_null($direccion_id)) return NULL;
+
+		$query = $this->db->select("SUM(a.out_horas_requeridas) AS nro_horas")
+						->from("asistencia.consulta_registros_asistencia_mes_ano('{$mes}','{$ano}') AS a")
+						->where('a.out_direccion_id',$direccion_id)
+						->group_by("a.out_direccion_id");
+		if( count($excluidos) > 0 ) $query = $this->db->where_not_in("a.out_cargo_id",$excluidos);
+		$query = $this->db->get()->result_array();
+		if(count($query)>0) return $query[0]['nro_horas'];
+		return "00:00:00";
+	}
+
+	function int_horas_requeridas_por_mes_ano_direccion($mes = NULL,$ano = NULL, $direccion_id = NULL ,$excluidos = array())
+	{
+		if(is_null($mes) ||is_null($ano) ||is_null($direccion_id)) return NULL;
+
+		$query = $this->db->select("EXTRACT(EPOCH FROM SUM(a.out_horas_requeridas)) AS int_horas")
+						->from("asistencia.consulta_registros_asistencia_mes_ano('{$mes}','{$ano}') AS a")
+						->where('a.out_direccion_id',$direccion_id)
+						->group_by("a.out_direccion_id");
+		if( count($excluidos) > 0 ) $query = $this->db->where_not_in("a.out_cargo_id",$excluidos);
+		$query = $this->db->get()->result_array();
+		if(count($query)>0) return $query[0]['int_horas'];
+		return "0";
 	}
 
 }

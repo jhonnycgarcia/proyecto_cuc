@@ -50,7 +50,7 @@
   if ( isset($contenido) && !is_null($contenido) && !empty($contenido) ) {
     $this->load->view( $contenido );
   }else{
-    $this->load->view('Template/content/content_view'); 
+    $this->load->view('template/content/content_view'); 
   }
 
 ?>

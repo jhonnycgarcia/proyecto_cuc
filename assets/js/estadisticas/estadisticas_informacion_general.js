@@ -69,6 +69,22 @@ var datos_generales = {
 			// console.log("complete");
 		});
 	}
+	,cargar_datos_tb_trabajadores : function (){
+		$.ajax({
+			url: _base_url+'Estadisticas/ajax_cargar_datos_tb_trabajadores',
+			dataType: 'JSON',
+		})
+		.done(function(data) {
+			// console.log(data);
+			rellenar_datos.rellenar_tb_trabajadores(data);
+		})
+		.fail(function() {
+			// console.log("error");
+		})
+		.always(function() {
+			// console.log("complete");
+		});
+	}
 }
 
 var rellenar_datos = {
@@ -95,7 +111,7 @@ var rellenar_datos = {
 				'<tr>'
 				+'<td>'+index+'</td>'
 				+'<td class="hidden">'+val.id_direccion+'</td>'
-				+'<td><h6>'+val.direccion+'</h6></td>'
+				+'<td class="col-md-5"><h6>'+val.direccion+'</h6></td>'
 				+'<td>'
                     +'<div class="progress progress-xs">'
                     +'<div class="progress-bar progress-bar-yellow" style="width:'+_pgbar+'%"></div>'
@@ -116,7 +132,7 @@ var rellenar_datos = {
 		});
 	}
 	,rellenar_tb_coordinaciones : function(data){
-		// $("#btn_informe_general_coordinaciones").removeAttr('disabled');
+		$("#btn_informe_coordinaciones_direccion").removeAttr('disabled');
 		$("#tb_coordinaciones tbody").empty();
 		_tb_coordinaciones._fnClearTable();
 		_tb_coordinaciones.fnDestroy();
@@ -148,6 +164,29 @@ var rellenar_datos = {
 					"oLanguage":_oLanguage
 					,"lengthMenu": [ 5,10 ]
 			});
+	},rellenar_tb_trabajadores : function(data){
+		$("#tb_trabajadores > tbody").empty();
+		_tb_trabajadores._fnClearTable();
+		_tb_trabajadores.fnDestroy();
+
+		$.each(data, function(index, val) {
+			index++;
+			$("#tb_trabajadores > tbody").append(
+				'<tr>'
+				+'<td>'+index+'</td>'
+				+'<td class="hidden">'+val.id_trabajador+'</td>'
+				+'<td class="text-center col-md-8">'+val.apellidos_nombres+'</td>'
+				+'<td class="text-center col-md-2">'+val.hora_entrada+'</td>'
+				+'<td class="text-center col-md-2">'+val.hora_salida+'</td>'
+				+'</tr>'
+			);
+		});
+
+		_tb_trabajadores.dataTable({
+			"oLanguage":_oLanguage
+			,"lengthMenu": [ 5 ]
+		});
+
 	}
 }
 
@@ -185,6 +224,10 @@ var _oLanguage = {
 		"oLanguage":_oLanguage
 		,"lengthMenu": [ 5 ]
 	});
+	var _tb_trabajadores = $("#tb_trabajadores").dataTable({
+		"oLanguage":_oLanguage
+		,"lengthMenu": [ 5 ]
+	});
 
 $(document).ready(function() {
 	var _load_dt_general, _load_dt_nro_registros, _load_dt_direcciones;
@@ -205,4 +248,7 @@ $(document).ready(function() {
 	_load_dt_direcciones = setInterval(function () {
 		datos_generales.cargar_datos_tb_direcciones();
 	},60000);
+
+
+	datos_generales.cargar_datos_tb_trabajadores();
 });

@@ -135,9 +135,13 @@
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Control Asistencian por Dirección</h3>
-          <a href="<?= base_url('Estadisticas/informacion_direcciones'); ?>" class="btn btn-default btn-sm pull-right" id="btn_informe_general_direcciones" data-worker="">
-            <i class="fa fa-area-chart"></i> General
-          </a>
+          <div class="box-tools">
+            <div class="btn-group">
+              <a href="<?= base_url('Estadisticas/informacion_direcciones'); ?>" class="btn btn-default btn-sm" id="btn_informe_general_direcciones" data-worker="">
+                <i class="fa fa-area-chart"></i> Mes
+              </a>
+            </div>
+          </div>
         </div>
         <div class="box-body">
             <table class="table table-bordered table-hover" id="tb_direcciones">
@@ -162,9 +166,16 @@
       <div class="box">
         <div class="box-header with-border">
           <h3 class="box-title">Control Asistencia por Coordinación</h3>
-          <button type="button" class="btn btn-default btn-sm pull-right" id="btn_informe_general_coordinaciones" data-worker="" disabled="disabled">
-            <i class="fa fa-area-chart"></i> General
-          </button>
+          <div class="box-tools">
+            <div class="btn-group" role="group">
+<!--               <button type="button" class="btn btn-default btn-sm" id="btn_informe_coordinaciones_direccion" data-worker="" disabled="disabled">
+                <i class="fa fa-area-chart"></i> Dirección
+              </button> -->
+              <button type="button" class="btn btn-default btn-sm" id="btn_informe_general_coordinaciones">
+                <i class="fa fa-area-chart"></i> Mes
+              </button>
+            </div>
+          </div>
         </div>
         <div class="box-body">
             <table class="table table-bordered table-hover" id="tb_coordinaciones">
@@ -186,18 +197,34 @@
   </div>
 
 <div class="box box-default"> 
-  <div class="box-header with-border"> <!-- Box-Header -->
-    <h4>Estatus de Asistencia</h4>
-  </div> <!-- /Box-Header -->
-  <div class="box-body"> <!-- Box-Body -->
-
-
-
-  	[CONTENT]
-    <h4>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Dignissimos quibusdam veniam tempore corporis fugit unde magnam dolorum, nihil nemo veritatis iure dolor sequi magni optio, vitae soluta adipisci itaque atque accusamus dolore eveniet qui culpa quam doloremque laborum. Molestiae sunt consectetur minima doloribus, quia earum nesciunt a assumenda et dolore.</h4>
-  </div> <!-- /Box-Body -->
-  <div class="box-footer"> <!-- Box-Header -->
-  	Lorem ipsum dolor sit amet. [FOOTER]
+  <div class="box-header with-border">
+    <h3 class="box-title">Control Asistencian por Trabajadores</h3>
+    <div class="box-tools">
+      <div class="btn-group">
+        <a href="<?= base_url('Estadisticas/informacion_direcciones'); ?>" class="btn btn-default btn-sm" id="btn_informe_general_direcciones" data-worker="">
+          <i class="fa fa-area-chart"></i> Mes
+        </a>
+      </div>
+    </div>
   </div>
+  <div class="box-body"> <!-- Box-Body -->
+    <table class="table table-bordered table-hover" id="tb_trabajadores">
+      <thead>
+        <tr>
+          <th class="text-center" style="width: 10px">#</th>
+          <!-- <th style="width: 10px">#</th> -->
+          <th class="hidden">id</th>
+          <th class="text-center col-md-8">Apellidos y nombres</th>
+          <th class="text-center col-md-2">Hora entrada</th>
+          <th class="text-center col-md-2">Hora salida</th>
+          <!-- <th class="text-center col-md-4">Coordinacion</th> -->
+          <!-- <th class="text-center col-md-4">direccion</th> -->
+          <!-- <th class="text-center" style="width: 40px">%</th> -->
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </div> <!-- /Box-Body -->
 </div>
 <!-- Your Page Content Here -->
