@@ -109,12 +109,21 @@ class Configuraciones extends CI_Controller {
 		}else
 		{
 			$add = $this->Configuraciones_M->agregar_configuracion($this->input->post());
-			if($add){redirect(__CLASS__);
+			if($add){
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se registro la configuración satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}else{
-				echo '<script language="javascript">
-						alert("No se pudo crear el registro de configuracion, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo crear el registro de configuracion, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
+			}
 		}
 	}
 
@@ -131,10 +140,12 @@ class Configuraciones extends CI_Controller {
 
 		$configuracion = $this->Configuraciones_M->consultar_configuracion($id);
 		if(is_null($configuracion)){
-			echo '<script language="javascript">
-						alert("No se encontro el item deseado, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se encontro el item deseado, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);
 		}else{
 			$datos['titulo_contenedor'] = 'Configuraciones';
 			$datos['titulo_descripcion'] = 'Actualizar';
@@ -177,12 +188,21 @@ class Configuraciones extends CI_Controller {
 		}else
 		{
 			$up = $this->Configuraciones_M->editar_configuracion($this->input->post());
-			if($up){ redirect(__CLASS__);
+			if($up){ 
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se actualizaron los datos de la configuración satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}else{
-				echo '<script language="javascript">
-						alert("No se actualizar los datos del Cargo, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se actualizar los datos del registro de configuración, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
+			}
 		}
 	}
 
@@ -198,18 +218,29 @@ class Configuraciones extends CI_Controller {
 		
 		$configuracion = $this->Configuraciones_M->consultar_configuracion($id);
 		if( is_null($configuracion)){
-			echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);
 		}else{
 			$up = $this->Configuraciones_M->activar_configuracion($configuracion['id_configuracion']);
-			if($up){ redirect(__CLASS__);
+			if($up){ 
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se activo la configuración satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}else{
-				echo '<script language="javascript">
-						alert("No se activar la configuracion, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se activar la configuracion, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
+			}
 		}
 	}
 
@@ -228,21 +259,32 @@ class Configuraciones extends CI_Controller {
 		if( !is_null($configuracion) ){
 			$delete = $this->Configuraciones_M->eliminar_configuracion($id);
 			if( is_null($delete) ){
-				echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción debido a que ocurrio un inconveniente, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; 
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo llevar a cabo esta acción debido a que ocurrio un inconveniente, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}elseif( $delete === false ){
-				echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo llevar a cabo esta acción, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}else{
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se elimino el registro de configuración satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
 				redirect(__CLASS__); }
 		}else{
-			echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);}
 	}
 }

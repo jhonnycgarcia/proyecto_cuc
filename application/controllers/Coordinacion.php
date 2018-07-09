@@ -58,12 +58,20 @@ class Coordinacion extends CI_Controller {
 		if( !$this->form_validation->run() ){ $this->agregar(); }
 		else{
 			$add = $this->Coordinacion_M->agregar_coordinacion($this->input->post());
-			if($add){redirect(__CLASS__);
+			if($add){
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se creo la coordinación satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}else{
-				echo '<script language="javascript">
-						alert("No se pudo crear la Coordinación, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo crear la coordinación, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);}
 		}
 	}
 
@@ -75,10 +83,12 @@ class Coordinacion extends CI_Controller {
 
 		$item = $this->Coordinacion_M->consultar_coordinacion($id);
 		if(is_null($item)){
-			echo '<script language="javascript">
-						alert("No se encontro el item deseado, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se encontro el item deseado, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);
 		}else{
 			$datos['titulo_contenedor'] = 'Coordinación';
 			$datos['titulo_descripcion'] = 'Editar';
@@ -109,12 +119,20 @@ class Coordinacion extends CI_Controller {
 			$this->editar($id);
 		}else{
 			$up = $this->Coordinacion_M->editar_coordinacion($this->input->post());
-			if($up){ redirect(__CLASS__);
+			if($up){ 
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se actualizaron los datos de la coordinación satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}else{
-				echo '<script language="javascript">
-						alert("No se actualizar los datos de la Coordinacion, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se actualizar los datos de la coordinacion, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);}
 		}
 	}
 
@@ -127,22 +145,33 @@ class Coordinacion extends CI_Controller {
 		if( !is_null($item) ){
 			$delete = $this->Coordinacion_M->eliminar_coordinacion($id);
 			if( is_null($delete) ){
-				echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este items");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; 
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este items';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}elseif( $delete === false ){
-				echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo llevar a cabo esta acción, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}else{
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se elimino la coordinación satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
 				redirect(__CLASS__); }
 		}else{
-			echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);}
 	}
 
 

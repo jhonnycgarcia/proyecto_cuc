@@ -82,12 +82,21 @@ class Usuarios extends CI_Controller {
 			$this->asignar();
 		}else{
 			$add = $this->Usuarios_M->asignar_usuario($this->input->post());
-			if( $add ){ redirect(__CLASS__);
+			if( $add ){ 
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se asigno el usuario satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}else{	
-				echo '<script language="javascript">
-						alert("No se pudo asignar el usuario, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo asignar el usuario, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
+			}
 		}
 	}
 
@@ -104,10 +113,12 @@ class Usuarios extends CI_Controller {
 		$usuario = $this->Usuarios_M->consultar_usuario($id);
 
 		if(is_null($usuario)){
-			echo '<script language="javascript">
-						alert("No se encontro el registro deseado, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se encontro el registro deseado, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);
 		}else{
 			$datos['titulo_contenedor'] = 'Usuario';
 			$datos['titulo_descripcion'] = 'Detalles';
@@ -129,10 +140,12 @@ class Usuarios extends CI_Controller {
 		$usuario = $this->Usuarios_M->consultar_usuario($id);
 
 		if(is_null($usuario)){
-			echo '<script language="javascript">
-						alert("No se encontro el registro deseado, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se encontro el registro deseado, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);
 		}else{
 			$datos['titulo_contenedor'] = 'Usuario';
 			$datos['titulo_descripcion'] = 'Editar';
@@ -156,12 +169,20 @@ class Usuarios extends CI_Controller {
 
 		$up = $this->Usuarios_M->editar_usuario($this->input->post());
 		if( $up){
+			$merror['title'] = 'Registrado';
+			$merror['text'] = 'Se actualizaron los datos del usuario satisfactoriamente';
+			$merror['type'] = 'success';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
 			redirect(__CLASS__);
 		}else{
-			echo '<script language="javascript">
-						alert("No se pudo actualizar los datos, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';	}
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se actualizar los datos del usuario, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);
+			}
 	}
 
 	/**
@@ -215,12 +236,20 @@ class Usuarios extends CI_Controller {
 			$datos['id_usuario'] = $this->input->post('id_usuario');
 			$up = $this->Usuarios_M->editar_usuario($datos);
 			if( $up){
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se actualizo la clave del usuario satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
 				redirect(__CLASS__);
 			}else{
-				echo '<script language="javascript">
-							alert("No se pudo actualizar la contraseña, favor intente nuevamente");
-							window.location="'.base_url(__CLASS__).'";
-						</script>';	}
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo actualizar la contraseña, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
+				}
 		}
 	}
 
@@ -236,19 +265,29 @@ class Usuarios extends CI_Controller {
 		$usuario = $this->Usuarios_M->consultar_usuario($id);
 
 		if(is_null($usuario)){
-			echo '<script language="javascript">
-						alert("No se pudo realizar esta accion debido a que no se consigui el registro deseado, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se pudo realizar esta accion debido a que no se consiguio el registro deseado, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);
 		}else{
 			$delete = $this->Usuarios_M->eliminar_usuario($id);
 			if($delete){
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se elimino el usuario satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
 				redirect(__CLASS__);
 			}else{
-				echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo llevar a cabo esta acción, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
+			}
 		}
 	}
 
@@ -263,10 +302,12 @@ class Usuarios extends CI_Controller {
 		$id = $this->seguridad_lib->execute_encryp($id,'decrypt',__CLASS__);
 
 		if(is_null($id)){
-			echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se pudo llevar a cabo esta acción, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);
 		}else{
 			$datos['titulo_contenedor'] = 'Usuario';
 			$datos['titulo_descripcion'] = 'Restablecer contraseña';
@@ -301,12 +342,20 @@ class Usuarios extends CI_Controller {
 			$datos['id_usuario'] = $this->input->post('id_usuario');
 			$up = $this->Usuarios_M->editar_usuario($datos);
 			if( $up){
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se actualizaron la clave satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
 				redirect(__CLASS__);
 			}else{
-				echo '<script language="javascript">
-							alert("No se pudo actualizar la contraseña, favor intente nuevamente");
-							window.location="'.base_url(__CLASS__).'";
-						</script>';	}
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo actualizar la clave, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
+			}
 		}
 	}
 

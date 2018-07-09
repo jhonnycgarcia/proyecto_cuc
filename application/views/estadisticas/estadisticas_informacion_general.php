@@ -168,12 +168,9 @@
           <h3 class="box-title">Control Asistencia por Coordinación</h3>
           <div class="box-tools">
             <div class="btn-group" role="group">
-<!--               <button type="button" class="btn btn-default btn-sm" id="btn_informe_coordinaciones_direccion" data-worker="" disabled="disabled">
-                <i class="fa fa-area-chart"></i> Dirección
-              </button> -->
-              <button type="button" class="btn btn-default btn-sm" id="btn_informe_general_coordinaciones">
+               <a href="<?= base_url('Estadisticas/informacion_coordinaciones'); ?>" class="btn btn-default btn-sm" id="btn_informe_general_coordinaciones" data-worker="">
                 <i class="fa fa-area-chart"></i> Mes
-              </button>
+              </a>
             </div>
           </div>
         </div>
@@ -201,7 +198,7 @@
     <h3 class="box-title">Control Asistencian por Trabajadores</h3>
     <div class="box-tools">
       <div class="btn-group">
-        <a href="<?= base_url('Estadisticas/informacion_direcciones'); ?>" class="btn btn-default btn-sm" id="btn_informe_general_direcciones" data-worker="">
+        <a href="<?= base_url('Estadisticas/informacion_trabajadores'); ?>" class="btn btn-default btn-sm" id="btn_informe_general_trabajadores" data-worker="">
           <i class="fa fa-area-chart"></i> Mes
         </a>
       </div>

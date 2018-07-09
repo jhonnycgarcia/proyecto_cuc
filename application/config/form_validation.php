@@ -95,12 +95,7 @@
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									),
 								array(
-									'field' => 'descripcion',
-									'label' => '<b>Descripción</b>',
-									'rules' => 'trim|strip_tags|xss_clean'
-									),
-								array(
-									'field' => 'id',
+									'field' => 'id_rol',
 									'label' => '<b>Id</b>',
 									'rules' => 'trim|required|strip_tags|xss_clean'
 									)

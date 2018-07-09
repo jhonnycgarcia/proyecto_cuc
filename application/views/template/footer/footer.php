@@ -13,6 +13,8 @@
 
 <!-- jQuery 2.2.3 JS -->
 <script src="<?= base_url('assets/AdminLTE/plugins/jQuery/jquery-2.2.3.min.js'); ?>"></script>
+<!-- SweetAlert2 JS -->
+<script src="<?= base_url('assets/sweetalert2/sweetalert2.all.js'); ?>"></script>
 <!-- REQUIRED JS SCRIPTS -->
 <script> 
 	window.onload = function(){
@@ -43,7 +45,10 @@
 	
 	var _base_url = "<?= base_url(); ?>";
 	var _merror = '<?= (!isset($_SESSION["merror"]))?"null":$_SESSION["merror"]; ?>';
-	if(_merror !== 'null' ){ _merror = JSON.parse(_merror);	}else{ _merror = null;}
+	if(_merror !== 'null' ){ 
+		_merror = JSON.parse(_merror);	
+		swal(_merror);
+	}else{ _merror = null;}
 </script>
 <!-- Bootstrap 3.3.6 JS -->
 <script src="<?= base_url('assets/AdminLTE/bootstrap/js/bootstrap.min.js'); ?>"></script>
@@ -55,8 +60,6 @@
 <script src="<?= base_url('assets/AdminLTE/plugins/fastclick/fastclick.js'); ?>"></script>
 <!-- IdLetimer Js -->
 <script src="<?= base_url('assets/jquery-idletimer/dist/idle-timer.js'); ?>"></script>
-<!-- SweetAlert2 JS -->
-<script src="<?= base_url('assets/sweetalert2/sweetalert2.all.js'); ?>"></script>
 
 <!-- IdLetimer Config Js -->
 <!-- <script src="<?= base_url('assets/js/template/v_login.js'); ?>"></script> -->

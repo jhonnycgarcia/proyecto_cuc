@@ -79,14 +79,21 @@ class Reportes_M extends CI_Model {
 	function registros_asistencia_por_fecha($fecha,$excluidos = array())
 	{	
 		$query = $this->db->select("ROW_NUMBER() OVER (ORDER BY out_cedula) AS nro"
-						.", b.out_id_trabajador AS id_trabajador, b.out_cedula AS cedula"
-						.", out_fecha AS fecha, out_apellidos_nombres  AS apellidos_nombres "
+						.", b.out_id_trabajador AS id_trabajador"
+						.", b.out_cedula AS cedula"
+						.", out_fecha AS fecha"
+						.", out_apellidos_nombres  AS apellidos_nombres "
 						.", out_cargo AS cargo, out_cargo_id AS cargo_id "
-						.", out_condicion_laboral AS condicion_laboral,out_condicion_laboral_id AS condicion_laboral_id "
-						.", out_coordinacion AS coordinacion, out_coordinacion_id AS coordinacion_id "
-						.", out_direccion AS direccion, out_direccion_id AS direccion_id "
-						.", out_hora_entrada AS hora_entrada, out_hora_salida AS hora_salida "
-						.", out_horas_trabajadas AS horas_trabajadas, out_horas_extras AS horas_extras "
+						.", out_condicion_laboral AS condicion_laboral"
+						.", out_condicion_laboral_id AS condicion_laboral_id "
+						.", out_coordinacion AS coordinacion"
+						.", out_coordinacion_id AS coordinacion_id "
+						.", out_direccion AS direccion"
+						.", out_direccion_id AS direccion_id "
+						.", out_hora_entrada AS hora_entrada"
+						.", out_hora_salida AS hora_salida "
+						.", out_horas_trabajadas AS horas_trabajadas"
+						.", out_horas_extras AS horas_extras "
 						.", out_observaciones AS observaciones ")
 						->from("( SELECT * FROM asistencia.consulta_registros_asistencia('{$fecha}') ) AS b");
 
@@ -115,6 +122,7 @@ class Reportes_M extends CI_Model {
 	 * @return [type]            [description]
 	 */
 	function registros_asistencia($fdesde,$fhasta,$excluidos = array() ){
+		$datos = array();
 		$fechas = $this->obtener_rango_fechas_asistencia($fdesde,$fhasta,$excluidos);
 		$nro_registros = $this->nro_registros_asistencia_fechas($fdesde,$fhasta,$excluidos);
 
@@ -125,9 +133,15 @@ class Reportes_M extends CI_Model {
 
 			$registros = $this->registros_asistencia_por_fecha($value['fecha'],$excluidos);
 			$fechas[$key]['registros'] = $registros;
+
+			var_export($fechas[$key]);echo "<br><br>";
+			if(count($registros)>0){
+				$datos[] = $fechas[$key];
+			}
 		}
 		
-		return $fechas;
+		exit();
+		return $datos;
 	}
 
 	/**
@@ -190,6 +204,7 @@ class Reportes_M extends CI_Model {
 	 */
 	function registros_inasistencia($fdesde,$fhasta,$excluidos = array() )
 	{
+		$datos = array();
 		$fechas = $this->obtener_rango_fechas_inasistencia($fdesde,$fhasta,$excluidos);
 		$nro_registros = $this->nro_registros_inasistencia_fechas($fdesde,$fhasta,$excluidos);
 
@@ -200,9 +215,10 @@ class Reportes_M extends CI_Model {
 
 			$registros = $this->registros_inasistencia_por_fecha($value['fecha'],$excluidos);
 			$fechas[$key]['registros'] = $registros;
+			if( count($registros) >0) { $datos[] = $fechas[$key]; }
 		}
 
-		return $fechas;
+		return $datos;
 	}
 
 	/**
@@ -318,6 +334,7 @@ class Reportes_M extends CI_Model {
 	 */
 	function registro_horas_extras($fecha,$excluidos = array() )
 	{
+		$datos = array();
 		$nro_registros = $this->obtener_nro_registros_horas_extras($fecha,$excluidos);
 		$trabajadores = $this->obtener_trabajadores_horas_extras($fecha, $excluidos);
 		if( (is_null($nro_registros)||$nro_registros == 0) || is_null($trabajadores) ) return NULL;
@@ -326,6 +343,7 @@ class Reportes_M extends CI_Model {
 			$trabajadores[$key] += array('registros' => array() );
 			$registros = $this->obtener_registros_horas_extras_trabajador($fecha,$value['id_trabajador']);
 			$trabajadores[$key]['registros'] = $registros;
+			if (count($registros)>0) { $datos[] =  $trabajadores[$key]; }
 		}
 		return $trabajadores;
 	}

@@ -59,12 +59,20 @@ class Direccion extends CI_Controller {
 		if( !$this->form_validation->run() ){ $this->agregar(); }
 		else{
 			$add = $this->Direccion_M->agregar_direccion($this->input->post() );
-			if( $add ){ redirect(__CLASS__);
+			if( $add ){ 
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se creo la dirección satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}else{
-				echo '<script language="javascript">
-						alert("No se pudo crear la Dirección, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; 
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo crear la dirección, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}
 		}
 	}
@@ -76,10 +84,12 @@ class Direccion extends CI_Controller {
 
 		$item = $this->Direccion_M->consultar_direccion($id);
 		if( is_null($item) ){
-			echo '<script language="javascript">
-						alert("No se encontro el item deseado, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se encontro el item deseado, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);
 		}else{
 			$datos['contenido'] = 'direccion/direccion_form';
 			$datos['form_action'] = 'Direccion/validar_editar';
@@ -107,12 +117,21 @@ class Direccion extends CI_Controller {
 			$this->editar($id);
 		}else{
 			$up = $this->Direccion_M->editar_direccion( $this->input->post() );
-			if( $up ){ redirect(__CLASS__);
+			if( $up ){
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se actualizaron los datos de la dirección satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}else{
-				echo '<script language="javascript">
-						alert("No se actualizar los datos de la dirección, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se actualizar los datos de la dirección, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
+			}
 		}
 
 	}
@@ -126,21 +145,32 @@ class Direccion extends CI_Controller {
 		if( !is_null($item) ){
 			$delete = $this->Direccion_M->eliminar_direccion($id);
 			if( is_null($delete) ){
-				echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este items");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; 
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este items';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}elseif( $delete === false ){
-				echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo llevar a cabo esta acción, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}else{
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se elimino la dirección satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
 				redirect(__CLASS__); }
 		}else{
-			echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);}
 	}
 }

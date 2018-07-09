@@ -141,9 +141,9 @@ desired effect
       <!-- Logo -->
       <a href="<?= base_url(); ?>" class="logo">
         <!-- mini logo for sidebar mini 50x50 pixels -->
-        <span class="logo-mini"><b>M</b>SIG</span>
+        <span class="logo-mini"><b>CGP</b></span>
         <!-- logo for regular state and mobile devices -->
-        <span class="logo-lg"><b>Master</b>SIGEI</span>
+        <span class="logo-lg"><b>CGP</b>Web</span>
       </a>
 
 <?php 

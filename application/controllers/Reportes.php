@@ -67,7 +67,7 @@ class Reportes extends CI_Controller {
 
 			$datos = $this->Reportes_M->registros_asistencia($fdesde,$fhasta,$excluidos);
 
-			if( is_null($datos) ){
+			if( is_null($datos) || count($datos) <=0 ){
 				echo '<script language="javascript">
 						alert("En rango de fechas seleccionadas no posee registros de asistencia, favor intente nuevamente");
 						window.close();
@@ -131,7 +131,7 @@ class Reportes extends CI_Controller {
 
 			$datos = $this->Reportes_M->registros_inasistencia($fdesde,$fhasta,$excluidos);
 
-			if( is_null($datos) ){
+			if( is_null($datos) || count($datos)<=0 ){
 				echo '<script language="javascript">
 						alert("En rango de fechas seleccionadas no se encontraron registros de inasistencias, favor intente nuevamente");
 						window.close();

@@ -1,8 +1,5 @@
 $(document).ready(function() {
 
-	if(_merror !== null ){
-		swal(_merror);
-	}
 
 	$("a[data='egresar']").on('click', function(event) {
 		event.preventDefault();

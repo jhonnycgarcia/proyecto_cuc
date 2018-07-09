@@ -58,12 +58,20 @@ class Cargos extends CI_Controller {
 		if( !$this->form_validation->run() ){ $this->agregar(); }
 		else{
 			$add = $this->Cargos_M->agregar_cargo($this->input->post());
-			if($add){redirect(__CLASS__);
+			if($add){
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se creo el cargo satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}else{
-				echo '<script language="javascript">
-						alert("No se pudo crear el Cargo, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo crear el Cargo, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);}
 		}
 	}
 
@@ -108,12 +116,20 @@ class Cargos extends CI_Controller {
 		}else
 		{
 			$up=$this->Cargos_M->editar_cargo($this->input->post());
-			if($up){ redirect(__CLASS__);
+			if($up){ 
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se modifico el cargo satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}else{
-				echo '<script language="javascript">
-						alert("No se actualizar los datos del Cargo, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se actualizar los datos del Cargo, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);}
 		}
 	}
 
@@ -128,22 +144,33 @@ class Cargos extends CI_Controller {
 		if( !is_null($item) ){
 			$delete = $this->Cargos_M->eliminar_cargo($id);
 			if( is_null($delete) ){
-				echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este items");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; 
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este items';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}elseif( $delete === false ){
-				echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo llevar a cabo esta acción, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}else{
-				redirect(__CLASS__); }
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se elimino el cargo satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);}
 		}else{
-			echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; }
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se pudo llevar a cabo esta acción debido a que no se encontro el registro solicitado, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);}
 	}
 
 }

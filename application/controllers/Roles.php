@@ -12,7 +12,7 @@ class Roles extends CI_Controller {
 
 	public function index()
 	{
-		redirect('Roles/lista');
+		$this->lista();
 	}
 
 	public function lista(){
@@ -58,12 +58,19 @@ class Roles extends CI_Controller {
 		}else{
 			$add = $this->Roles_M->agregar_item( $this->input->post() );
 			if( $add ){
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se creo el rol satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
 				redirect(__CLASS__);
 			}else{
-				echo '<script language="javascript">
-						alert("No se pudo crear el item, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; 
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo crear el rol, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}
 		}
 
@@ -76,10 +83,12 @@ class Roles extends CI_Controller {
 
 		$item = $this->Roles_M->consultar_item($id);
 		if( is_null($item) ){
-			echo '<script language="javascript">
-						alert("No se encontro el item deseado, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se encontro el item deseado, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);
 		}else{
 			$datos['titulo_contenedor'] = 'Roles';
 			$datos['titulo_descripcion'] = 'Editar item';
@@ -109,12 +118,19 @@ class Roles extends CI_Controller {
 		}else{
 			$up = $this->Roles_M->actualizar_item( $this->input->post() );
 			if( $up ){
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se actualizaron los datos del rol satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
 				redirect(__CLASS__);
 			}else{
-				echo '<script language="javascript">
-						alert("No se pudo actualizar el item, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se actualizar los datos del rol, favor intente nuevamente';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}
 		}
 	}
@@ -126,23 +142,34 @@ class Roles extends CI_Controller {
 
 		$item = $this->Roles_M->consultar_item($id);
 		if( is_null($item) ){
-			echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-						window.location="'.base_url(__CLASS__).'";
-					</script>';
+			$merror['title'] = 'Error';
+			$merror['text'] = 'No se pudo llevar a cabo esta acción, favor intente nuevamente';
+			$merror['type'] = 'error';
+			$merror['confirmButtonText'] = 'Aceptar';
+			$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+			redirect(__CLASS__);
 		}else{
 			$delete = $this->Roles_M->eliminar_item($id);
 			if( is_null($delete) ){
-				echo '<script language="javascript">
-						alert("No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este items");
-						window.location="'.base_url(__CLASS__).'";
-					</script>'; 
+				$merror['title'] = 'Error';
+				$merror['text'] = 'No se pudo llevar a cabo esta acción debido a que hay elementos que dependen de este item';
+				$merror['type'] = 'error';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+				redirect(__CLASS__);
 			}elseif ( !$delete ) {
-				echo '<script language="javascript">
-					alert("No se pudo llevar a cabo esta acción, favor intente nuevamente");
-					window.location="'.base_url(__CLASS__).'";
-				</script>'; 
+					$merror['title'] = 'Error';
+					$merror['text'] = 'No se pudo llevar a cabo esta acción, favor intente nuevamente';
+					$merror['type'] = 'error';
+					$merror['confirmButtonText'] = 'Aceptar';
+					$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
+					redirect(__CLASS__);
 			}else{
+				$merror['title'] = 'Registrado';
+				$merror['text'] = 'Se elimino el rol satisfactoriamente';
+				$merror['type'] = 'success';
+				$merror['confirmButtonText'] = 'Aceptar';
+				$this->session->set_flashdata('merror', json_encode( $merror,JSON_UNESCAPED_UNICODE) );
 				redirect(__CLASS__);
 			}
 		}

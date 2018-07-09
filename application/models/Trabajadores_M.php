@@ -31,6 +31,7 @@ class Trabajadores_M extends CI_Model {
 							.", a.condicion_laboral_id, c.condicion_laboral"
 							.", a.coordinacion_id, d.coordinacion"
 							.", a.cargo_id, e.cargo"
+							.", d.direccion_id, f.direccion"
 							.", to_char(a.fecha_ingreso,'DD/MM/YYYY') AS fecha_ingreso"
 							.", to_char(a.fecha_egreso,'DD/MM/YYYY') AS fecha_egreso"
 							.", a.estatus, a.asistencia_obligatoria")
@@ -38,7 +39,8 @@ class Trabajadores_M extends CI_Model {
 							->join("administrativo.datos_personales AS b","a.dato_personal_id = b.id_dato_personal")
 							->join("administrativo.condiciones_laborales AS c","a.condicion_laboral_id = c.id_condicion_laboral")
 							->join("administrativo.coordinaciones AS d","a.coordinacion_id = d.id_coordinacion")
-							->join("administrativo.cargos AS e","a.cargo_id = e.id_cargo");
+							->join("administrativo.cargos AS e","a.cargo_id = e.id_cargo")
+							->join("administrativo.direcciones AS f","d.direccion_id = f.id_direccion");
 		if($opcion){ $query = $this->db->where("a.estatus",'t');
 		}elseif ($opcion === false) { $query = $this->db->where("a.estatus",'f');}
 		if(!is_null($order_by)){ $query = $this->db->order_by($order_by['campo'],$order_by['orden']);}

@@ -39,7 +39,7 @@ class Roles_M extends CI_Model {
 
 	function consultar_dependencias($id){
 		$query = $this->db->get_where("seguridad.usuarios AS a",array("a.rol_id" => $id) )->result_array();
-		$query2 = $this->db->get_where("seguridad.roles_menu AS a",array('a.rol_id' => $id) )->result_array();
+		$query2 = $this->db->get_where("seguridad.roles_menus AS a",array('a.rol_id' => $id) )->result_array();
 		if( (count($query) > 0) || (count($query2) > 0) )
 			return true;
 		return false;

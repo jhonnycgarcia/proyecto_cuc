@@ -10,8 +10,7 @@ var _chart_desempeno = new Chart($("#chart_desempeno"), {
         labels: [ "Trabajadas", "Faltantes", "Extras"],
         datasets: [{
             label: '%',
-            // data: [ 100, 100, 100, 100,100],
-            data: [ 100, 100, 100,100],
+            data: [ 100, 100, 100, 100,100],
             backgroundColor: [
                 // 'rgba(75, 192, 192, 0.2)',
                 'rgba(54, 162, 235, 0.2)',
@@ -81,9 +80,9 @@ var _chart_asistencia = new Chart($("#chart_asistencia"),{
 
 // Objeto para realizar la carga delos datos
 	var cargar_datos = {
-		cargar_direcciones : function(_mes, _ano){
+		cargar_coordinaciones : function(_mes, _ano){
 			$.ajax({
-				url: _base_url+'Estadisticas/ajax_informacion_general_direcciones',
+				url: _base_url+'Estadisticas/ajax_informacion_general_coordinaciones',
 				type: 'POST',
 				dataType: 'JSON',
 				asyc : false,
@@ -92,7 +91,7 @@ var _chart_asistencia = new Chart($("#chart_asistencia"),{
 			.done(function(data) {
 				// console.log("success");
 				// console.log(data);	
-				rellenar.tabla_direcciones(data);
+				rellenar.tabla_coordinaciones(data);
 			})
 			.fail(function() {
 				console.log("error");
@@ -106,20 +105,20 @@ var _chart_asistencia = new Chart($("#chart_asistencia"),{
 
 // Objeto para realizar el lleano de los datos en la vista
 	var rellenar = {
-		tabla_direcciones : function(data){
-			$("#tb_direcciones > tbody").empty();
-			_tb_direcciones._fnClearTable();
-			_tb_direcciones.fnDestroy();
+		tabla_coordinaciones : function(data){
+			$("#_tb_coordinaciones > tbody").empty();
+			_tb_coordinaciones._fnClearTable();
+			_tb_coordinaciones.fnDestroy();
 			var _contador = 1;
 			$.each(data, function(index, val) {
 
-				$("#tb_direcciones > tbody").append(
+				$("#tb_coordinaciones > tbody").append(
 					'<tr>'
 						+'<td>'+_contador+'</td>'
-						+'<td class="hidden">['+val.id_direccion+']</td>'
+						+'<td class="hidden">['+val.id_coordinacion+']</td>'
 						+'<td class="hidden" id="st_asistencia">'+val.st_asistencia+'</td>'
 						+'<td class="hidden" id="st_desempeno">'+val.st_desempeno+'</td>'
-						+'<td class="text-center col-md-4">'+val.direccion+'</td>'
+						+'<td class="text-center col-md-4">'+val.coordinacion+'</td>'
 						+'<td><span class="badge bg-red">'+val.por_inasistencias+'%</span></td>'
 						+'<td><span class="badge bg-green">'+val.por_asistencias+'%</span></td>'
 						+'<td><span class="badge bg-blue">'+val.por_horas_trabajadas+'%</span></td>'
@@ -131,7 +130,7 @@ var _chart_asistencia = new Chart($("#chart_asistencia"),{
 				);
 				_contador++;
 			});
-			_tb_direcciones.dataTable({
+			_tb_coordinaciones.dataTable({
 					"oLanguage":_oLanguage
 					,"lengthMenu": [ 5,10 ]
 			});
@@ -165,7 +164,7 @@ var _chart_asistencia = new Chart($("#chart_asistencia"),{
 					"sSearch": "Buscar: " } 
 
 
-	var _tb_direcciones = $("#tb_direcciones").dataTable({
+	var _tb_coordinaciones = $("#tb_coordinaciones").dataTable({
 		"oLanguage":_oLanguage
 		,"lengthMenu": [ 5,10 ]
 	});
@@ -194,14 +193,14 @@ $(document).ready(function() {
 
 	var _str = $("#fecha_consulta").val();
 	var _array = _str.split("/");
-	cargar_datos.cargar_direcciones(_array[0],_array[1]);
+	cargar_datos.cargar_coordinaciones(_array[0],_array[1]);
 
 
 	$("#consultar").on('click', function() {
 		_str = $("#fecha_consulta").val();
 		_array = _str.split("/");
 		espera(true);
-		cargar_datos.cargar_direcciones(_array[0],_array[1]);
+		cargar_datos.cargar_coordinaciones(_array[0],_array[1]);
 		espera(false);
 		_chart_asistencia.data.datasets[0].data = _data_default_chart_asistencia;
 		_chart_desempeno.data.datasets[0].data = _data_default_chart_desempeno;

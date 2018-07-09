@@ -22,7 +22,8 @@
 <body class="hold-transition login-page">
 <div class="login-box">
   <div class="login-logo">
-    <h1>Sistema <b>Maestro</b></h1>
+    <img class="img-responsive" src="<?= base_url('assets/images/cgp_login.png'); ?>" alt="">
+    <!-- <h1>Sistema <b>Maestro</b></h1> -->
   </div>
   <!-- /.login-logo -->
   <div class="login-box-body">
